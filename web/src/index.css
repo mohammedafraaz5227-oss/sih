@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 @import 'reactflow/dist/style.css';
 @tailwind base;
 @tailwind components;
@@ -10,7 +11,26 @@
     font-family: 'Space Mono', 'Courier New', monospace;
     overflow-x: hidden;
   }
+
+  /* Selective pixel typography as requested */
+  h1, h2, h3, .pixel-heading {
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  .font-pixel {
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  .font-digital {
+    font-family: 'VT323', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .font-mono {
+    font-family: 'Space Mono', monospace;
+  }
 }
+
 
 /* Light Control Room Ambient Pattern */
 .bg-control-room-light {

@@ -30,7 +30,7 @@ export const OptimizationStatusCard: React.FC<OptimizationStatusCardProps> = ({
   return (
     <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm h-full flex flex-col justify-between">
       {/* 1. Card Header */}
-      <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-800 tracking-wider uppercase mb-3">
+      <div className="flex items-center space-x-1.5 font-pixel text-[9px] font-bold text-slate-800 tracking-wider uppercase mb-3">
         <span className="text-slate-500">⚙️</span>
         <span>OPTIMIZATION STATUS</span>
       </div>
@@ -45,65 +45,65 @@ export const OptimizationStatusCard: React.FC<OptimizationStatusCardProps> = ({
             : 'bg-[#10b981] hover:bg-[#059669] text-white shadow-sm hover:shadow-md'
         }`}
       >
-        <span className="text-lg font-black">{isSolving ? '⏳' : '✓'}</span>
-        <span className="font-black text-sm tracking-wider uppercase">
+        <span className="text-base font-black">{isSolving ? '⏳' : '✓'}</span>
+        <span className="font-pixel text-[10px] tracking-wider uppercase">
           {isSolving ? 'OPTIMIZING...' : 'OPTIMAL'}
         </span>
       </button>
 
       {/* 3. Five Metrics Rows with Icons */}
-      <div className="space-y-2.5 text-xs font-sans">
+      <div className="space-y-2.5 text-xs">
         {/* Row 1: Solve Time */}
         <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
-          <div className="flex items-center space-x-2 text-slate-600">
+          <div className="flex items-center space-x-2 font-mono text-xs text-slate-700">
             <span className="text-sm">⏱️</span>
             <span>Solve Time</span>
           </div>
-          <span className="font-mono font-bold text-slate-900">
+          <span className="font-digital text-base font-bold text-slate-900 tracking-wider">
             {solveTimeMs} ms
           </span>
         </div>
 
         {/* Row 2: Objective Score */}
         <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
-          <div className="flex items-center space-x-2 text-slate-600">
+          <div className="flex items-center space-x-2 font-mono text-xs text-slate-700">
             <span className="text-sm">📊</span>
             <span>Objective Score</span>
           </div>
-          <span className="font-mono font-bold text-slate-900">
+          <span className="font-digital text-base font-bold text-slate-900 tracking-wider">
             {objectiveScoreStr}
           </span>
         </div>
 
         {/* Row 3: Blocks Scheduled */}
         <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
-          <div className="flex items-center space-x-2 text-slate-600">
+          <div className="flex items-center space-x-2 font-mono text-xs text-slate-700">
             <span className="text-sm">🔧</span>
             <span>Blocks Scheduled</span>
           </div>
-          <span className="font-mono font-bold text-slate-900">
+          <span className="font-digital text-base font-bold text-slate-900 tracking-wider">
             {scheduledCount} / {totalRequested}
           </span>
         </div>
 
         {/* Row 4: Train Conflicts */}
         <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
-          <div className="flex items-center space-x-2 text-slate-600">
+          <div className="flex items-center space-x-2 font-mono text-xs text-slate-700">
             <span className="text-sm">🛡️</span>
             <span>Train Conflicts</span>
           </div>
-          <span className="font-mono font-black text-emerald-600 text-sm">
+          <span className="font-digital text-base font-bold text-emerald-600 tracking-wider">
             {conflicts}
           </span>
         </div>
 
         {/* Row 5: Crew Teams */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-slate-600">
+          <div className="flex items-center space-x-2 font-mono text-xs text-slate-700">
             <span className="text-sm">👥</span>
             <span>Crew Teams</span>
           </div>
-          <span className="font-mono font-bold text-slate-900">
+          <span className="font-digital text-base font-bold text-slate-900 tracking-wider">
             2 / 2
           </span>
         </div>

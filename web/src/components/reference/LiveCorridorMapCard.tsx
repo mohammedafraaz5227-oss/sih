@@ -36,15 +36,15 @@ export const LiveCorridorMapCard: React.FC<LiveCorridorMapCardProps> = ({
   return (
     <div className="bg-white border border-slate-200/80 rounded-2xl p-3.5 shadow-sm overflow-hidden flex flex-col justify-between">
       {/* 1. Header Bar: Title + Legend + Map/Satellite Toggle */}
-      <div className="flex flex-wrap items-center justify-between pb-2.5 mb-1.5 gap-2 border-b border-slate-100">
+      <div className="flex flex-wrap items-center justify-between pb-2 mb-1.5 gap-2 border-b border-slate-100">
         {/* Title */}
-        <div className="flex items-center space-x-2 text-xs font-black text-slate-800 tracking-wide uppercase">
+        <div className="flex items-center space-x-2 font-pixel text-[9px] text-slate-800 tracking-wide uppercase">
           <span className="text-blue-600 text-sm">🚆</span>
           <span>LIVE CORRIDOR MAP</span>
         </div>
 
         {/* Legend */}
-        <div className="flex items-center space-x-3 text-[10px] text-slate-600 font-medium">
+        <div className="flex items-center space-x-3 text-[9px] text-slate-600 font-mono">
           <div className="flex items-center space-x-1">
             <span className="w-2 h-2 rounded-full bg-blue-600 inline-block"></span>
             <span>Train</span>
@@ -69,12 +69,12 @@ export const LiveCorridorMapCard: React.FC<LiveCorridorMapCardProps> = ({
             <span className="text-xs text-slate-400">🔍</span>
           </div>
 
-          <div className="inline-flex border border-slate-200 bg-slate-100 p-0.5 rounded-lg text-[10px] font-semibold">
+          <div className="inline-flex border border-slate-200 bg-slate-100 p-0.5 rounded-lg">
             <button
               onClick={() => setMapMode('map')}
-              className={`px-2.5 py-0.5 rounded-md transition-all ${
+              className={`px-2 py-0.5 rounded-md transition-all font-pixel text-[7px] ${
                 mapMode === 'map'
-                  ? 'bg-blue-600 text-white font-bold shadow-xs'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -82,9 +82,9 @@ export const LiveCorridorMapCard: React.FC<LiveCorridorMapCardProps> = ({
             </button>
             <button
               onClick={() => setMapMode('satellite')}
-              className={`px-2.5 py-0.5 rounded-md transition-all ${
+              className={`px-2 py-0.5 rounded-md transition-all font-pixel text-[7px] ${
                 mapMode === 'satellite'
-                  ? 'bg-blue-600 text-white font-bold shadow-xs'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >

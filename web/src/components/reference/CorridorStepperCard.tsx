@@ -24,8 +24,8 @@ export const CorridorStepperCard: React.FC<CorridorStepperCardProps> = ({
 
   return (
     <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm h-full flex flex-col justify-between">
-      <div className="flex items-center space-x-2 text-xs font-bold text-slate-800 tracking-wider uppercase mb-3">
-        <span className="w-1.5 h-3 bg-blue-600 rounded-full"></span>
+      <div className="flex items-center space-x-2 font-pixel text-[9px] text-slate-800 tracking-wider uppercase mb-3">
+        <span className="w-1.5 h-3 bg-blue-600 rounded-xs"></span>
         <span>CORRIDOR</span>
       </div>
 
@@ -53,14 +53,14 @@ export const CorridorStepperCard: React.FC<CorridorStepperCardProps> = ({
               {/* Station Code & Distance */}
               <div className="leading-tight">
                 <div
-                  className={`text-xs font-black tracking-wide ${
-                    isSelected ? 'text-blue-700 font-extrabold' : 'text-slate-800 group-hover:text-blue-600'
+                  className={`font-pixel text-[8px] tracking-wide ${
+                    isSelected ? 'text-blue-700' : 'text-slate-800 group-hover:text-blue-600'
                   }`}
                 >
                   {stn.code}
                 </div>
-                <div className="text-[10px] text-slate-400 font-mono">
-                  {stn.km} km
+                <div className="font-digital text-sm text-slate-500 tracking-wide mt-0.5">
+                  {stn.km} KM
                 </div>
               </div>
             </div>

@@ -50,16 +50,16 @@ export const Timeline24HCard: React.FC<Timeline24HCardProps> = ({
     <div className="bg-white border border-slate-200/80 rounded-2xl p-3.5 shadow-sm">
       {/* 1. Header: Title + Red Time Pill + Legend */}
       <div className="flex flex-wrap items-center justify-between pb-2 mb-2 border-b border-slate-100 gap-2">
-        <div className="flex items-center space-x-2 text-xs font-black text-slate-800 tracking-wide uppercase">
+        <div className="flex items-center space-x-2 font-pixel text-[9px] text-slate-800 tracking-wide uppercase">
           <span className="text-blue-600 text-sm">🚆</span>
           <span>24-HOUR TIMELINE (IST)</span>
-          <span className="px-2 py-0.5 rounded-full bg-red-500 text-white font-mono text-[10px] font-bold shadow-xs">
+          <span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-digital text-sm tracking-wider shadow-xs">
             {istTimeShort}
           </span>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-3 text-[10px] text-slate-600 font-medium">
+        <div className="flex flex-wrap items-center gap-3 text-[9px] text-slate-600 font-mono">
           <div className="flex items-center space-x-1">
             <span className="w-2.5 h-2.5 bg-blue-600 rounded-xs inline-block"></span>
             <span>Passenger Train</span>
@@ -92,13 +92,13 @@ export const Timeline24HCard: React.FC<Timeline24HCardProps> = ({
             className="absolute top-0 bottom-0 w-[2px] border-l-2 border-dashed border-red-500 z-30 pointer-events-none"
           >
             {/* Red Current Time Badge on Top of Line */}
-            <div className="absolute -top-3.5 -left-4 bg-red-500 text-white px-1.5 py-0.2 rounded-xs text-[8px] font-bold font-mono shadow-xs whitespace-nowrap">
+            <div className="absolute -top-3.5 -left-4 bg-red-600 text-white px-1.5 py-0.2 rounded-xs font-digital text-xs font-bold shadow-xs whitespace-nowrap">
               {istTimeShort}
             </div>
           </div>
 
           {/* Time Marks Header */}
-          <div className="flex border-b border-slate-200/80 pb-1 mb-1.5 text-[9px] font-mono text-slate-400">
+          <div className="flex border-b border-slate-200/80 pb-1 mb-1.5 font-digital text-xs text-slate-500 tracking-wider">
             <div className="w-[90px] flex-shrink-0"></div>
             <div className="flex-1 flex justify-between px-1">
               {timeTicks.map((t) => (
@@ -126,7 +126,7 @@ export const Timeline24HCard: React.FC<Timeline24HCardProps> = ({
               return (
                 <div key={sec.id} className="flex items-center">
                   {/* Left Section Label */}
-                  <div className="w-[90px] flex-shrink-0 text-[10px] font-mono font-bold text-slate-700">
+                  <div className="w-[90px] flex-shrink-0 font-pixel text-[7px] text-slate-700 tracking-tight">
                     {sec.label}
                   </div>
 

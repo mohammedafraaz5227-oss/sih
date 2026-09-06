@@ -64,16 +64,15 @@ export const HeaderReference: React.FC<HeaderReferenceProps> = ({
             alt="Indian Railways Crest"
             className="w-9 h-9 object-contain"
             onError={(e) => {
-              // Fallback to circular IR crest emblem
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
         </div>
-        <div className="leading-tight">
-          <div className="text-[13px] font-black tracking-wider text-[#0284c7] uppercase font-sans">
+        <div className="leading-tight select-none">
+          <div className="font-pixel text-[8px] tracking-wider text-[#0284c7] uppercase">
             INDIAN
           </div>
-          <div className="text-[13px] font-black tracking-widest text-[#0f172a] uppercase font-sans">
+          <div className="font-pixel text-[9px] tracking-widest text-[#0f172a] uppercase mt-0.5">
             RAILWAYS
           </div>
         </div>
@@ -87,10 +86,10 @@ export const HeaderReference: React.FC<HeaderReferenceProps> = ({
             <button
               key={tab.id}
               onClick={() => onSelectTab(tab.id)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-all duration-150 ${
+              className={`px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-all duration-150 ${
                 isActive
-                  ? 'bg-[#e0f2fe] text-[#0284c7] border border-[#38bdf8] shadow-sm font-bold'
-                  : 'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
+                  ? 'bg-[#e0f2fe] text-[#0284c7] border border-[#38bdf8] shadow-xs font-pixel text-[8px]'
+                  : 'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent font-pixel text-[8px]'
               }`}
             >
               <span className="text-xs">{tab.icon}</span>
@@ -109,11 +108,11 @@ export const HeaderReference: React.FC<HeaderReferenceProps> = ({
 
         {/* Digital Clock & Date */}
         <div className="text-right border-l border-slate-200 pl-3">
-          <div className="font-mono text-sm font-bold text-slate-800 tracking-wider leading-none">
+          <div className="font-digital text-lg font-bold text-slate-900 tracking-widest leading-none">
             {currentTime}
           </div>
-          <div className="text-[10px] text-slate-400 font-sans mt-0.5">
-            {currentDate} • <strong className="text-blue-600">IST</strong>
+          <div className="font-mono text-[10px] text-slate-500 mt-0.5">
+            {currentDate} • <strong className="text-blue-600 font-pixel text-[8px]">IST</strong>
           </div>
         </div>
 

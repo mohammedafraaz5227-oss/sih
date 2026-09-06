@@ -17,25 +17,25 @@ export const RecentActivityCard: React.FC<RecentActivityCardProps> = () => {
   return (
     <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm h-full flex flex-col justify-between">
       {/* Title */}
-      <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-800 tracking-wider uppercase mb-3">
+      <div className="flex items-center space-x-1.5 font-pixel text-[9px] font-bold text-slate-800 tracking-wider uppercase mb-3">
         <span className="text-slate-500">⚡</span>
         <span>RECENT ACTIVITY</span>
       </div>
 
       {/* Activity List */}
-      <div className="space-y-2.5 text-xs font-sans">
+      <div className="space-y-2.5 text-xs">
         {activities.map((item, idx) => (
           <div key={idx} className="flex items-center space-x-2.5 text-slate-700">
             {/* Colored Dot */}
             <span className={`w-2 h-2 rounded-full flex-shrink-0 ${item.dotColor}`}></span>
 
             {/* Timestamp */}
-            <span className="font-mono text-slate-400 text-[11px] flex-shrink-0">
+            <span className="font-digital text-sm text-slate-500 flex-shrink-0 tracking-wider">
               {item.time}
             </span>
 
             {/* Activity Description */}
-            <span className="text-slate-800 truncate text-xs font-medium">
+            <span className="font-mono text-xs text-slate-800 truncate font-medium">
               {item.text}
             </span>
           </div>
