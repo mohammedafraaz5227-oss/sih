@@ -222,13 +222,10 @@ export const App: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen bg-[#060a12] text-slate-100 flex flex-col selection:bg-yellow-400 selection:text-black font-sans relative ${
+      className={`min-h-screen bg-control-room-light text-slate-900 flex flex-col selection:bg-amber-400 selection:text-black font-sans relative ${
         scanlines ? 'scanlines' : ''
       }`}
     >
-      {/* Ambient Procedural Grid Background (Image-free) */}
-      <div className="fixed inset-0 bg-control-grid opacity-30 pointer-events-none z-0" />
-
       {/* Top Navigation & Status Bar */}
       <Header
         activeTab={activeTab}
@@ -244,14 +241,14 @@ export const App: React.FC = () => {
       {notification && (
         <div className="max-w-7xl mx-auto w-full px-4 pt-4 relative z-20">
           <div
-            className={`pixel-card p-3 border-2 flex items-center justify-between text-xs font-pixel shadow-pixel animate-fadeIn ${
+            className={`pixel-card-light p-3 border-2 flex items-center justify-between text-xs font-pixel shadow-pixel animate-fadeIn ${
               notification.type === 'success'
-                ? 'bg-[#064e3b] border-emerald-400 text-emerald-100 shadow-glow-emerald'
+                ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
                 : notification.type === 'error'
-                ? 'bg-[#7f1d1d] border-rose-500 text-rose-100 shadow-glow-red'
+                ? 'bg-rose-50 border-rose-600 text-rose-900'
                 : notification.type === 'warning'
-                ? 'bg-[#78350f] border-amber-400 text-amber-100 shadow-glow-amber'
-                : 'bg-[#0f2347] border-electric-cyan text-cyan-100 shadow-glow-cyan'
+                ? 'bg-amber-50 border-amber-600 text-amber-900'
+                : 'bg-blue-50 border-blue-600 text-blue-900'
             }`}
           >
             <div className="flex items-center space-x-2.5">
@@ -259,19 +256,19 @@ export const App: React.FC = () => {
                 size={16}
                 color={
                   notification.type === 'success'
-                    ? '#34d399'
+                    ? '#16a34a'
                     : notification.type === 'error'
-                    ? '#f87171'
+                    ? '#dc2626'
                     : notification.type === 'warning'
-                    ? '#fbbf24'
-                    : '#00f0ff'
+                    ? '#d97706'
+                    : '#0284c7'
                 }
               />
               <span>{notification.message}</span>
             </div>
             <button
               onClick={() => setNotification(null)}
-              className="text-xs hover:text-white px-2 py-0.5 border border-white/40 ml-4 font-mono uppercase transition-colors"
+              className="text-xs hover:text-black px-2 py-0.5 border border-slate-400 ml-4 font-mono uppercase transition-colors"
             >
               [X]
             </button>
@@ -284,8 +281,8 @@ export const App: React.FC = () => {
         {isLoading ? (
           <div className="min-h-[400px] flex flex-col items-center justify-center space-y-4">
             <PixelSignal aspect="amber" size={36} />
-            <p className="font-pixel text-xs text-yellow-400">INITIALIZING RAILWAY CONTROL DESK...</p>
-            <p className="font-mono text-xs text-slate-400">Connecting to corridor telemetry & CP-SAT solver engine</p>
+            <p className="font-pixel text-xs text-slate-800">INITIALIZING RAILWAY CONTROL DESK...</p>
+            <p className="font-mono text-xs text-slate-500">Connecting to corridor telemetry & CP-SAT solver engine</p>
           </div>
         ) : (
           <>
@@ -295,6 +292,8 @@ export const App: React.FC = () => {
                 comparison={comparison}
                 blocks={blocks}
                 assets={assets}
+                stations={stations}
+                trains={trains}
                 isSolving={isSolving}
                 onRunOptimization={handleRunOptimization}
                 onNavigateTab={setActiveTab}
@@ -352,27 +351,27 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Control-Room Footer */}
-      <footer className="border-t-2 border-[#1e293b] bg-[#070d18] text-slate-400 text-xs font-mono py-4 px-4 mt-12 relative z-10">
+      {/* Control-Room Operations Footer */}
+      <footer className="border-t-2 border-[#0f172a] bg-white text-slate-600 text-xs font-mono py-4 px-4 mt-12 relative z-10 shadow-pixel-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
-            <div className="w-2.5 h-2.5 bg-emerald-400 rounded-none border border-black animate-pulse shadow-glow-emerald" />
-            <span className="font-pixel text-[9px] text-slate-300">
+            <div className="w-2.5 h-2.5 bg-emerald-500 rounded-none border border-black animate-pulse" />
+            <span className="font-pixel text-[9px] text-slate-900 font-bold">
               SMART INDIA HACKATHON • RAILWAY OPERATIONAL BLOCK PLANNER
             </span>
           </div>
 
-          <div className="text-[11px] text-slate-400 text-center">
+          <div className="text-[11px] text-slate-600 text-center">
             Repository Mode:{' '}
-            <span className={isFirebaseConfigured ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
+            <span className={isFirebaseConfigured ? 'text-emerald-700 font-bold' : 'text-blue-700 font-bold'}>
               {isFirebaseConfigured ? 'FIRESTORE CLOUD DATA' : 'IN-MEMORY LOCAL REPOSITORY'}
             </span>{' '}
             • Engine:{' '}
-            <span className="text-electric-cyan font-bold">Google OR-Tools CP-SAT (Python 3.12)</span>
+            <span className="text-slate-900 font-bold font-mono">Google OR-Tools CP-SAT (Python 3.12)</span>
           </div>
 
-          <div className="text-[9px] text-amber-500 font-pixel text-center md:text-right">
-            [SYNTHETIC DATA — FOR EVALUATION ONLY]
+          <div className="text-[9px] text-amber-800 font-pixel text-center md:text-right bg-amber-100 px-2 py-0.5 border border-amber-300">
+            [SYNTHETIC BENCHMARK DATA]
           </div>
         </div>
       </footer>
