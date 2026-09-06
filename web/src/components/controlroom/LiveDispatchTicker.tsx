@@ -20,7 +20,7 @@ export const LiveDispatchTicker: React.FC<LiveDispatchTickerProps> = ({ scenario
       name="LIVE DISPATCH ACTIVITY"
       icon={<span className="text-sm">📡</span>}
       badge={
-        <span className="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-pixel text-[7px] uppercase">
+        <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-pixel text-[7px] uppercase">
           TELEMETRY
         </span>
       }
@@ -31,18 +31,18 @@ export const LiveDispatchTicker: React.FC<LiveDispatchTickerProps> = ({ scenario
         {dispatchEvents.map((evt, idx) => (
           <div
             key={idx}
-            className="flex items-center justify-between gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 transition-all font-mono text-xs border border-transparent hover:border-slate-100"
+            className="flex items-center justify-between gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-all font-mono text-xs border border-transparent hover:border-slate-100 dark:hover:border-slate-800"
           >
             <div className="flex items-center gap-2 min-w-0">
               <PulsingSignalPip aspect={evt.aspect} size="sm" pulse={idx === 0} />
-              <span className="font-digital text-sm text-slate-500 shrink-0">
+              <span className="font-digital text-sm text-slate-500 dark:text-slate-400 shrink-0">
                 {evt.time}
               </span>
-              <span className="text-slate-800 text-[11px] font-medium truncate">
+              <span className="text-slate-800 dark:text-slate-200 text-[11px] font-medium truncate">
                 {evt.text}
               </span>
             </div>
-            <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[9px] shrink-0">
+            <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px] shrink-0">
               {evt.section}
             </span>
           </div>

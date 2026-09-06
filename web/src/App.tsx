@@ -24,6 +24,29 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [scenario, setScenario] = useState<'congested' | 'demo'>('congested');
 
+  // Theme State (Light vs Dark Control Room)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sih_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('sih_theme', theme);
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  };
+
   // Core Data State
   const [stations, setStations] = useState<Station[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -221,7 +244,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#f1f5f9] text-slate-800 flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#f1f5f9] dark:bg-[#060a12] text-slate-800 dark:text-slate-100 flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden transition-colors duration-200">
       {/* 21st.dev Ambient Retro Perspective Grid */}
       <RetroGrid className="opacity-25" />
 
@@ -234,6 +257,8 @@ export const App: React.FC = () => {
           scenario={scenario}
           onToggleScenario={handleToggleScenario}
           isSolving={isSolving}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
 
         {/* Floating Notification */}
@@ -242,12 +267,12 @@ export const App: React.FC = () => {
             <div
               className={`p-3 rounded-xl border flex items-center justify-between text-xs font-semibold shadow-xs ${
                 notification.type === 'success'
-                  ? 'bg-emerald-50 border-emerald-400 text-emerald-900'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200'
                   : notification.type === 'error'
-                  ? 'bg-rose-50 border-rose-400 text-rose-900'
+                  ? 'bg-rose-50 dark:bg-rose-950/80 border-rose-400 dark:border-rose-700 text-rose-900 dark:text-rose-200'
                   : notification.type === 'warning'
-                  ? 'bg-amber-50 border-amber-400 text-amber-900'
-                  : 'bg-blue-50 border-blue-400 text-blue-900'
+                  ? 'bg-amber-50 dark:bg-amber-950/80 border-amber-400 dark:border-amber-700 text-amber-900 dark:text-amber-200'
+                  : 'bg-blue-50 dark:bg-blue-950/80 border-blue-400 dark:border-blue-700 text-blue-900 dark:text-blue-200'
               }`}
             >
               <div className="flex items-center space-x-2">
@@ -267,7 +292,7 @@ export const App: React.FC = () => {
               </div>
               <button
                 onClick={() => setNotification(null)}
-                className="text-xs hover:text-black px-2 py-0.5 border border-slate-300 rounded font-mono uppercase"
+                className="text-xs hover:text-black dark:hover:text-white px-2 py-0.5 border border-slate-300 dark:border-slate-700 rounded font-mono uppercase text-slate-600 dark:text-slate-300"
               >
                 [X]
               </button>
@@ -280,8 +305,8 @@ export const App: React.FC = () => {
           {isLoading ? (
             <div className="min-h-[400px] flex flex-col items-center justify-center space-y-4">
               <PixelSignal aspect="amber" size={36} />
-              <p className="font-pixel text-xs text-slate-700">INITIALIZING RAILWAY CONTROL CONSOLE...</p>
-              <p className="font-mono text-xs text-slate-500">Connecting to corridor telemetry & CP-SAT solver engine</p>
+              <p className="font-pixel text-xs text-slate-700 dark:text-slate-300">INITIALIZING RAILWAY CONTROL CONSOLE...</p>
+              <p className="font-mono text-xs text-slate-500 dark:text-slate-400">Connecting to corridor telemetry & CP-SAT solver engine</p>
             </div>
           ) : (
             <>

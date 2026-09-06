@@ -56,7 +56,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white border border-slate-200/90 p-4 shadow-sm transition-all duration-300',
+        'group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 p-4 shadow-sm transition-all duration-300',
         glowStyles[glowColor],
         className
       )}
@@ -65,12 +65,12 @@ export const BentoCard: React.FC<BentoCardProps> = ({
         <div className="flex items-center justify-between gap-2 mb-3 z-10">
           <div className="flex items-center gap-2 min-w-0">
             {icon && (
-              <div className="flex items-center justify-center text-slate-700">
+              <div className="flex items-center justify-center text-slate-700 dark:text-slate-300">
                 {icon}
               </div>
             )}
             {name && (
-              <h3 className="font-pixel text-[9px] text-slate-900 tracking-wider uppercase truncate">
+              <h3 className="font-pixel text-[9px] text-slate-900 dark:text-slate-100 tracking-wider uppercase truncate">
                 {name}
               </h3>
             )}
@@ -81,7 +81,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
       )}
 
       {description && (
-        <p className="font-mono text-xs text-slate-500 mb-3 z-10">
+        <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mb-3 z-10">
           {description}
         </p>
       )}
@@ -89,7 +89,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
       <div className="relative z-10 flex-1 flex flex-col">{children}</div>
 
       {/* Subtle corner highlight gradient */}
-      <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gradient-to-br from-slate-100/60 to-transparent blur-xl transition-all duration-500 group-hover:scale-125" />
+      <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gradient-to-br from-slate-100/60 dark:from-slate-800/40 to-transparent blur-xl transition-all duration-500 group-hover:scale-125" />
     </motion.div>
   );
 };

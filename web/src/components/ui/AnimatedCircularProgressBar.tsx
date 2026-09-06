@@ -19,7 +19,7 @@ export const AnimatedCircularProgressBar: React.FC<AnimatedCircularProgressBarPr
   min = 0,
   value,
   gaugePrimaryColor = '#0284c7',
-  gaugeSecondaryColor = '#e2e8f0',
+  gaugeSecondaryColor = 'currentColor',
   className,
   size = 110,
   strokeWidth = 9,
@@ -48,6 +48,7 @@ export const AnimatedCircularProgressBar: React.FC<AnimatedCircularProgressBarPr
           cy={size / 2}
           r={radius}
           stroke={gaugeSecondaryColor}
+          className="text-slate-200 dark:text-slate-800"
           strokeWidth={strokeWidth}
           fill="none"
         />

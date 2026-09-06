@@ -31,21 +31,21 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
   return (
     <div className="space-y-4 pb-6 select-none">
       {/* 1. Hero CP-SAT Banner Card */}
-      <div className="w-full bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
+      <div className="w-full bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 relative overflow-hidden transition-colors duration-200">
         <div className="flex items-center gap-3.5 z-10">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-2xl shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl shadow-xs">
             ⚡
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-pixel text-xs sm:text-sm text-slate-900 tracking-wider uppercase">
+              <h2 className="font-pixel text-xs sm:text-sm text-slate-900 dark:text-slate-100 tracking-wider uppercase">
                 Google OR-Tools CP-SAT Solver Engine
               </h2>
-              <span className="px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-700 font-pixel text-[7px] uppercase">
+              <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-pixel text-[7px] uppercase">
                 MULTI-THREADED
               </span>
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-1">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-1">
               Exact Constraint Programming • Disjunctive Track Occupancy (NoOverlap) • ±15m Headway Buffers • Cumulative Crew Limit
             </p>
           </div>
@@ -72,11 +72,11 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
           <div className="flex flex-col justify-between h-full pt-1">
             <div className="flex items-center gap-2">
               <PulsingSignalPip aspect={metrics?.solver_status === 'OPTIMAL' ? 'green' : 'amber'} size="md" />
-              <span className="font-pixel text-sm text-emerald-600 font-bold">
+              <span className="font-pixel text-sm text-emerald-600 dark:text-emerald-400 font-bold">
                 {metrics?.solver_status || 'OPTIMAL'}
               </span>
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               0 Track Conflicts Detected
             </p>
           </div>
@@ -90,12 +90,12 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
         >
           <div className="flex flex-col justify-between h-full pt-1">
             <div className="flex items-baseline gap-1">
-              <span className="font-digital text-2xl font-bold text-slate-900">
+              <span className="font-digital text-2xl font-bold text-slate-900 dark:text-slate-100">
                 <NumberTicker value={solveTimeMs} decimalPlaces={1} />
               </span>
-              <span className="font-mono text-xs text-slate-500">ms</span>
+              <span className="font-mono text-xs text-slate-500 dark:text-slate-400">ms</span>
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               Across 8 Worker Threads
             </p>
           </div>
@@ -108,26 +108,27 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
           glowColor="cyan"
         >
           <div className="flex flex-col justify-between h-full pt-1">
-            <span className="font-digital text-2xl font-bold text-blue-700">
+            <div className="font-digital text-2xl font-bold text-blue-700 dark:text-blue-400">
               <NumberTicker value={score} decimalPlaces={0} />
-            </span>
-            <p className="font-mono text-xs text-slate-500 mt-2">
-              Max Priority • Min Delay
+            </div>
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Max Priority • Min Deviation
             </p>
           </div>
         </BentoCard>
 
-        {/* KPI 4: Allocation Success */}
+        {/* KPI 4: Granted vs Requested */}
         <BentoCard
-          name="ALLOCATION RATE"
+          name="BLOCKS SCHEDULED"
           icon={<span className="text-sm">🔧</span>}
           glowColor="amber"
         >
           <div className="flex flex-col justify-between h-full pt-1">
-            <span className="font-digital text-2xl font-bold text-slate-900">
-              {scheduledBlocks.length} / {(schedule?.blocks || []).length}
-            </span>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <div className="flex items-baseline gap-1 font-digital text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <span>{scheduledBlocks.length}</span>
+              <span className="text-slate-400 font-mono text-sm">/ {schedule?.blocks.length || 10}</span>
+            </div>
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               {skippedBlocks.length} Lower-Priority Skipped
             </p>
           </div>
@@ -135,13 +136,13 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
       </BentoGrid>
 
       {/* 3. Detailed Schedule Allocation Table */}
-      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-          <div className="flex items-center gap-2 font-pixel text-xs text-slate-900 uppercase">
-            <span className="text-blue-600">📋</span>
+      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm transition-colors duration-200">
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-2 font-pixel text-xs text-slate-900 dark:text-slate-100 uppercase">
+            <span className="text-blue-600 dark:text-blue-400">📋</span>
             <span>OPTIMIZED BLOCK SCHEDULE ASSIGNMENTS</span>
           </div>
-          <span className="font-mono text-xs text-slate-500">
+          <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
             {scheduledBlocks.length} Possession Slots Granted
           </span>
         </div>
@@ -149,7 +150,7 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left font-mono text-xs">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/80 font-pixel text-[7.5px] text-slate-600 uppercase">
+              <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 font-pixel text-[7.5px] text-slate-600 dark:text-slate-400 uppercase">
                 <th className="py-2.5 px-3">Status</th>
                 <th className="py-2.5 px-3">Demand ID</th>
                 <th className="py-2.5 px-3">Corridor Track Section</th>
@@ -160,7 +161,7 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
                 <th className="py-2.5 px-3">Deviation</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
               {scheduledBlocks.map((b) => {
                 const startH = Math.floor(b.scheduled_start / 60);
                 const startM = b.scheduled_start % 60;
@@ -169,32 +170,32 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
                 const timeStr = `${String(startH).padStart(2, '0')}:${String(startM).padStart(2, '0')} - ${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
 
                 return (
-                  <tr key={b.block_request_id} className="hover:bg-slate-50/80 transition-all">
+                  <tr key={b.block_request_id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/60 transition-all">
                     <td className="py-2.5 px-3">
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-pixel text-[7px] border border-emerald-200">
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-pixel text-[7px] border border-emerald-200 dark:border-emerald-700">
                         <PulsingSignalPip aspect="green" size="sm" pulse={false} />
                         SCHEDULED
                       </span>
                     </td>
-                    <td className="py-2.5 px-3 font-bold text-slate-800 font-pixel text-[8px]">
+                    <td className="py-2.5 px-3 font-bold text-slate-800 dark:text-slate-200 font-pixel text-[8px]">
                       {b.block_request_id}
                     </td>
-                    <td className="py-2.5 px-3 text-slate-700">{b.asset_name}</td>
-                    <td className="py-2.5 px-3 uppercase text-[11px] text-blue-700 font-medium">
+                    <td className="py-2.5 px-3 text-slate-700 dark:text-slate-300">{b.asset_name}</td>
+                    <td className="py-2.5 px-3 uppercase text-[11px] text-blue-700 dark:text-blue-400 font-medium">
                       {b.maintenance_type.replace('_', ' ')}
                     </td>
                     <td className="py-2.5 px-3">
-                      <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-bold text-[10px]">
+                      <span className="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 font-bold text-[10px] border border-amber-300 dark:border-amber-700">
                         P{b.priority}
                       </span>
                     </td>
-                    <td className="py-2.5 px-3 font-digital text-sm text-slate-900 font-bold">
+                    <td className="py-2.5 px-3 font-digital text-sm text-slate-900 dark:text-slate-100 font-bold">
                       {timeStr}
                     </td>
-                    <td className="py-2.5 px-3 font-digital text-sm text-slate-700">
+                    <td className="py-2.5 px-3 font-digital text-sm text-slate-700 dark:text-slate-300">
                       {b.duration_minutes}m
                     </td>
-                    <td className="py-2.5 px-3 font-digital text-sm text-slate-600">
+                    <td className="py-2.5 px-3 font-digital text-sm text-slate-600 dark:text-slate-400">
                       {b.deviation_minutes}m
                     </td>
                   </tr>
@@ -202,26 +203,26 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
               })}
 
               {skippedBlocks.map((b) => (
-                <tr key={b.block_request_id} className="opacity-60 bg-rose-50/20 hover:opacity-90 transition-all">
+                <tr key={b.block_request_id} className="opacity-60 bg-rose-50/20 dark:bg-rose-950/20 hover:opacity-90 transition-all">
                   <td className="py-2.5 px-3">
-                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 font-pixel text-[7px] border border-rose-200">
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 font-pixel text-[7px] border border-rose-200 dark:border-rose-700">
                       <PulsingSignalPip aspect="red" size="sm" pulse={false} />
                       DEFERRED
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 font-bold text-slate-500 font-pixel text-[8px]">
+                  <td className="py-2.5 px-3 font-bold text-slate-500 dark:text-slate-400 font-pixel text-[8px]">
                     {b.block_request_id}
                   </td>
-                  <td className="py-2.5 px-3 text-slate-500">{b.asset_name}</td>
-                  <td className="py-2.5 px-3 uppercase text-[11px] text-slate-500">
+                  <td className="py-2.5 px-3 text-slate-500 dark:text-slate-400">{b.asset_name}</td>
+                  <td className="py-2.5 px-3 uppercase text-[11px] text-slate-500 dark:text-slate-400">
                     {b.maintenance_type.replace('_', ' ')}
                   </td>
                   <td className="py-2.5 px-3">
-                    <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px]">
+                    <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px]">
                       P{b.priority}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 text-slate-400 font-mono text-[11px]" colSpan={3}>
+                  <td className="py-2.5 px-3 text-slate-400 dark:text-slate-500 font-mono text-[11px]" colSpan={3}>
                     {b.skip_reason || 'Lower priority deferred to avoid Rajdhani/Shatabdi train conflict'}
                   </td>
                 </tr>

@@ -113,16 +113,16 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
   };
 
   return (
-    <div className="relative w-full bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-sm overflow-hidden flex flex-col justify-between">
+    <div className="relative w-full bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm overflow-hidden flex flex-col justify-between transition-colors duration-200">
       {/* 1. Header Bar: Title + Legend + Inspector Trigger */}
-      <div className="flex flex-wrap items-center justify-between pb-3 mb-3 border-b border-slate-100 gap-2.5 z-20">
+      <div className="flex flex-wrap items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 gap-2.5 z-20">
         <div className="flex items-center gap-2.5">
           <span className="w-2.5 h-4 bg-[#7B1113] rounded-xs shadow-xs" />
           <div>
-            <h2 className="font-pixel text-[10px] text-slate-900 tracking-wider uppercase">
+            <h2 className="font-pixel text-[10px] text-slate-900 dark:text-slate-100 tracking-wider uppercase">
               LIVE CORRIDOR TOPOLOGY & DISPATCH
             </h2>
-            <p className="font-mono text-[11px] text-slate-500">
+            <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
               Delhi ⇄ Agra 6-Station Double-Line High-Density Route (265 KM)
             </p>
           </div>
@@ -130,19 +130,19 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
 
         {/* Dynamic Legend */}
         <div className="flex flex-wrap items-center gap-3 text-xs font-mono">
-          <div className="flex items-center gap-1.5 text-slate-700">
+          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
             <span className="w-2 h-2 rounded-full bg-blue-600 inline-block" />
             <span className="text-[11px]">Down Line (NDLS→AGC)</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-700">
+          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
             <span className="w-2 h-2 rounded-full bg-indigo-600 inline-block" />
             <span className="text-[11px]">Up Line (AGC→NDLS)</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-700">
+          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
             <span className="w-2.5 h-2.5 bg-amber-400 rounded-xs border border-amber-600 hazard-stripes-light inline-block" />
             <span className="text-[11px]">Active Maintenance Possession</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-700">
+          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
             <PulsingSignalPip aspect="green" size="sm" />
             <span className="text-[11px]">Signal Clear</span>
           </div>
@@ -150,7 +150,7 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
       </div>
 
       {/* 2. Interactive SVG Corridor Canvas */}
-      <div className="relative w-full min-h-[220px] bg-slate-50/70 border border-slate-200/80 rounded-xl p-3 select-none overflow-hidden">
+      <div className="relative w-full min-h-[220px] bg-slate-50/70 dark:bg-[#060a12]/80 border border-slate-200/80 dark:border-slate-800 rounded-xl p-3 select-none overflow-hidden">
         {/* CP-SAT Solver Scanning Laser (Visible during solve) */}
         {isSolving && (
           <div className="pointer-events-none absolute inset-0 z-30 overflow-hidden">
@@ -165,7 +165,7 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
           {/* Subtle Grid Lines */}
           <defs>
             <pattern id="track-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" strokeWidth="0.5" />
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" className="text-slate-200 dark:text-slate-800" strokeWidth="0.5" />
             </pattern>
             {/* Directional Headlight Gradient */}
             <linearGradient id="headlight-right" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -471,15 +471,15 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-3 p-3 bg-slate-50 border border-blue-200/80 rounded-xl flex items-center justify-between gap-4 text-xs font-mono"
+            className="mt-3 p-3 bg-slate-50 dark:bg-slate-900/90 border border-blue-200/80 dark:border-blue-900/60 rounded-xl flex items-center justify-between gap-4 text-xs font-mono"
           >
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping" />
               <div>
-                <span className="font-bold text-slate-900 font-pixel text-[9px]">
+                <span className="font-bold text-slate-900 dark:text-slate-100 font-pixel text-[9px]">
                   {inspectedEntity.title}
                 </span>
-                <p className="text-slate-600 text-[11px] mt-0.5">
+                <p className="text-slate-600 dark:text-slate-400 text-[11px] mt-0.5">
                   {inspectedEntity.subtitle}
                 </p>
               </div>
@@ -487,18 +487,18 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
 
             <div className="flex items-center gap-3 shrink-0">
               {inspectedEntity.blocks && inspectedEntity.blocks.length > 0 ? (
-                <span className="px-2 py-1 rounded bg-amber-100 text-amber-900 font-semibold text-[10px] border border-amber-300">
+                <span className="px-2 py-1 rounded bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 font-semibold text-[10px] border border-amber-300 dark:border-amber-700">
                   {inspectedEntity.blocks.length} Scheduled Block(s)
                 </span>
               ) : (
-                <span className="px-2 py-1 rounded bg-emerald-100 text-emerald-900 font-semibold text-[10px] border border-emerald-300">
+                <span className="px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-300 font-semibold text-[10px] border border-emerald-300 dark:border-emerald-700">
                   Track Clear • No Possessions
                 </span>
               )}
 
               <button
                 onClick={() => setInspectedEntity(null)}
-                className="px-2 py-0.5 text-[10px] text-slate-400 hover:text-slate-700 uppercase"
+                className="px-2 py-0.5 text-[10px] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 uppercase"
               >
                 [CLOSE]
               </button>

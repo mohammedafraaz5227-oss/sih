@@ -28,8 +28,8 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
     >
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center justify-between flex-1 py-1">
         {/* Gauge 1: Maintenance Occupancy */}
-        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 border border-slate-100">
-          <span className="font-pixel text-[6.5px] text-slate-500 uppercase mb-2 text-center h-4 flex items-center">
+        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
+          <span className="font-pixel text-[6.5px] text-slate-500 dark:text-slate-400 uppercase mb-2 text-center h-4 flex items-center">
             MAINTENANCE OCCUPANCY
           </span>
           <AnimatedCircularProgressBar
@@ -37,23 +37,22 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
             size={96}
             strokeWidth={8}
             gaugePrimaryColor="#0284c7"
-            gaugeSecondaryColor="#e2e8f0"
           >
             <div className="flex flex-col items-center">
-              <span className="font-digital text-base font-bold text-slate-900 leading-none">
+              <span className="font-digital text-base font-bold text-slate-900 dark:text-slate-100 leading-none">
                 <NumberTicker value={occupancyPercent} decimalPlaces={1} />%
               </span>
               <span className="text-[8px] font-mono text-slate-400 mt-0.5">Corridor</span>
             </div>
           </AnimatedCircularProgressBar>
-          <span className="font-mono text-[10px] text-slate-600 mt-2">
+          <span className="font-mono text-[10px] text-slate-600 dark:text-slate-400 mt-2">
             Target: &lt;15.0%
           </span>
         </div>
 
         {/* Gauge 2: Train Delay (Minutes) */}
-        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 border border-slate-100">
-          <span className="font-pixel text-[6.5px] text-slate-500 uppercase mb-2 text-center h-4 flex items-center">
+        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
+          <span className="font-pixel text-[6.5px] text-slate-500 dark:text-slate-400 uppercase mb-2 text-center h-4 flex items-center">
             TRAIN DELAY
           </span>
           <AnimatedCircularProgressBar
@@ -61,23 +60,22 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
             size={96}
             strokeWidth={8}
             gaugePrimaryColor={trainDelayMinutes === 0 ? '#10b981' : '#f59e0b'}
-            gaugeSecondaryColor="#e2e8f0"
           >
             <div className="flex flex-col items-center">
-              <span className="font-digital text-base font-bold text-emerald-600 leading-none">
+              <span className="font-digital text-base font-bold text-emerald-600 dark:text-emerald-400 leading-none">
                 <NumberTicker value={trainDelayMinutes} decimalPlaces={0} />m
               </span>
-              <span className="text-[8px] font-mono text-emerald-700 mt-0.5">Zero Clash</span>
+              <span className="text-[8px] font-mono text-emerald-700 dark:text-emerald-300 mt-0.5">Zero Clash</span>
             </div>
           </AnimatedCircularProgressBar>
-          <span className="font-mono text-[10px] text-emerald-700 mt-2 font-medium">
+          <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-400 mt-2 font-medium">
             100% Punctuality
           </span>
         </div>
 
         {/* Gauge 3: Track Availability */}
-        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 border border-slate-100">
-          <span className="font-pixel text-[6.5px] text-slate-500 uppercase mb-2 text-center h-4 flex items-center">
+        <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
+          <span className="font-pixel text-[6.5px] text-slate-500 dark:text-slate-400 uppercase mb-2 text-center h-4 flex items-center">
             TRACK AVAILABILITY
           </span>
           <AnimatedCircularProgressBar
@@ -85,16 +83,15 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
             size={96}
             strokeWidth={8}
             gaugePrimaryColor="#10b981"
-            gaugeSecondaryColor="#e2e8f0"
           >
             <div className="flex flex-col items-center">
-              <span className="font-digital text-base font-bold text-slate-900 leading-none">
+              <span className="font-digital text-base font-bold text-slate-900 dark:text-slate-100 leading-none">
                 <NumberTicker value={availabilityPercent} decimalPlaces={1} />%
               </span>
               <span className="text-[8px] font-mono text-slate-400 mt-0.5">Operational</span>
             </div>
           </AnimatedCircularProgressBar>
-          <span className="font-mono text-[10px] text-slate-600 mt-2">
+          <span className="font-mono text-[10px] text-slate-600 dark:text-slate-400 mt-2">
             24h Window
           </span>
         </div>

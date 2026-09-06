@@ -60,7 +60,7 @@ export const CorridorTimeline24H: React.FC<CorridorTimeline24HProps> = ({
         </div>
       }
       headerAction={
-        <div className="flex flex-wrap items-center gap-3 text-[9px] text-slate-600 font-mono">
+        <div className="flex flex-wrap items-center gap-3 text-[9px] text-slate-600 dark:text-slate-400 font-mono">
           <div className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 bg-blue-600 rounded-xs inline-block" />
             <span>Passenger Train</span>
@@ -97,13 +97,13 @@ export const CorridorTimeline24H: React.FC<CorridorTimeline24HProps> = ({
         )}
 
         {/* Timeline Grid Container */}
-        <div className="relative border border-slate-200/80 rounded-xl bg-slate-50/70 p-2 overflow-hidden">
+        <div className="relative border border-slate-200/80 dark:border-slate-800 rounded-xl bg-slate-50/70 dark:bg-[#060a12]/80 p-2 overflow-hidden">
           {/* Vertical Hour Tick Background Guides */}
           <div className="absolute inset-0 left-28 right-4 flex justify-between pointer-events-none">
             {timeTicks.map((_, idx) => (
               <div
                 key={idx}
-                className="h-full border-r border-slate-200/60"
+                className="h-full border-r border-slate-200/60 dark:border-slate-800/60"
                 style={{ width: `${100 / (timeTicks.length - 1)}%` }}
               />
             ))}
@@ -135,13 +135,13 @@ export const CorridorTimeline24H: React.FC<CorridorTimeline24HProps> = ({
                 <div key={sec.id} className="flex items-center h-8">
                   {/* Left Section Label */}
                   <div className="w-28 shrink-0 pr-2">
-                    <span className="font-pixel text-[7.5px] text-slate-800 tracking-wide uppercase truncate block">
+                    <span className="font-pixel text-[7.5px] text-slate-800 dark:text-slate-200 tracking-wide uppercase truncate block">
                       {sec.label}
                     </span>
                   </div>
 
                   {/* 24-Hour Row Track */}
-                  <div className="relative flex-1 h-6 bg-white border border-slate-200 rounded-md overflow-hidden">
+                  <div className="relative flex-1 h-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md overflow-hidden">
                     {/* Train Movements (Blue / Green Bars) */}
                     {secTrains.map(({ train, movement }, idx) => {
                       const startPct = (movement.entry_time / totalMinutes) * 100;

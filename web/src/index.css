@@ -10,6 +10,12 @@
     color: #0f172a;
     font-family: 'Space Mono', 'Courier New', monospace;
     overflow-x: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  html.dark body {
+    background-color: #060a12;
+    color: #f8fafc;
   }
 
   /* Selective pixel typography as requested */
@@ -266,6 +272,20 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0284c7;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #0a101d;
+  border-color: #1e293b;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-color: #475569;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
 }
 
 /* 21st.dev Animations */

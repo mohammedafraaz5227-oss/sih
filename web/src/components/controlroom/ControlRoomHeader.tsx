@@ -8,6 +8,8 @@ interface ControlRoomHeaderProps {
   scenario: 'congested' | 'demo';
   onToggleScenario: (s: 'congested' | 'demo') => void;
   isSolving: boolean;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
 }
 
 export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
@@ -16,6 +18,8 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
   scenario,
   onToggleScenario,
   isSolving,
+  theme,
+  onToggleTheme,
 }) => {
   const [istTime, setIstTime] = useState<string>('12:35:39');
   const [istDate, setIstDate] = useState<string>('Wed, 06 Sep 2026');
@@ -58,7 +62,7 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
   ];
 
   return (
-    <header className="w-full bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl p-2.5 sm:px-4 shadow-sm mb-4 select-none">
+    <header className="w-full bg-white/95 dark:bg-[#0a101d]/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-2xl p-2.5 sm:px-4 shadow-sm mb-4 select-none transition-colors duration-200">
       <div className="flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Left: Indian Railways Crest & Wordmark */}
         <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
@@ -69,27 +73,34 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-pixel text-[11px] text-slate-900 tracking-wider">
+                <h1 className="font-pixel text-[11px] text-slate-900 dark:text-slate-100 tracking-wider">
                   INDIAN RAILWAYS
                 </h1>
-                <span className="px-1.5 py-0.5 rounded bg-amber-100 border border-amber-300 text-amber-900 font-pixel text-[6.5px]">
+                <span className="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-300 font-pixel text-[6.5px]">
                   CENTRAL OCC
                 </span>
               </div>
-              <p className="font-mono text-[10px] text-slate-500 tracking-tight">
+              <p className="font-mono text-[10px] text-slate-500 dark:text-slate-400 tracking-tight">
                 AI Automated Maintenance Block Planning System • Delhi-Agra
               </p>
             </div>
           </div>
 
-          {/* Quick Scenario Badge on Mobile */}
-          <div className="md:hidden">
+          {/* Mobile Right Quick Controls */}
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              onClick={onToggleTheme}
+              className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-sm"
+              title="Toggle Dark Mode"
+            >
+              {theme === 'dark' ? '🌙' : '☀️'}
+            </button>
             <PulsingSignalPip aspect={isSolving ? 'amber' : 'green'} size="sm" />
           </div>
         </div>
 
         {/* Center: Modern 21st.dev Nav Tabs Pill Strip */}
-        <nav className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 overflow-x-auto max-w-full">
+        <nav className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1 rounded-xl border border-slate-200 dark:border-slate-800 overflow-x-auto max-w-full">
           {navTabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -99,7 +110,7 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
                 className={`relative px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-pixel text-[7.5px] transition-all shrink-0 ${
                   isActive
                     ? 'text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                 }`}
               >
                 {isActive && (
@@ -118,8 +129,18 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
 
         {/* Right: Real-Time Digital Clock & Telemetry Badges */}
         <div className="hidden lg:flex items-center gap-3">
+          {/* Dark Mode Toggle Button */}
+          <button
+            onClick={onToggleTheme}
+            className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 font-pixel text-[7.5px] text-slate-700 dark:text-yellow-400 transition-all shadow-xs cursor-pointer active:scale-95"
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          >
+            <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
+            <span className="uppercase">{theme === 'dark' ? 'DARK' : 'LIGHT'}</span>
+          </button>
+
           {/* Active Line Status */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 rounded-xl border border-slate-200 font-mono text-xs text-slate-700">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-700 dark:text-slate-300">
             <PulsingSignalPip aspect={isSolving ? 'amber' : 'green'} size="sm" />
             <span className="text-[11px] font-medium">
               {isSolving ? 'OPTIMIZING...' : 'NORMAL WORKING'}
@@ -127,10 +148,10 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
           </div>
 
           {/* Clock */}
-          <div className="flex flex-col items-end pl-2 border-l border-slate-200 font-mono">
-            <div className="flex items-center gap-1 text-slate-900 font-bold font-digital text-lg leading-tight tracking-wider">
+          <div className="flex flex-col items-end pl-2 border-l border-slate-200 dark:border-slate-800 font-mono">
+            <div className="flex items-center gap-1 text-slate-900 dark:text-slate-100 font-bold font-digital text-lg leading-tight tracking-wider">
               <span>{istTime}</span>
-              <span className="text-[9px] font-pixel text-blue-700">IST</span>
+              <span className="text-[9px] font-pixel text-blue-700 dark:text-blue-400">IST</span>
             </div>
             <span className="text-[10px] text-slate-400 font-mono leading-tight">
               {istDate}
