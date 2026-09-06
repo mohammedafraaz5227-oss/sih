@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { HeaderReference } from './components/reference/HeaderReference';
+import { ControlRoomHeader } from './components/controlroom/ControlRoomHeader';
+import { RetroGrid } from './components/ui/RetroGrid';
 import { OverviewDashboard } from './components/OverviewDashboard';
 import { RailwayNetwork } from './components/RailwayNetwork';
 import { BlockRequestsView } from './components/BlockRequestsView';
@@ -220,11 +221,14 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#eaf1f8] text-slate-800 flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white">
+    <div className="relative min-h-screen bg-[#f1f5f9] text-slate-800 flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden">
+      {/* 21st.dev Ambient Retro Perspective Grid */}
+      <RetroGrid className="opacity-25" />
+
       {/* Outer Dashboard Card Wrapper */}
-      <div className="max-w-[1400px] w-full mx-auto flex-1 flex flex-col">
-        {/* Top Reference Header */}
-        <HeaderReference
+      <div className="relative z-10 max-w-[1440px] w-full mx-auto flex-1 flex flex-col">
+        {/* Top Control Room Navigation Header */}
+        <ControlRoomHeader
           activeTab={activeTab}
           onSelectTab={setActiveTab}
           scenario={scenario}
@@ -293,6 +297,7 @@ export const App: React.FC = () => {
                   onRunOptimization={handleRunOptimization}
                   onNavigateTab={setActiveTab}
                   scenario={scenario}
+                  onToggleScenario={handleToggleScenario}
                 />
               )}
 

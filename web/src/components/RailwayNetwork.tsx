@@ -228,33 +228,33 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
         </ReactFlow>
 
         {/* Map Tip Banner */}
-        <div className="absolute bottom-2 left-3 pointer-events-none bg-[#0a101d]/90 border border-slate-800 px-2 py-1 text-[8px] font-mono text-slate-400">
+        <div className="absolute bottom-3 left-4 pointer-events-none bg-slate-900/90 text-white rounded-xl shadow-md border border-slate-700/70 px-3 py-1.5 text-[9px] font-mono">
           💡 Click any station node or track badge to inspect timetable, signals, and maintenance windows.
         </div>
       </div>
 
       {/* 3. Detailed Inspector Card (Track Section or Station) */}
-      <div className="bg-[#0a101d] border-2 border-[#1e293b] shadow-pixel p-5 relative">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm relative">
         {/* Toggle Inspector Subject */}
-        <div className="flex flex-wrap items-center justify-between border-b border-slate-800 pb-3 gap-3">
+        <div className="flex flex-wrap items-center justify-between border-b border-slate-100 pb-3 gap-3">
           <div className="flex items-center space-x-3">
-            <div className={`p-2.5 border-2 ${selectedType === 'track' ? 'bg-[#1a1405] border-amber-500/80' : 'bg-[#0b213b] border-cyan-500/80'}`}>
+            <div className={`p-2.5 rounded-xl border ${selectedType === 'track' ? 'bg-amber-50 border-amber-300' : 'bg-blue-50 border-blue-300'}`}>
               {selectedType === 'track' ? (
-                <PixelTrack size={22} color="#f59e0b" />
+                <PixelTrack size={22} color="#d97706" />
               ) : (
-                <PixelStation size={22} color="#38bdf8" />
+                <PixelStation size={22} color="#0284c7" />
               )}
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-[9px] font-pixel text-slate-400">
+                <span className="text-[8px] font-pixel text-slate-500 uppercase">
                   {selectedType === 'track' ? 'TRACK SECTION INSPECTION' : 'STATION JUNCTION INSPECTION'}
                 </span>
-                <span className="font-pixel text-[8px] px-1.5 py-0.5 bg-slate-800 text-yellow-400">
+                <span className="font-pixel text-[8px] px-2 py-0.5 rounded-full bg-slate-100 text-blue-700 font-bold">
                   {selectedType === 'track' ? selectedTrack?.id : selectedStation?.code}
                 </span>
               </div>
-              <h3 className="font-pixel text-sm text-white mt-0.5">
+              <h3 className="font-pixel text-xs sm:text-sm text-slate-900 mt-0.5">
                 {selectedType === 'track' ? selectedTrack?.name : selectedStation?.name}
               </h3>
             </div>
@@ -262,7 +262,7 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
 
           {/* Quick Select Buttons */}
           <div className="flex items-center space-x-1.5 flex-wrap">
-            <span className="text-[9px] font-pixel text-slate-400 mr-1">QUICK JUMP:</span>
+            <span className="text-[8px] font-pixel text-slate-500 mr-1 uppercase">QUICK JUMP:</span>
             {assets.map(asset => (
               <button
                 key={asset.id}
@@ -270,10 +270,10 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
                   setSelectedType('track');
                   setSelectedId(asset.id);
                 }}
-                className={`px-2 py-1 text-[8px] font-pixel border transition-all ${
+                className={`px-2.5 py-1 text-[7.5px] font-pixel rounded-lg border transition-all ${
                   selectedType === 'track' && selectedId === asset.id
-                    ? 'bg-electric-cyan text-black border-white shadow-glow-cyan'
-                    : 'bg-[#0c1424] text-slate-400 border-slate-800 hover:border-slate-600'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                    : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
                 }`}
               >
                 {asset.id.replace('SEC_', '').replace('_', '⇄')}
@@ -287,17 +287,17 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
           <div className="mt-5 space-y-5">
             {/* Quick Specs Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
-              <div className="bg-[#060a12] border border-slate-800 p-2.5">
-                <span className="text-[9px] text-slate-400 block font-pixel">SECTION LENGTH</span>
-                <span className="text-white text-sm font-bold mt-0.5 block">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                <span className="text-[8px] text-slate-500 block font-pixel uppercase">SECTION LENGTH</span>
+                <span className="text-slate-900 text-base font-digital font-bold mt-0.5 block">
                   {selectedTrack.end_km - selectedTrack.start_km} KM
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-slate-500 font-mono">
                   KM {selectedTrack.start_km} → {selectedTrack.end_km}
                 </span>
               </div>
 
-              <div className="bg-[#060a12] border border-slate-800 p-2.5">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
                 <span className="text-[9px] text-slate-400 block font-pixel">PERMISSIBLE SPEED</span>
                 <span className="text-emerald-400 text-sm font-bold mt-0.5 block">
                   {selectedTrack.max_speed_kmph} KM/H

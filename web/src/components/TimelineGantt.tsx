@@ -92,18 +92,18 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. Header Controls & Legend Bar */}
-      <div className="bg-[#0c1424] border-2 border-[#1e293b] shadow-pixel p-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <PixelTrack size={20} color="#00f0ff" />
-            <h2 className="font-pixel text-xs md:text-sm text-yellow-400 uppercase">
+            <span className="text-xl">🕒</span>
+            <h2 className="font-pixel text-xs md:text-sm text-slate-900 uppercase">
               24-Hour Corridor Gantt Master Timetable
             </h2>
-            <span className="px-1.5 py-0.5 bg-cyan-950 border border-cyan-700 text-cyan-300 text-[8px] font-pixel">
+            <span className="px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[7px] font-pixel uppercase">
               1,440 MIN HORIZON
             </span>
           </div>
-          <p className="text-xs text-slate-400 font-mono mt-0.5">
+          <p className="text-xs text-slate-500 font-mono mt-0.5">
             5 Track Sections • Disjunctive NoOverlap Intervals • Live IST Scrubber
           </p>
         </div>
@@ -111,33 +111,33 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
         {/* Filter Buttons & Legend */}
         <div className="flex flex-wrap items-center gap-3">
           {/* Filter Mode Selector */}
-          <div className="inline-flex border border-slate-700 bg-black p-0.5">
+          <div className="inline-flex border border-slate-200 bg-slate-100 p-0.5 rounded-xl">
             <button
               onClick={() => setFilterMode('all')}
-              className={`px-2.5 py-1 text-[8px] font-pixel transition-colors ${
+              className={`px-3 py-1 text-[7.5px] font-pixel rounded-lg transition-colors ${
                 filterMode === 'all'
-                  ? 'bg-electric-cyan text-black font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-blue-600 text-white font-bold shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               ALL
             </button>
             <button
               onClick={() => setFilterMode('trains')}
-              className={`px-2.5 py-1 text-[8px] font-pixel transition-colors ${
+              className={`px-3 py-1 text-[7.5px] font-pixel rounded-lg transition-colors ${
                 filterMode === 'trains'
-                  ? 'bg-emerald-500 text-black font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-emerald-600 text-white font-bold shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               TRAINS ONLY
             </button>
             <button
               onClick={() => setFilterMode('blocks')}
-              className={`px-2.5 py-1 text-[8px] font-pixel transition-colors ${
+              className={`px-3 py-1 text-[7.5px] font-pixel rounded-lg transition-colors ${
                 filterMode === 'blocks'
-                  ? 'bg-amber-500 text-black font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-amber-500 text-white font-bold shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               BLOCKS ONLY
@@ -145,25 +145,25 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
           </div>
 
           {/* Visual Legend */}
-          <div className="flex items-center space-x-3 text-[9px] font-pixel text-slate-300 border-l border-slate-800 pl-3">
+          <div className="flex items-center space-x-3 text-[8px] font-mono text-slate-600 border-l border-slate-200 pl-3">
             <div className="flex items-center space-x-1">
-              <span className="w-3 h-2.5 bg-[#00f0ff] inline-block"></span>
+              <span className="w-2.5 h-2.5 rounded-xs bg-[#0284c7] inline-block" />
               <span>PREMIER</span>
             </div>
             <div className="flex items-center space-x-1">
-              <span className="w-3 h-2.5 bg-[#10b981] inline-block"></span>
+              <span className="w-2.5 h-2.5 rounded-xs bg-[#10b981] inline-block" />
               <span>EXPRESS</span>
             </div>
             <div className="flex items-center space-x-1">
-              <span className="w-3 h-2.5 bg-[#f59e0b] inline-block"></span>
+              <span className="w-2.5 h-2.5 rounded-xs bg-[#f59e0b] inline-block" />
               <span>FREIGHT</span>
             </div>
             <div className="flex items-center space-x-1">
-              <span className="w-3 h-2.5 bg-[#7B1113] border border-yellow-400 inline-block"></span>
+              <span className="w-2.5 h-2.5 rounded-xs bg-[#7B1113] border border-amber-400 inline-block" />
               <span>BLOCK</span>
             </div>
             <div className="flex items-center space-x-1">
-              <span className="w-3 h-2.5 bg-rose-500 inline-block animate-pulse"></span>
+              <span className="w-2.5 h-2.5 rounded-xs bg-rose-500 inline-block animate-pulse" />
               <span>IST LASER</span>
             </div>
           </div>
@@ -171,7 +171,7 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
       </div>
 
       {/* 2. Main 24-Hour Gantt Timeline Canvas */}
-      <div className="pixel-card bg-[#060a12] p-4 border-2 border-[#1e293b] shadow-pixel overflow-x-auto relative">
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm overflow-x-auto relative">
         <div className="min-w-[1100px] relative">
           {/* LIVE IST LASER SCRUBBER LINE (Spans entire height of Gantt) */}
           <div
@@ -218,26 +218,26 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
               const assetBlocks = scheduledBlocks.filter((b) => b.asset_id === asset.id);
 
               return (
-                <div key={asset.id} className="flex items-center border-b border-slate-800/60 pb-3">
+                <div key={asset.id} className="flex items-center border-b border-slate-100 pb-3">
                   {/* Left Label */}
                   <div className="w-48 flex-shrink-0 pr-3">
-                    <div className="font-pixel text-[10px] text-yellow-400 truncate">
+                    <div className="font-pixel text-[8.5px] text-slate-900 truncate">
                       {asset.id.replace('SEC_', '')}
                     </div>
-                    <div className="text-[10px] font-mono text-slate-400 truncate">
+                    <div className="text-[11px] font-mono text-slate-600 truncate">
                       {asset.name}
                     </div>
-                    <div className="text-[8px] font-mono text-slate-400 mt-0.5">
+                    <div className="text-[9px] font-mono text-slate-400 mt-0.5">
                       {asset.max_speed_kmph} km/h • 25kV OHE
                     </div>
                   </div>
 
                   {/* 24-Hour Timeline Bar */}
-                  <div className="flex-1 h-14 bg-[#0a101d] border border-slate-800 relative rounded-none overflow-hidden">
+                  <div className="flex-1 h-14 bg-slate-50/80 border border-slate-200 relative rounded-xl overflow-hidden">
                     {/* Hourly Grid Lines */}
                     <div className="absolute inset-0 grid grid-cols-24 pointer-events-none">
                       {hours.map((h) => (
-                        <div key={h} className="border-r border-slate-800/40 h-full"></div>
+                        <div key={h} className="border-r border-slate-200/50 h-full" />
                       ))}
                     </div>
 

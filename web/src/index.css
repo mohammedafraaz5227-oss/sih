@@ -267,3 +267,54 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #0284c7;
 }
+
+/* 21st.dev Animations */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes grid {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(40px);
+  }
+}
+
+.animate-grid {
+  animation: grid 20s linear infinite;
+}
+
+@keyframes laser-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-laser-sweep {
+  animation: laser-sweep 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-halo {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
+}
+
+.animate-pulse-halo {
+  animation: pulse-halo 2s ease-in-out infinite;
+}

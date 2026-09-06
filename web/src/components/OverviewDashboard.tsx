@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { OptimizedSchedule, BlockRequest, Asset, ScheduleComparison, Station, TrainMovement } from '../types';
-import { CorridorStepperCard } from './reference/CorridorStepperCard';
-import { CorridorMetricsCard } from './reference/CorridorMetricsCard';
-import { LiveCorridorMapCard } from './reference/LiveCorridorMapCard';
-import { Timeline24HCard } from './reference/Timeline24HCard';
-import { OptimizationStatusCard } from './reference/OptimizationStatusCard';
-import { RecentActivityCard } from './reference/RecentActivityCard';
-import { ControlRoomAnimatedFloor } from './reference/ControlRoomAnimatedFloor';
+import {
+  OptimizedSchedule,
+  BlockRequest,
+  Asset,
+  ScheduleComparison,
+  Station,
+  TrainMovement,
+} from '../types';
+import { LiveCorridorVisualizer } from './controlroom/LiveCorridorVisualizer';
+import { OptimizationEngineCard } from './controlroom/OptimizationEngineCard';
+import { CorridorKPIBento } from './controlroom/CorridorKPIBento';
+import { LiveDispatchTicker } from './controlroom/LiveDispatchTicker';
+import { CorridorTimeline24H } from './controlroom/CorridorTimeline24H';
+import { BentoGrid } from './ui/BentoGrid';
 
 interface OverviewDashboardProps {
   schedule: OptimizedSchedule | null;
@@ -19,6 +25,7 @@ interface OverviewDashboardProps {
   onRunOptimization: () => void;
   onNavigateTab: (tab: string) => void;
   scenario: 'congested' | 'demo';
+  onToggleScenario?: (scenario: 'congested' | 'demo') => void;
 }
 
 export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
@@ -32,13 +39,14 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   onRunOptimization,
   onNavigateTab,
   scenario,
+  onToggleScenario = () => {},
 }) => {
   const [selectedStationId, setSelectedStationId] = useState<string>('NDLS');
 
   const metrics = schedule?.metrics;
 
-  // Dynamic values calculated directly from current repository & schedule
-  const scheduledBlocks = schedule?.blocks.filter(b => b.is_scheduled) || [];
+  // Dynamically calculate metrics strictly from repository and solver data
+  const scheduledBlocks = schedule?.blocks.filter((b) => b.is_scheduled) || [];
   const scheduledCount = scheduledBlocks.length;
   const requestedCount = blocks.length;
 
@@ -46,85 +54,74 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   // Formula: (Total Scheduled Block Mins / (1440 * Number of Track Sections)) * 100%
   const numSections = assets.length > 0 ? assets.length : 5;
   const totalCorridorMinutes = 1440 * numSections;
-  const totalScheduledBlockMinutes = scheduledBlocks.reduce((acc, b) => acc + b.duration_minutes, 0);
-  const maintenanceOccupancyPercent = totalCorridorMinutes > 0
-    ? (totalScheduledBlockMinutes / totalCorridorMinutes) * 100
-    : 8.33;
+  const totalScheduledBlockMinutes = scheduledBlocks.reduce(
+    (acc, b) => acc + b.duration_minutes,
+    0
+  );
+  const maintenanceOccupancyPercent =
+    totalCorridorMinutes > 0
+      ? (totalScheduledBlockMinutes / totalCorridorMinutes) * 100
+      : 8.33;
   const trackAvailabilityPercent = 100 - maintenanceOccupancyPercent;
 
   const trainDelayMinutes = metrics?.estimated_train_delay_minutes ?? 0;
 
   return (
-    <div className="space-y-4">
-      {/* Upper 3-Column Dashboard Grid Matching Reference Mockup */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
-        {/* Left Column (Span 2): Corridor Vertical Stepper & Corridor Metrics */}
-        <div className="lg:col-span-2 flex flex-col space-y-3.5">
-          <div className="flex-1 min-h-[210px]">
-            <CorridorStepperCard
-              stations={stations}
-              selectedId={selectedStationId}
-              onSelectStation={(code) => setSelectedStationId(code)}
-            />
-          </div>
-          <div className="h-auto">
-            <CorridorMetricsCard
-              occupancyPercent={maintenanceOccupancyPercent}
-              trainDelayMinutes={trainDelayMinutes}
-              availabilityPercent={trackAvailabilityPercent}
-            />
-          </div>
-        </div>
+    <div className="space-y-4 pb-6 select-none">
+      {/* 1. PRIMARY HERO CENTERPIECE: Live Corridor Visualizer & Moving Trains */}
+      <section className="w-full">
+        <LiveCorridorVisualizer
+          stations={stations}
+          assets={assets}
+          trains={trains}
+          scheduledBlocks={scheduledBlocks}
+          selectedId={selectedStationId}
+          onSelectStation={(code) => setSelectedStationId(code)}
+          onSelectTrack={(trackId) => setSelectedStationId(trackId)}
+          isSolving={isSolving}
+        />
+      </section>
 
-        {/* Center Column (Span 7): Live Corridor Map & 24-Hour Timeline */}
-        <div className="lg:col-span-7 flex flex-col space-y-3.5">
-          {/* Centerpiece 1: Live Corridor Map */}
-          <div className="flex-1">
-            <LiveCorridorMapCard
-              stations={stations}
-              assets={assets}
-              trains={trains}
-              scheduledBlocks={scheduledBlocks}
-              selectedId={selectedStationId}
-              onSelectStation={(code) => setSelectedStationId(code)}
-              onSelectTrack={(trackId) => setSelectedStationId(trackId)}
-            />
-          </div>
-
-          {/* Centerpiece 2: 24-Hour Timeline (IST) */}
-          <div className="h-auto">
-            <Timeline24HCard
-              assets={assets}
-              trains={trains}
-              scheduledBlocks={scheduledBlocks}
-            />
-          </div>
-        </div>
-
-        {/* Right Column (Span 3): Optimization Status & Recent Activity */}
-        <div className="lg:col-span-3 flex flex-col space-y-3.5">
-          <div className="flex-1 min-h-[210px]">
-            <OptimizationStatusCard
+      {/* 2. MIDDLE BENTO GRID: Telemetry, CP-SAT Engine & Live Dispatch */}
+      <section className="w-full">
+        <BentoGrid className="grid-cols-1 lg:grid-cols-12 gap-4">
+          {/* Bento Card 1: CP-SAT Solver Engine (Span 4) */}
+          <div className="lg:col-span-4">
+            <OptimizationEngineCard
               metrics={metrics}
               isSolving={isSolving}
               onRunOptimization={onRunOptimization}
               scheduledCount={scheduledCount}
               totalRequested={requestedCount}
-            />
-          </div>
-          <div className="h-auto">
-            <RecentActivityCard
               scenario={scenario}
+              onToggleScenario={onToggleScenario}
             />
           </div>
-        </div>
-      </div>
 
-      {/* Bottom Area: Full-Width Detailed Pixel-Art Control Room Scene with Animated Characters */}
-      <ControlRoomAnimatedFloor
-        isSolving={isSolving}
-        onTriggerSolve={onRunOptimization}
-      />
+          {/* Bento Card 2: Corridor Telemetry Gauges (Span 5) */}
+          <div className="lg:col-span-5">
+            <CorridorKPIBento
+              occupancyPercent={maintenanceOccupancyPercent}
+              trainDelayMinutes={trainDelayMinutes}
+              availabilityPercent={trackAvailabilityPercent}
+            />
+          </div>
+
+          {/* Bento Card 3: Live Dispatch Activity Ticker (Span 3) */}
+          <div className="lg:col-span-3">
+            <LiveDispatchTicker scenario={scenario} />
+          </div>
+        </BentoGrid>
+      </section>
+
+      {/* 3. BOTTOM HERO: 24-Hour Operations Timeline with Laser Scrubber */}
+      <section className="w-full">
+        <CorridorTimeline24H
+          assets={assets}
+          trains={trains}
+          scheduledBlocks={scheduledBlocks}
+        />
+      </section>
     </div>
   );
 };
