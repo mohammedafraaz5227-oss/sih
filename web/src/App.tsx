@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Header } from './components/Header';
+import { HeaderReference } from './components/reference/HeaderReference';
 import { OverviewDashboard } from './components/OverviewDashboard';
 import { RailwayNetwork } from './components/RailwayNetwork';
 import { BlockRequestsView } from './components/BlockRequestsView';
@@ -22,7 +22,6 @@ import {
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [scenario, setScenario] = useState<'congested' | 'demo'>('congested');
-  const [scanlines, setScanlines] = useState<boolean>(false);
 
   // Core Data State
   const [stations, setStations] = useState<Station[]>([]);
@@ -221,160 +220,132 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen bg-control-room-light text-slate-900 flex flex-col selection:bg-amber-400 selection:text-black font-sans relative ${
-        scanlines ? 'scanlines' : ''
-      }`}
-    >
-      {/* Top Navigation & Status Bar */}
-      <Header
-        activeTab={activeTab}
-        onSelectTab={setActiveTab}
-        scenario={scenario}
-        onToggleScenario={handleToggleScenario}
-        isSolving={isSolving}
-        scanlines={scanlines}
-        onToggleScanlines={() => setScanlines(!scanlines)}
-      />
+    <div className="min-h-screen bg-[#eaf1f8] text-slate-800 flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white">
+      {/* Outer Dashboard Card Wrapper */}
+      <div className="max-w-[1400px] w-full mx-auto flex-1 flex flex-col">
+        {/* Top Reference Header */}
+        <HeaderReference
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
+          scenario={scenario}
+          onToggleScenario={handleToggleScenario}
+          isSolving={isSolving}
+        />
 
-      {/* Floating System Notification Strip */}
-      {notification && (
-        <div className="max-w-7xl mx-auto w-full px-4 pt-4 relative z-20">
-          <div
-            className={`pixel-card-light p-3 border-2 flex items-center justify-between text-xs font-pixel shadow-pixel animate-fadeIn ${
-              notification.type === 'success'
-                ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
-                : notification.type === 'error'
-                ? 'bg-rose-50 border-rose-600 text-rose-900'
-                : notification.type === 'warning'
-                ? 'bg-amber-50 border-amber-600 text-amber-900'
-                : 'bg-blue-50 border-blue-600 text-blue-900'
-            }`}
-          >
-            <div className="flex items-center space-x-2.5">
-              <PixelAlert
-                size={16}
-                color={
-                  notification.type === 'success'
-                    ? '#16a34a'
-                    : notification.type === 'error'
-                    ? '#dc2626'
-                    : notification.type === 'warning'
-                    ? '#d97706'
-                    : '#0284c7'
-                }
-              />
-              <span>{notification.message}</span>
-            </div>
-            <button
-              onClick={() => setNotification(null)}
-              className="text-xs hover:text-black px-2 py-0.5 border border-slate-400 ml-4 font-mono uppercase transition-colors"
+        {/* Floating Notification */}
+        {notification && (
+          <div className="mb-3">
+            <div
+              className={`p-3 rounded-xl border flex items-center justify-between text-xs font-semibold shadow-xs ${
+                notification.type === 'success'
+                  ? 'bg-emerald-50 border-emerald-400 text-emerald-900'
+                  : notification.type === 'error'
+                  ? 'bg-rose-50 border-rose-400 text-rose-900'
+                  : notification.type === 'warning'
+                  ? 'bg-amber-50 border-amber-400 text-amber-900'
+                  : 'bg-blue-50 border-blue-400 text-blue-900'
+              }`}
             >
-              [X]
-            </button>
+              <div className="flex items-center space-x-2">
+                <PixelAlert
+                  size={16}
+                  color={
+                    notification.type === 'success'
+                      ? '#16a34a'
+                      : notification.type === 'error'
+                      ? '#dc2626'
+                      : notification.type === 'warning'
+                      ? '#d97706'
+                      : '#0284c7'
+                  }
+                />
+                <span>{notification.message}</span>
+              </div>
+              <button
+                onClick={() => setNotification(null)}
+                className="text-xs hover:text-black px-2 py-0.5 border border-slate-300 rounded font-mono uppercase"
+              >
+                [X]
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-
-      {/* Main Control Room Canvas */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 relative z-10">
-        {isLoading ? (
-          <div className="min-h-[400px] flex flex-col items-center justify-center space-y-4">
-            <PixelSignal aspect="amber" size={36} />
-            <p className="font-pixel text-xs text-slate-800">INITIALIZING RAILWAY CONTROL DESK...</p>
-            <p className="font-mono text-xs text-slate-500">Connecting to corridor telemetry & CP-SAT solver engine</p>
-          </div>
-        ) : (
-          <>
-            {activeTab === 'overview' && (
-              <OverviewDashboard
-                schedule={schedule}
-                comparison={comparison}
-                blocks={blocks}
-                assets={assets}
-                stations={stations}
-                trains={trains}
-                isSolving={isSolving}
-                onRunOptimization={handleRunOptimization}
-                onNavigateTab={setActiveTab}
-                scenario={scenario}
-              />
-            )}
-
-            {activeTab === 'network' && (
-              <RailwayNetwork
-                stations={stations}
-                assets={assets}
-                schedule={schedule}
-                blocks={blocks}
-                trains={trains}
-              />
-            )}
-
-            {activeTab === 'blocks' && (
-              <BlockRequestsView
-                blocks={blocks}
-                assets={assets}
-                onCreateBlock={handleCreateBlock}
-                onUpdateBlock={handleUpdateBlock}
-                onDeleteBlock={handleDeleteBlock}
-                onResetDemo={handleResetDemo}
-              />
-            )}
-
-            {activeTab === 'optimize' && (
-              <OptimizationPanel
-                schedule={schedule}
-                isSolving={isSolving}
-                onRunOptimization={handleRunOptimization}
-                scenario={scenario}
-              />
-            )}
-
-            {activeTab === 'timeline' && (
-              <TimelineGantt
-                assets={assets}
-                trains={trains}
-                schedule={schedule}
-                blocks={blocks}
-              />
-            )}
-
-            {activeTab === 'compare' && (
-              <ComparisonView
-                comparison={comparison}
-                onRunComparison={handleRunComparison}
-                isLoading={isLoadingComparison}
-              />
-            )}
-          </>
         )}
-      </main>
 
-      {/* Control-Room Operations Footer */}
-      <footer className="border-t-2 border-[#0f172a] bg-white text-slate-600 text-xs font-mono py-4 px-4 mt-12 relative z-10 shadow-pixel-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-2.5 h-2.5 bg-emerald-500 rounded-none border border-black animate-pulse" />
-            <span className="font-pixel text-[9px] text-slate-900 font-bold">
-              SMART INDIA HACKATHON • RAILWAY OPERATIONAL BLOCK PLANNER
-            </span>
-          </div>
+        {/* Main Workspace Canvas */}
+        <main className="flex-1">
+          {isLoading ? (
+            <div className="min-h-[400px] flex flex-col items-center justify-center space-y-4">
+              <PixelSignal aspect="amber" size={36} />
+              <p className="font-pixel text-xs text-slate-700">INITIALIZING RAILWAY CONTROL CONSOLE...</p>
+              <p className="font-mono text-xs text-slate-500">Connecting to corridor telemetry & CP-SAT solver engine</p>
+            </div>
+          ) : (
+            <>
+              {activeTab === 'overview' && (
+                <OverviewDashboard
+                  schedule={schedule}
+                  comparison={comparison}
+                  blocks={blocks}
+                  assets={assets}
+                  stations={stations}
+                  trains={trains}
+                  isSolving={isSolving}
+                  onRunOptimization={handleRunOptimization}
+                  onNavigateTab={setActiveTab}
+                  scenario={scenario}
+                />
+              )}
 
-          <div className="text-[11px] text-slate-600 text-center">
-            Repository Mode:{' '}
-            <span className={isFirebaseConfigured ? 'text-emerald-700 font-bold' : 'text-blue-700 font-bold'}>
-              {isFirebaseConfigured ? 'FIRESTORE CLOUD DATA' : 'IN-MEMORY LOCAL REPOSITORY'}
-            </span>{' '}
-            • Engine:{' '}
-            <span className="text-slate-900 font-bold font-mono">Google OR-Tools CP-SAT (Python 3.12)</span>
-          </div>
+              {activeTab === 'network' && (
+                <RailwayNetwork
+                  stations={stations}
+                  assets={assets}
+                  schedule={schedule}
+                  blocks={blocks}
+                  trains={trains}
+                />
+              )}
 
-          <div className="text-[9px] text-amber-800 font-pixel text-center md:text-right bg-amber-100 px-2 py-0.5 border border-amber-300">
-            [SYNTHETIC BENCHMARK DATA]
-          </div>
-        </div>
-      </footer>
+              {activeTab === 'blocks' && (
+                <BlockRequestsView
+                  blocks={blocks}
+                  assets={assets}
+                  onCreateBlock={handleCreateBlock}
+                  onUpdateBlock={handleUpdateBlock}
+                  onDeleteBlock={handleDeleteBlock}
+                  onResetDemo={handleResetDemo}
+                />
+              )}
+
+              {activeTab === 'optimize' && (
+                <OptimizationPanel
+                  schedule={schedule}
+                  isSolving={isSolving}
+                  onRunOptimization={handleRunOptimization}
+                  scenario={scenario}
+                />
+              )}
+
+              {activeTab === 'timeline' && (
+                <TimelineGantt
+                  assets={assets}
+                  trains={trains}
+                  schedule={schedule}
+                  blocks={blocks}
+                />
+              )}
+
+              {activeTab === 'compare' && (
+                <ComparisonView
+                  comparison={comparison}
+                  onRunComparison={handleRunComparison}
+                  isLoading={isLoadingComparison}
+                />
+              )}
+            </>
+          )}
+        </main>
+      </div>
     </div>
   );
 };
