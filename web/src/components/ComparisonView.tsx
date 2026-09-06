@@ -67,10 +67,10 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
           glowColor="green"
         >
           <div className="flex flex-col justify-between h-full pt-1">
-            <div className="flex items-baseline gap-1 text-emerald-600 font-digital text-3xl font-bold">
+            <div className="flex items-baseline gap-1 text-emerald-600 dark:text-emerald-400 font-digital text-3xl font-bold">
               +<NumberTicker value={conflictsEliminated} decimalPlaces={0} />
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               From {naive?.train_conflicts ?? 6} Clashes to 0
             </p>
           </div>
@@ -83,11 +83,11 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
           glowColor="cyan"
         >
           <div className="flex flex-col justify-between h-full pt-1">
-            <div className="flex items-baseline gap-1 text-blue-700 font-digital text-3xl font-bold">
+            <div className="flex items-baseline gap-1 text-blue-700 dark:text-cyan-400 font-digital text-3xl font-bold">
               +<NumberTicker value={delaySaved} decimalPlaces={0} />
-              <span className="font-mono text-xs text-slate-500">mins</span>
+              <span className="font-mono text-xs text-slate-500 dark:text-slate-400">mins</span>
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               Avoided Punctuality Penalties
             </p>
           </div>
@@ -100,10 +100,10 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
           glowColor="green"
         >
           <div className="flex flex-col justify-between h-full pt-1">
-            <div className="flex items-baseline gap-1 text-emerald-600 font-digital text-3xl font-bold">
+            <div className="flex items-baseline gap-1 text-emerald-600 dark:text-emerald-400 font-digital text-3xl font-bold">
               <NumberTicker value={conflictReduction} decimalPlaces={0} />%
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               100% Conflict-Free Corridor
             </p>
           </div>
@@ -116,10 +116,10 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
           glowColor="blue"
         >
           <div className="flex flex-col justify-between h-full pt-1">
-            <div className="flex items-baseline gap-1 text-slate-900 font-digital text-3xl font-bold">
+            <div className="flex items-baseline gap-1 text-slate-900 dark:text-slate-100 font-digital text-3xl font-bold">
               <NumberTicker value={optScore} decimalPlaces={0} />
             </div>
-            <p className="font-mono text-xs text-slate-500 mt-2">
+            <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-2">
               Highest Weighted Priority
             </p>
           </div>

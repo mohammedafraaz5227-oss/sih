@@ -331,33 +331,33 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
       </div>
 
       {/* 3. Real-Time Telemetry & Inspector Tooltip Dock */}
-      <div className="bg-[#0c1424] border-2 border-[#1e293b] p-3.5 min-h-[60px] flex items-center justify-between font-mono text-xs shadow-pixel">
+      <div className="bg-white dark:bg-[#0c1424] border border-slate-200/90 dark:border-[#1e293b] rounded-2xl p-4 min-h-[60px] flex items-center justify-between font-mono text-xs shadow-sm transition-colors duration-200">
         {hoveredItem ? (
           <div className="flex items-center space-x-3 w-full">
-            <div className="p-2 bg-[#060a12] border border-slate-700">
+            <div className="p-2 bg-blue-50 dark:bg-[#060a12] border border-blue-200 dark:border-slate-700 rounded-xl">
               {hoveredItem.type === 'train' ? (
-                <PixelTrain size={22} color="#00f0ff" />
+                <PixelTrain size={22} color="#0284c7" />
               ) : (
-                <PixelWrench size={22} color="#facc15" />
+                <PixelWrench size={22} color="#d97706" />
               )}
             </div>
             <div className="flex-1 flex flex-wrap items-center justify-between gap-2">
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="font-pixel text-xs text-yellow-400">
+                  <span className="font-pixel text-xs text-amber-600 dark:text-yellow-400">
                     {hoveredItem.label}
                   </span>
-                  <span className="text-[10px] text-slate-300 font-bold">
+                  <span className="text-[10px] text-slate-800 dark:text-slate-300 font-bold">
                     {hoveredItem.subLabel}
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-400 mt-0.5">
-                  Section: <strong className="text-slate-200">{hoveredItem.sectionName}</strong> • {hoveredItem.extra}
+                <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">
+                  Section: <strong className="text-slate-900 dark:text-slate-200">{hoveredItem.sectionName}</strong> • {hoveredItem.extra}
                 </div>
               </div>
 
               <div className="text-right">
-                <div className="font-digital text-xl text-emerald-400 font-bold">
+                <div className="font-digital text-xl text-emerald-600 dark:text-emerald-400 font-bold">
                   {hoveredItem.time}
                 </div>
                 <span className="text-[8px] font-pixel text-slate-400">TIMETABLE WINDOW</span>

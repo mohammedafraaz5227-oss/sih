@@ -16,11 +16,11 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
 }) => {
   return (
     <BentoCard
-      name="CORRIDOR TELEMETRY METRICS"
-      icon={<span className="text-sm">📈</span>}
+      name="CORRIDOR METRICS"
+      icon={<span className="text-sm">📊</span>}
       badge={
-        <span className="px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-pixel text-[7px] uppercase">
-          LIVE TELEMETRY
+        <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-pixel text-[7px] uppercase">
+          LIVE
         </span>
       }
       glowColor="cyan"
@@ -53,7 +53,7 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
         {/* Gauge 2: Train Delay (Minutes) */}
         <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
           <span className="font-pixel text-[6.5px] text-slate-500 dark:text-slate-400 uppercase mb-2 text-center h-4 flex items-center">
-            TRAIN DELAY
+            AVG TRAIN DELAY
           </span>
           <AnimatedCircularProgressBar
             value={trainDelayMinutes === 0 ? 100 : Math.max(0, 100 - trainDelayMinutes)}
@@ -63,13 +63,13 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
           >
             <div className="flex flex-col items-center">
               <span className="font-digital text-base font-bold text-emerald-600 dark:text-emerald-400 leading-none">
-                <NumberTicker value={trainDelayMinutes} decimalPlaces={0} />m
+                <NumberTicker value={trainDelayMinutes} decimalPlaces={0} /> m
               </span>
               <span className="text-[8px] font-mono text-emerald-700 dark:text-emerald-300 mt-0.5">Zero Clash</span>
             </div>
           </AnimatedCircularProgressBar>
           <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-400 mt-2 font-medium">
-            100% Punctuality
+            Zero Clash
           </span>
         </div>
 

@@ -49,25 +49,20 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
 
   return (
     <BentoCard
-      name="CP-SAT SOLVER ENGINE"
+      name="CP-SAT SOLVER"
       icon={<span className="text-sm">⚡</span>}
       badge={
-        <span className="px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-700 font-pixel text-[7px] uppercase">
-          OR-TOOLS v9.8
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-pixel text-[7px] uppercase">
+            OR-TOOLS v9.8
+          </span>
+          <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 font-pixel text-[7px] uppercase">
+            LIVE
+          </span>
+        </div>
       }
       headerAction={
         <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-800">
-          <button
-            onClick={() => onToggleScenario('congested')}
-            className={`px-2 py-0.5 rounded-md font-pixel text-[6.5px] transition-all ${
-              scenario === 'congested'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-            }`}
-          >
-            CONGESTED (10)
-          </button>
           <button
             onClick={() => onToggleScenario('demo')}
             className={`px-2 py-0.5 rounded-md font-pixel text-[6.5px] transition-all ${
@@ -77,6 +72,16 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
             }`}
           >
             DEMO (6)
+          </button>
+          <button
+            onClick={() => onToggleScenario('congested')}
+            className={`px-2 py-0.5 rounded-md font-pixel text-[6.5px] transition-all ${
+              scenario === 'congested'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+            }`}
+          >
+            CONGESTED (10)
           </button>
         </div>
       }
@@ -89,7 +94,7 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
           onClick={onRunOptimization}
           disabled={isSolving}
           variant={isSolving ? 'amber' : 'emerald'}
-          className="w-full py-3 text-xs tracking-wider uppercase font-pixel"
+          className="w-full py-2.5 text-xs tracking-wider uppercase font-pixel flex items-center justify-center gap-2"
         >
           {isSolving ? (
             <>
@@ -100,6 +105,7 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
             <>
               <span className="text-sm font-black">✓</span>
               <span>OPTIMAL SCHEDULE SOLVED</span>
+              <span className="text-sm">→</span>
             </>
           )}
         </ShinyButton>
@@ -130,7 +136,7 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
           {/* Scheduled Blocks */}
           <div className="flex items-center justify-between pt-1">
             <span className="font-mono text-slate-600 dark:text-slate-400 flex items-center gap-1.5 text-xs">
-              <span>🔧</span> Blocks Scheduled
+              <span>💼</span> Blocks Scheduled
             </span>
             <span className="font-digital text-lg font-bold text-slate-900 dark:text-slate-100">
               {scheduledCount} / {totalRequested}
@@ -143,7 +149,6 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
               <span>🛡️</span> Train Conflicts
             </span>
             <div className="flex items-center gap-1.5">
-              <PulsingSignalPip aspect={conflicts === 0 ? 'green' : 'red'} size="sm" />
               <span
                 className={`font-digital text-lg font-bold ${
                   conflicts === 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
@@ -153,12 +158,17 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
               </span>
             </div>
           </div>
-        </div>
 
-        {/* Solver Configuration Footer Tag */}
-        <div className="p-2 bg-slate-50/80 dark:bg-slate-900/80 rounded-xl border border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400">
-          <span>Search Workers: 8 Threads</span>
-          <span>Buffer: 15 Mins Safety</span>
+          {/* Status Row */}
+          <div className="flex items-center justify-between pt-1">
+            <span className="font-mono text-slate-600 dark:text-slate-400 flex items-center gap-1.5 text-xs">
+              <span>🛡️</span> Status
+            </span>
+            <div className="flex items-center gap-1.5 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block shadow-[0_0_6px_#10b981]" />
+              <span>All constraints satisfied</span>
+            </div>
+          </div>
         </div>
       </div>
     </BentoCard>

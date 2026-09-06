@@ -28,24 +28,36 @@ export const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('sih_theme');
-      if (saved === 'dark' || saved === 'light') return saved;
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+      if (saved === 'dark') return 'dark';
+      if (saved === 'light') return 'light';
     }
     return 'light';
   });
 
-  useEffect(() => {
-    if (theme === 'dark') {
+  const handleSetTheme = useCallback((newTheme: 'light' | 'dark') => {
+    setTheme(newTheme);
+    try {
+      localStorage.setItem('sih_theme', newTheme);
+    } catch (e) {}
+
+    if (newTheme === 'dark') {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+      document.documentElement.style.backgroundColor = '#060a12';
+      document.body.style.backgroundColor = '#060a12';
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+      document.documentElement.style.backgroundColor = '#f1f5f9';
+      document.body.style.backgroundColor = '#f1f5f9';
     }
-    localStorage.setItem('sih_theme', theme);
-  }, [theme]);
+  }, []);
 
-  const handleToggleTheme = () => {
-    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
-  };
+  useEffect(() => {
+    handleSetTheme(theme);
+  }, [theme, handleSetTheme]);
 
   // Core Data State
   const [stations, setStations] = useState<Station[]>([]);
@@ -244,7 +256,13 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#f1f5f9] dark:bg-[#060a12] text-slate-800 dark:text-slate-100 flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden transition-colors duration-200">
+    <div
+      style={{
+        backgroundColor: theme === 'dark' ? '#060a12' : '#f1f5f9',
+        color: theme === 'dark' ? '#f1f5f9' : '#0f172a',
+      }}
+      className="relative min-h-screen flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden transition-colors duration-200"
+    >
       {/* 21st.dev Ambient Retro Perspective Grid */}
       <RetroGrid className="opacity-25" />
 
@@ -258,7 +276,7 @@ export const App: React.FC = () => {
           onToggleScenario={handleToggleScenario}
           isSolving={isSolving}
           theme={theme}
-          onToggleTheme={handleToggleTheme}
+          onSetTheme={handleSetTheme}
         />
 
         {/* Floating Notification */}
@@ -375,6 +393,23 @@ export const App: React.FC = () => {
             </>
           )}
         </main>
+
+        {/* Official Indian Railways Footer (Matching Reference Image) */}
+        <footer className="mt-4 pt-3 pb-2 border-t border-slate-200/90 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-500 dark:text-slate-400 select-none">
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-[#7B1113] text-white flex items-center justify-center text-[10px] font-bold shadow-xs">
+              🚂
+            </div>
+            <span className="font-pixel text-[8px] text-slate-800 dark:text-slate-200 tracking-wider">
+              INDIAN RAILWAYS
+            </span>
+            <span className="text-slate-400 dark:text-slate-500">|</span>
+            <span className="text-[11px]">Ministry of Railways, Government of India</span>
+          </div>
+          <div className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+            AI for Safer, Smarter, More Punctual Railways
+          </div>
+        </footer>
       </div>
     </div>
   );
