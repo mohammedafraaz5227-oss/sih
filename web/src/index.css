@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #090d16;
+    color: #f1f5f9;
+  }
+}
+
+/* 8-bit Pixel Button */
+.pixel-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  transition: all 0.05s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pixel-btn:hover {
+  filter: brightness(1.1);
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000000;
+}
+
+/* 8-bit Pixel Container / Card */
+.pixel-card {
+  border: 2px solid #334155;
+  box-shadow: 4px 4px 0px #000000;
+  background-color: #111827;
+}
+
+.pixel-panel {
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+}
+
+/* Railway track graphic pattern */
+.railway-track {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #475569,
+    #475569 4px,
+    transparent 4px,
+    transparent 16px
+  );
+}
+
+/* Signal light animations */
+@keyframes signal-pulse-green {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #22c55e); }
+  50% { opacity: 0.7; filter: drop-shadow(0 0 2px #22c55e); }
+}
+
+@keyframes signal-pulse-amber {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #eab308); }
+  50% { opacity: 0.7; filter: drop-shadow(0 0 2px #eab308); }
+}
+
+@keyframes signal-pulse-red {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #ef4444); }
+  50% { opacity: 0.7; filter: drop-shadow(0 0 2px #ef4444); }
+}
+
+.signal-active-green {
+  animation: signal-pulse-green 1.5s infinite;
+}
+
+.signal-active-amber {
+  animation: signal-pulse-amber 1.2s infinite;
+}
+
+.signal-active-red {
+  animation: signal-pulse-red 0.8s infinite;
+}
+
+/* Subtle CRT scanline overlay */
+.crt-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
