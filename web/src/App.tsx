@@ -6,7 +6,7 @@ import { BlockRequestsView } from './components/BlockRequestsView';
 import { OptimizationPanel } from './components/OptimizationPanel';
 import { TimelineGantt } from './components/TimelineGantt';
 import { ComparisonView } from './components/ComparisonView';
-import { PixelAlert, PixelCpu, PixelSignal } from './components/PixelIcons';
+import { PixelAlert, PixelSignal } from './components/PixelIcons';
 import { railwayRepository } from './services/railwayService';
 import { isFirebaseConfigured } from './services/firebase';
 import { INITIAL_SCHEDULE, INITIAL_COMPARISON } from './services/mockCorridorData';
@@ -22,6 +22,7 @@ import {
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [scenario, setScenario] = useState<'congested' | 'demo'>('congested');
+  const [scanlines, setScanlines] = useState<boolean>(false);
 
   // Core Data State
   const [stations, setStations] = useState<Station[]>([]);
@@ -72,7 +73,7 @@ export const App: React.FC = () => {
       console.error('Failed to load initial data:', err);
       setNotification({
         type: 'warning',
-        message: 'Loaded fallback data. Firebase or local repository initialized with default scenario.',
+        message: 'Loaded fallback data. Local repository initialized with default congested corridor set.',
       });
     } finally {
       setIsLoading(false);
@@ -88,7 +89,7 @@ export const App: React.FC = () => {
     setIsSolving(true);
     setNotification({
       type: 'info',
-      message: 'CP-SAT Engine: Building constraint model and searching optimal schedule...',
+      message: 'CP-SAT Engine: Building integer model and solving track intervals on 8 workers...',
     });
 
     try {
@@ -101,15 +102,14 @@ export const App: React.FC = () => {
 
       setNotification({
         type: 'success',
-        message: `Optimization complete! ${newSchedule.metrics.total_blocks_scheduled}/${newSchedule.metrics.total_blocks_requested} blocks scheduled in ${newSchedule.metrics.solve_time_seconds}s with 0 train conflicts.`,
+        message: `CP-SAT Complete! ${newSchedule.metrics.total_blocks_scheduled}/${newSchedule.metrics.total_blocks_requested} blocks scheduled in ${newSchedule.metrics.solve_time_seconds}s with 0 train conflicts.`,
       });
     } catch (err: any) {
       console.error('Optimization error:', err);
       setNotification({
         type: 'warning',
-        message: `Backend optimizer not reachable at /api/optimize. Displaying precomputed optimal schedule. (Start server: uvicorn src.api.server:app --port 8000)`,
+        message: `Backend optimizer not reachable at /api/optimize. Displaying precomputed optimal schedule. (FastAPI port 8000)`,
       });
-      // Maintain precomputed schedule as reliable fallback
       if (!schedule) setSchedule(INITIAL_SCHEDULE);
     } finally {
       setIsSolving(false);
@@ -121,7 +121,7 @@ export const App: React.FC = () => {
     setIsLoadingComparison(true);
     setNotification({
       type: 'info',
-      message: 'Running benchmark: Comparing Naive Baseline vs CP-SAT on congested corridor...',
+      message: 'Running benchmark: Comparing Naive Greedy Baseline vs CP-SAT on congested corridor...',
     });
 
     try {
@@ -129,7 +129,7 @@ export const App: React.FC = () => {
       setComparison(compResult);
       setNotification({
         type: 'success',
-        message: `Benchmark complete! CP-SAT eliminated ${compResult.improvement_summary.train_conflicts_eliminated} train conflicts and saved ${compResult.improvement_summary.train_delay_saved_minutes} mins of train delay.`,
+        message: `Benchmark complete! CP-SAT eliminated ${compResult.improvement_summary.train_conflicts_eliminated} train clashes and saved ${compResult.improvement_summary.train_delay_saved_minutes} mins delay.`,
       });
     } catch (err: any) {
       console.error('Comparison error:', err);
@@ -165,7 +165,7 @@ export const App: React.FC = () => {
       setBlocks(updated);
       setNotification({
         type: 'success',
-        message: `Block ${updatedBlock.id} updated.`,
+        message: `Block demand ${updatedBlock.id} updated.`,
       });
     } catch (err: any) {
       setNotification({ type: 'error', message: `Failed to update block: ${err.message}` });
@@ -179,7 +179,7 @@ export const App: React.FC = () => {
       setBlocks(updated);
       setNotification({
         type: 'info',
-        message: `Block request ${id} removed.`,
+        message: `Block demand ${id} removed.`,
       });
     } catch (err: any) {
       setNotification({ type: 'error', message: `Failed to delete block: ${err.message}` });
@@ -221,31 +221,40 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col selection:bg-yellow-400 selection:text-black font-sans">
-      {/* Pixel Top Header */}
+    <div
+      className={`min-h-screen bg-[#060a12] text-slate-100 flex flex-col selection:bg-yellow-400 selection:text-black font-sans relative ${
+        scanlines ? 'scanlines' : ''
+      }`}
+    >
+      {/* Ambient Procedural Grid Background (Image-free) */}
+      <div className="fixed inset-0 bg-control-grid opacity-30 pointer-events-none z-0" />
+
+      {/* Top Navigation & Status Bar */}
       <Header
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         scenario={scenario}
         onToggleScenario={handleToggleScenario}
         isSolving={isSolving}
+        scanlines={scanlines}
+        onToggleScanlines={() => setScanlines(!scanlines)}
       />
 
-      {/* Floating System Notification */}
+      {/* Floating System Notification Strip */}
       {notification && (
-        <div className="max-w-7xl mx-auto w-full px-4 pt-4">
+        <div className="max-w-7xl mx-auto w-full px-4 pt-4 relative z-20">
           <div
             className={`pixel-card p-3 border-2 flex items-center justify-between text-xs font-pixel shadow-pixel animate-fadeIn ${
               notification.type === 'success'
-                ? 'bg-[#064e3b] border-emerald-400 text-emerald-100'
+                ? 'bg-[#064e3b] border-emerald-400 text-emerald-100 shadow-glow-emerald'
                 : notification.type === 'error'
-                ? 'bg-[#7f1d1d] border-red-500 text-red-100'
+                ? 'bg-[#7f1d1d] border-rose-500 text-rose-100 shadow-glow-red'
                 : notification.type === 'warning'
-                ? 'bg-[#78350f] border-amber-400 text-amber-100'
-                : 'bg-[#1e3a8a] border-blue-400 text-blue-100'
+                ? 'bg-[#78350f] border-amber-400 text-amber-100 shadow-glow-amber'
+                : 'bg-[#0f2347] border-electric-cyan text-cyan-100 shadow-glow-cyan'
             }`}
           >
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2.5">
               <PixelAlert
                 size={16}
                 color={
@@ -255,14 +264,14 @@ export const App: React.FC = () => {
                     ? '#f87171'
                     : notification.type === 'warning'
                     ? '#fbbf24'
-                    : '#60a5fa'
+                    : '#00f0ff'
                 }
               />
               <span>{notification.message}</span>
             </div>
             <button
               onClick={() => setNotification(null)}
-              className="text-xs hover:text-white px-2 py-0.5 border border-white/40 ml-4 font-mono uppercase"
+              className="text-xs hover:text-white px-2 py-0.5 border border-white/40 ml-4 font-mono uppercase transition-colors"
             >
               [X]
             </button>
@@ -271,18 +280,19 @@ export const App: React.FC = () => {
       )}
 
       {/* Main Control Room Canvas */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 relative z-10">
         {isLoading ? (
           <div className="min-h-[400px] flex flex-col items-center justify-center space-y-4">
-            <PixelSignal aspect="amber" size={32} />
-            <p className="font-pixel text-xs text-yellow-400">INITIALIZING RAILWAY CONTROL DASHBOARD...</p>
-            <p className="font-mono text-xs text-slate-400">Loading corridor assets and train paths</p>
+            <PixelSignal aspect="amber" size={36} />
+            <p className="font-pixel text-xs text-yellow-400">INITIALIZING RAILWAY CONTROL DESK...</p>
+            <p className="font-mono text-xs text-slate-400">Connecting to corridor telemetry & CP-SAT solver engine</p>
           </div>
         ) : (
           <>
             {activeTab === 'overview' && (
               <OverviewDashboard
                 schedule={schedule}
+                comparison={comparison}
                 blocks={blocks}
                 assets={assets}
                 isSolving={isSolving}
@@ -342,27 +352,27 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Retro Control-Room Footer */}
-      <footer className="border-t-2 border-black bg-[#0d131f] text-slate-400 text-xs font-mono py-4 px-4 mt-12">
+      {/* Control-Room Footer */}
+      <footer className="border-t-2 border-[#1e293b] bg-[#070d18] text-slate-400 text-xs font-mono py-4 px-4 mt-12 relative z-10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
-            <div className="w-2.5 h-2.5 bg-emerald-500 rounded-none border border-black animate-pulse" />
-            <span className="font-pixel text-[10px] text-slate-300">
+            <div className="w-2.5 h-2.5 bg-emerald-400 rounded-none border border-black animate-pulse shadow-glow-emerald" />
+            <span className="font-pixel text-[9px] text-slate-300">
               SMART INDIA HACKATHON • RAILWAY OPERATIONAL BLOCK PLANNER
             </span>
           </div>
 
           <div className="text-[11px] text-slate-400 text-center">
-            Mode:{' '}
+            Repository Mode:{' '}
             <span className={isFirebaseConfigured ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
               {isFirebaseConfigured ? 'FIRESTORE CLOUD DATA' : 'IN-MEMORY LOCAL REPOSITORY'}
             </span>{' '}
             • Engine:{' '}
-            <span className="text-cyan-400 font-bold">Google OR-Tools CP-SAT (Python 3.12)</span>
+            <span className="text-electric-cyan font-bold">Google OR-Tools CP-SAT (Python 3.12)</span>
           </div>
 
-          <div className="text-[10px] text-amber-500 font-pixel text-center md:text-right">
-            [DEMO DATA — NOT REAL IR OPERATIONS]
+          <div className="text-[9px] text-amber-500 font-pixel text-center md:text-right">
+            [SYNTHETIC DATA — FOR EVALUATION ONLY]
           </div>
         </div>
       </footer>

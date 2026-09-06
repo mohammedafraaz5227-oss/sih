@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Asset, TrainMovement, OptimizedSchedule, BlockRequest } from '../types';
-import { PixelTrain, PixelWrench, PixelTrack } from './PixelIcons';
+import { PixelTrain, PixelWrench, PixelTrack, PixelSignal, PixelAlert } from './PixelIcons';
 
 interface TimelineGanttProps {
   assets: Asset[];
@@ -15,12 +15,43 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
   schedule,
   blocks,
 }) => {
+  const [filterMode, setFilterMode] = useState<'all' | 'trains' | 'blocks'>('all');
   const [hoveredItem, setHoveredItem] = useState<{
     type: 'train' | 'block';
+    id: string;
     label: string;
-    details: string;
+    subLabel: string;
+    sectionName: string;
     time: string;
+    extra: string;
   } | null>(null);
+
+  // Live IST Laser Scrubber Line (updates every 1s)
+  const [scrubberPct, setScrubberPct] = useState<number>(50);
+  const [istTimeString, setIstTimeString] = useState<string>('12:00:00');
+
+  useEffect(() => {
+    const updateScrubber = () => {
+      const now = new Date();
+      const hourStr = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', hour12: false }).format(now);
+      const minStr = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', minute: '2-digit' }).format(now);
+      const secStr = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', second: '2-digit' }).format(now);
+
+      const h = parseInt(hourStr, 10) || 0;
+      const m = parseInt(minStr, 10) || 0;
+      const s = parseInt(secStr, 10) || 0;
+
+      const totalMins = (h % 24) * 60 + m + s / 60;
+      const pct = (totalMins / 1440) * 100;
+
+      setScrubberPct(pct);
+      setIstTimeString(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`);
+    };
+
+    updateScrubber();
+    const interval = setInterval(updateScrubber, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const totalMinutes = 1440;
@@ -28,46 +59,142 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
   // Filter scheduled blocks
   const scheduledBlocks = schedule?.blocks.filter(b => b.is_scheduled) || [];
 
+  // Helper for train category styling
+  const getTrainCategoryStyle = (train: TrainMovement) => {
+    if (train.train_type === 'rajdhani' || train.train_type === 'shatabdi') {
+      return {
+        bg: 'bg-[#00f0ff]',
+        text: 'text-black',
+        border: 'border-white',
+        shadow: 'shadow-glow-cyan',
+        badge: 'bg-cyan-950 text-cyan-300 border-cyan-500',
+      };
+    }
+    if (train.train_type === 'superfast' || train.train_type === 'express') {
+      return {
+        bg: 'bg-[#10b981]',
+        text: 'text-black',
+        border: 'border-emerald-200',
+        shadow: 'shadow-glow-emerald',
+        badge: 'bg-emerald-950 text-emerald-300 border-emerald-500',
+      };
+    }
+    // Freight / passenger
+    return {
+      bg: 'bg-[#f59e0b]',
+      text: 'text-black',
+      border: 'border-amber-200',
+      shadow: 'shadow-glow-amber',
+      badge: 'bg-amber-950 text-amber-300 border-amber-500',
+    };
+  };
+
   return (
     <div className="space-y-6">
-      {/* Timeline Controls & Legend */}
-      <div className="bg-[#1e293b] border-2 border-black shadow-pixel p-3 flex flex-wrap items-center justify-between gap-3">
+      {/* 1. Header Controls & Legend Bar */}
+      <div className="bg-[#0c1424] border-2 border-[#1e293b] shadow-pixel p-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-pixel text-xs text-yellow-400 uppercase flex items-center space-x-2">
-            <PixelTrack size={18} color="#facc15" />
-            <span>24-Hour Railway Corridor Gantt Timetable</span>
-          </h2>
-          <p className="text-xs text-slate-300 font-mono mt-0.5">
-            5 Track Sections • 00:00 to 24:00 (1,440 Mins) • Train Movements & Maintenance Blocks
+          <div className="flex items-center space-x-2">
+            <PixelTrack size={20} color="#00f0ff" />
+            <h2 className="font-pixel text-xs md:text-sm text-yellow-400 uppercase">
+              24-Hour Corridor Gantt Master Timetable
+            </h2>
+            <span className="px-1.5 py-0.5 bg-cyan-950 border border-cyan-700 text-cyan-300 text-[8px] font-pixel">
+              1,440 MIN HORIZON
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 font-mono mt-0.5">
+            5 Track Sections • Disjunctive NoOverlap Intervals • Live IST Scrubber
           </p>
         </div>
 
-        {/* Legend */}
-        <div className="flex flex-wrap items-center gap-3 text-[10px] font-pixel text-slate-300">
-          <div className="flex items-center space-x-1.5">
-            <div className="w-3.5 h-3 bg-cyan-600 border border-cyan-400"></div>
-            <span>TRAIN (NOMINAL)</span>
+        {/* Filter Buttons & Legend */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Filter Mode Selector */}
+          <div className="inline-flex border border-slate-700 bg-black p-0.5">
+            <button
+              onClick={() => setFilterMode('all')}
+              className={`px-2.5 py-1 text-[8px] font-pixel transition-colors ${
+                filterMode === 'all'
+                  ? 'bg-electric-cyan text-black font-bold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              ALL
+            </button>
+            <button
+              onClick={() => setFilterMode('trains')}
+              className={`px-2.5 py-1 text-[8px] font-pixel transition-colors ${
+                filterMode === 'trains'
+                  ? 'bg-emerald-500 text-black font-bold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              TRAINS ONLY
+            </button>
+            <button
+              onClick={() => setFilterMode('blocks')}
+              className={`px-2.5 py-1 text-[8px] font-pixel transition-colors ${
+                filterMode === 'blocks'
+                  ? 'bg-amber-500 text-black font-bold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              BLOCKS ONLY
+            </button>
           </div>
-          <div className="flex items-center space-x-1.5">
-            <div className="w-3.5 h-3 bg-cyan-950/80 border border-dashed border-cyan-500"></div>
-            <span>15M BUFFER</span>
-          </div>
-          <div className="flex items-center space-x-1.5">
-            <div className="w-3.5 h-3 bg-[#7B1113] border border-yellow-400"></div>
-            <span>MAINTENANCE BLOCK</span>
+
+          {/* Visual Legend */}
+          <div className="flex items-center space-x-3 text-[9px] font-pixel text-slate-300 border-l border-slate-800 pl-3">
+            <div className="flex items-center space-x-1">
+              <span className="w-3 h-2.5 bg-[#00f0ff] inline-block"></span>
+              <span>PREMIER</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="w-3 h-2.5 bg-[#10b981] inline-block"></span>
+              <span>EXPRESS</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="w-3 h-2.5 bg-[#f59e0b] inline-block"></span>
+              <span>FREIGHT</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="w-3 h-2.5 bg-[#7B1113] border border-yellow-400 inline-block"></span>
+              <span>BLOCK</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="w-3 h-2.5 bg-rose-500 inline-block animate-pulse"></span>
+              <span>IST LASER</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Gantt Timeline Container */}
-      <div className="pixel-card bg-[#0b101d] p-4 border-2 border-slate-700 overflow-x-auto">
-        <div className="min-w-[1000px]">
+      {/* 2. Main 24-Hour Gantt Timeline Canvas */}
+      <div className="pixel-card bg-[#060a12] p-4 border-2 border-[#1e293b] shadow-pixel overflow-x-auto relative">
+        <div className="min-w-[1100px] relative">
+          {/* LIVE IST LASER SCRUBBER LINE (Spans entire height of Gantt) */}
+          <div
+            style={{ left: `calc(192px + (100% - 192px) * ${scrubberPct / 100})` }}
+            className="absolute top-0 bottom-0 w-[2px] bg-rose-500 z-30 pointer-events-none shadow-[0_0_8px_#f43f5e]"
+          >
+            {/* Scrubber Header Badge */}
+            <div className="absolute -top-3.5 -left-10 bg-rose-600 text-white px-1.5 py-0.5 text-[7px] font-pixel whitespace-nowrap shadow-glow-red border border-white">
+              NOW: {istTimeString} IST
+            </div>
+          </div>
+
           {/* Hour Marks Header */}
-          <div className="flex border-b-2 border-slate-700 pb-2 mb-4 text-[10px] font-pixel text-slate-400">
-            <div className="w-48 flex-shrink-0 font-pixel text-yellow-400">TRACK SECTION</div>
+          <div className="flex border-b-2 border-slate-800 pb-2 mb-4 text-[10px] font-pixel text-slate-400">
+            <div className="w-48 flex-shrink-0 font-pixel text-yellow-400 pl-2">
+              TRACK SECTION
+            </div>
             <div className="flex-1 grid grid-cols-24 gap-0 relative">
               {hours.map((h) => (
-                <div key={h} className="text-center border-l border-slate-800 text-[9px] font-digital text-cyan-300">
+                <div
+                  key={h}
+                  className="text-center border-l border-slate-800/80 text-[9px] font-digital text-cyan-300"
+                >
                   {String(h).padStart(2, '0')}:00
                 </div>
               ))}
@@ -77,7 +204,7 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
           {/* Section Rows */}
           <div className="space-y-4">
             {assets.map((asset) => {
-              // Find train sections for this asset
+              // Find train sections on this asset
               const assetTrainSections: { train: TrainMovement; entry: number; exit: number }[] = [];
               trains.forEach((t) => {
                 t.sections.forEach((s) => {
@@ -87,23 +214,26 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
                 });
               });
 
-              // Find blocks on this asset
+              // Find scheduled blocks on this asset
               const assetBlocks = scheduledBlocks.filter((b) => b.asset_id === asset.id);
 
               return (
-                <div key={asset.id} className="flex items-center border-b border-slate-800/80 pb-3">
+                <div key={asset.id} className="flex items-center border-b border-slate-800/60 pb-3">
                   {/* Left Label */}
                   <div className="w-48 flex-shrink-0 pr-3">
-                    <div className="font-pixel text-[10px] text-yellow-300 truncate">
+                    <div className="font-pixel text-[10px] text-yellow-400 truncate">
                       {asset.id.replace('SEC_', '')}
                     </div>
                     <div className="text-[10px] font-mono text-slate-400 truncate">
                       {asset.name}
                     </div>
+                    <div className="text-[8px] font-mono text-slate-400 mt-0.5">
+                      {asset.max_speed_kmph} km/h • 25kV OHE
+                    </div>
                   </div>
 
                   {/* 24-Hour Timeline Bar */}
-                  <div className="flex-1 h-14 bg-black/60 border border-slate-800 relative rounded-none overflow-hidden">
+                  <div className="flex-1 h-14 bg-[#0a101d] border border-slate-800 relative rounded-none overflow-hidden">
                     {/* Hourly Grid Lines */}
                     <div className="absolute inset-0 grid grid-cols-24 pointer-events-none">
                       {hours.map((h) => (
@@ -111,76 +241,87 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
                       ))}
                     </div>
 
-                    {/* Render Train Intervals (with 15-min buffers) */}
-                    {assetTrainSections.map(({ train, entry, exit }, idx) => {
-                      const bufStart = Math.max(0, entry - 15);
-                      const bufEnd = Math.min(totalMinutes, exit + 15);
+                    {/* Render Train Intervals with Safety Buffers */}
+                    {(filterMode === 'all' || filterMode === 'trains') &&
+                      assetTrainSections.map(({ train, entry, exit }, idx) => {
+                        const style = getTrainCategoryStyle(train);
 
-                      const bufLeftPct = (bufStart / totalMinutes) * 100;
-                      const bufWidthPct = ((bufEnd - bufStart) / totalMinutes) * 100;
+                        const bufStart = Math.max(0, entry - 15);
+                        const bufEnd = Math.min(totalMinutes, exit + 15);
 
-                      const leftPct = (entry / totalMinutes) * 100;
-                      const widthPct = ((exit - entry) / totalMinutes) * 100;
+                        const bufLeftPct = (bufStart / totalMinutes) * 100;
+                        const bufWidthPct = ((bufEnd - bufStart) / totalMinutes) * 100;
 
-                      return (
-                        <React.Fragment key={`train-${train.id}-${idx}`}>
-                          {/* 15m Safety Buffer Zone (Dashed Hatched) */}
+                        const leftPct = (entry / totalMinutes) * 100;
+                        const widthPct = ((exit - entry) / totalMinutes) * 100;
+
+                        return (
+                          <React.Fragment key={`train-${train.id}-${idx}`}>
+                            {/* ±15m Safety Buffer Zone (Dashed Hatched) */}
+                            <div
+                              style={{ left: `${bufLeftPct}%`, width: `${Math.max(bufWidthPct, 0.6)}%` }}
+                              className="absolute top-1 bottom-1 bg-cyan-950/30 border-x border-dashed border-cyan-500/50 z-0 pointer-events-none"
+                              title={`Safety Buffer: ${bufStart}m to ${bufEnd}m`}
+                            />
+
+                            {/* Nominal Train Movement Bar */}
+                            <div
+                              style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 0.45)}%` }}
+                              onMouseEnter={() =>
+                                setHoveredItem({
+                                  type: 'train',
+                                  id: train.id,
+                                  label: `${train.train_number} • ${train.name}`,
+                                  subLabel: `Priority P${train.priority} • Type: ${train.train_type.toUpperCase()}`,
+                                  sectionName: asset.name,
+                                  time: `${String(Math.floor(entry / 60)).padStart(2, '0')}:${String(entry % 60).padStart(2, '0')} → ${String(Math.floor(exit / 60)).padStart(2, '0')}:${String(exit % 60).padStart(2, '0')}`,
+                                  extra: `Transit: ${exit - entry}m (Safety Buffer: ±15m)`,
+                                })
+                              }
+                              onMouseLeave={() => setHoveredItem(null)}
+                              className={`absolute top-2 bottom-2 ${style.bg} border ${style.border} ${style.shadow} z-10 cursor-pointer flex items-center justify-center overflow-hidden transition-all hover:scale-y-110`}
+                            >
+                              <span className={`font-pixel text-[7px] ${style.text} font-bold truncate px-0.5`}>
+                                {train.train_number}
+                              </span>
+                            </div>
+                          </React.Fragment>
+                        );
+                      })}
+
+                    {/* Render Scheduled Maintenance Blocks */}
+                    {(filterMode === 'all' || filterMode === 'blocks') &&
+                      assetBlocks.map((block) => {
+                        const leftPct = (block.scheduled_start / totalMinutes) * 100;
+                        const widthPct = (block.duration_minutes / totalMinutes) * 100;
+
+                        return (
                           <div
-                            style={{ left: `${bufLeftPct}%`, width: `${Math.max(bufWidthPct, 0.5)}%` }}
-                            className="absolute top-1 bottom-1 bg-cyan-950/40 border border-dashed border-cyan-600/60 z-0 pointer-events-none"
-                          ></div>
-
-                          {/* Nominal Train Movement Bar */}
-                          <div
-                            style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 0.4)}%` }}
+                            key={block.block_request_id}
+                            style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 1.2)}%` }}
                             onMouseEnter={() =>
                               setHoveredItem({
-                                type: 'train',
-                                label: `${train.train_number} - ${train.name}`,
-                                details: `Type: ${train.train_type.toUpperCase()} • Priority: P${train.priority} • Section: ${asset.name}`,
-                                time: `${String(Math.floor(entry / 60)).padStart(2, '0')}:${String(entry % 60).padStart(2, '0')} - ${String(Math.floor(exit / 60)).padStart(2, '0')}:${String(exit % 60).padStart(2, '0')} (Buffer: ±15m)`,
+                                type: 'block',
+                                id: block.block_request_id,
+                                label: `${block.block_request_id} (Priority P${block.priority})`,
+                                subLabel: `Type: ${block.maintenance_type.replace(/_/g, ' ').toUpperCase()}`,
+                                sectionName: asset.name,
+                                time: `${String(Math.floor(block.scheduled_start / 60)).padStart(2, '0')}:${String(block.scheduled_start % 60).padStart(2, '0')} → ${String(Math.floor(block.scheduled_end / 60)).padStart(2, '0')}:${String(block.scheduled_end % 60).padStart(2, '0')}`,
+                                extra: `Duration: ${block.duration_minutes}m | Window Deviation: +${block.deviation_minutes}m`,
                               })
                             }
                             onMouseLeave={() => setHoveredItem(null)}
-                            className="absolute top-2 bottom-2 bg-cyan-600 hover:bg-cyan-400 border border-black shadow-sm z-10 cursor-pointer flex items-center justify-center overflow-hidden transition-colors"
+                            className="absolute top-1.5 bottom-1.5 bg-[#7B1113] hover:bg-red-700 border-2 border-yellow-400 shadow-glow-amber z-20 cursor-pointer flex items-center justify-center overflow-hidden transition-all hover:scale-y-110"
                           >
-                            <span className="font-pixel text-[7px] text-black font-bold truncate px-0.5">
-                              {train.train_number}
-                            </span>
+                            <div className="flex items-center space-x-1 px-1">
+                              <PixelWrench size={10} color="#facc15" />
+                              <span className="font-pixel text-[7px] text-yellow-300 font-bold truncate">
+                                {block.block_request_id}
+                              </span>
+                            </div>
                           </div>
-                        </React.Fragment>
-                      );
-                    })}
-
-                    {/* Render Scheduled Maintenance Blocks */}
-                    {assetBlocks.map((block) => {
-                      const leftPct = (block.scheduled_start / totalMinutes) * 100;
-                      const widthPct = (block.duration_minutes / totalMinutes) * 100;
-
-                      return (
-                        <div
-                          key={block.block_request_id}
-                          style={{ left: `${leftPct}%`, width: `${Math.max(widthPct, 1)}%` }}
-                          onMouseEnter={() =>
-                            setHoveredItem({
-                              type: 'block',
-                              label: `${block.block_request_id} (P${block.priority}) - ${block.maintenance_type.replace(/_/g, ' ')}`,
-                              details: `Section: ${asset.name} • Shift: +${block.deviation_minutes}m • Duration: ${block.duration_minutes}m`,
-                              time: `${String(Math.floor(block.scheduled_start / 60)).padStart(2, '0')}:${String(block.scheduled_start % 60).padStart(2, '0')} - ${String(Math.floor(block.scheduled_end / 60)).padStart(2, '0')}:${String(block.scheduled_end % 60).padStart(2, '0')}`,
-                            })
-                          }
-                          onMouseLeave={() => setHoveredItem(null)}
-                          className="absolute top-1.5 bottom-1.5 bg-[#7B1113] hover:bg-red-700 border-2 border-yellow-400 shadow-pixel-sm z-20 cursor-pointer flex items-center justify-center overflow-hidden transition-all"
-                        >
-                          <div className="flex items-center space-x-1 px-1">
-                            <PixelWrench size={10} color="#facc15" />
-                            <span className="font-pixel text-[8px] text-yellow-300 font-bold truncate">
-                              {block.block_request_id}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                   </div>
                 </div>
               );
@@ -189,27 +330,46 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
         </div>
       </div>
 
-      {/* Hover Info Tooltip Bar */}
-      <div className="bg-[#111827] border-2 border-black p-3 min-h-[56px] flex items-center justify-between font-mono text-xs">
+      {/* 3. Real-Time Telemetry & Inspector Tooltip Dock */}
+      <div className="bg-[#0c1424] border-2 border-[#1e293b] p-3.5 min-h-[60px] flex items-center justify-between font-mono text-xs shadow-pixel">
         {hoveredItem ? (
-          <div className="flex items-center space-x-3">
-            {hoveredItem.type === 'train' ? (
-              <PixelTrain size={20} color="#06b6d4" />
-            ) : (
-              <PixelWrench size={20} color="#facc15" />
-            )}
-            <div>
-              <div className="font-pixel text-[11px] text-yellow-400">
-                {hoveredItem.label}
+          <div className="flex items-center space-x-3 w-full">
+            <div className="p-2 bg-[#060a12] border border-slate-700">
+              {hoveredItem.type === 'train' ? (
+                <PixelTrain size={22} color="#00f0ff" />
+              ) : (
+                <PixelWrench size={22} color="#facc15" />
+              )}
+            </div>
+            <div className="flex-1 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="font-pixel text-xs text-yellow-400">
+                    {hoveredItem.label}
+                  </span>
+                  <span className="text-[10px] text-slate-300 font-bold">
+                    {hoveredItem.subLabel}
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-0.5">
+                  Section: <strong className="text-slate-200">{hoveredItem.sectionName}</strong> • {hoveredItem.extra}
+                </div>
               </div>
-              <div className="text-slate-300 text-xs">
-                {hoveredItem.details} • <strong className="text-cyan-300">{hoveredItem.time}</strong>
+
+              <div className="text-right">
+                <div className="font-digital text-xl text-emerald-400 font-bold">
+                  {hoveredItem.time}
+                </div>
+                <span className="text-[8px] font-pixel text-slate-400">TIMETABLE WINDOW</span>
               </div>
             </div>
           </div>
         ) : (
-          <div className="text-slate-500 font-mono text-xs italic">
-            Hover over any train bar (cyan) or maintenance block (maroon) to inspect timings, headways, and deviation details.
+          <div className="flex items-center space-x-2 text-slate-400 font-mono text-xs">
+            <span className="w-2 h-2 bg-rose-500 animate-pulse inline-block"></span>
+            <span>
+              Hover over any train traversal or maintenance possession block to inspect micro-timings, safety headway clearances, and schedule deviation details.
+            </span>
           </div>
         )}
       </div>

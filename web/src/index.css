@@ -1,98 +1,260 @@
+@import 'reactflow/dist/style.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    background-color: #090d16;
-    color: #f1f5f9;
+    background-color: #060a12;
+    color: #e2e8f0;
+    font-family: 'Space Mono', 'Courier New', monospace;
+    overflow-x: hidden;
   }
 }
 
-/* 8-bit Pixel Button */
+/* Procedural Ambient Grid & Track Motif (Image-Free) */
+.bg-control-grid {
+  background-color: #060a12;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px, 32px 32px, 16px 16px;
+  background-position: 0 0, 0 0, 8px 8px;
+}
+
+/* Subtle CRT Scanlines */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.22) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Pixelact / Pxlkit Style Pixel Cards & Panels */
+.pixel-card {
+  position: relative;
+  background-color: #0d1527;
+  border: 2px solid #1e293b;
+  box-shadow: 
+    3px 3px 0px 0px #000000,
+    inset 0 0 16px rgba(15, 23, 42, 0.8);
+  transition: all 0.15s ease-in-out;
+}
+
+.pixel-card-glow-cyan {
+  border-color: #0284c7;
+  box-shadow: 
+    3px 3px 0px 0px #000000,
+    0 0 12px rgba(0, 240, 255, 0.25),
+    inset 0 0 16px rgba(2, 132, 199, 0.15);
+}
+
+.pixel-card-glow-green {
+  border-color: #059669;
+  box-shadow: 
+    3px 3px 0px 0px #000000,
+    0 0 12px rgba(0, 255, 102, 0.25),
+    inset 0 0 16px rgba(5, 150, 105, 0.15);
+}
+
+.pixel-card-glow-red {
+  border-color: #dc2626;
+  box-shadow: 
+    3px 3px 0px 0px #000000,
+    0 0 12px rgba(255, 42, 42, 0.25),
+    inset 0 0 16px rgba(220, 38, 38, 0.15);
+}
+
+.pixel-card-glow-amber {
+  border-color: #d97706;
+  box-shadow: 
+    3px 3px 0px 0px #000000,
+    0 0 12px rgba(255, 183, 3, 0.25),
+    inset 0 0 16px rgba(217, 119, 6, 0.15);
+}
+
+.pixel-card-glow-purple {
+  border-color: #7c3aed;
+  box-shadow: 
+    3px 3px 0px 0px #000000,
+    0 0 12px rgba(168, 85, 247, 0.25),
+    inset 0 0 16px rgba(124, 58, 237, 0.15);
+}
+
+/* Pixel Buttons */
 .pixel-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
-  transition: all 0.05s ease-in-out;
+  box-shadow: 3px 3px 0px 0px #000000;
+  transition: all 0.08s ease-in-out;
   cursor: pointer;
   user-select: none;
+  font-family: 'Press Start 2P', monospace;
 }
 
-.pixel-btn:hover {
-  filter: brightness(1.1);
+.pixel-btn:hover:not(:disabled) {
+  filter: brightness(1.15);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px #000000;
 }
 
-.pixel-btn:active {
+.pixel-btn:active:not(:disabled) {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px #000000;
+  box-shadow: 1px 1px 0px 0px #000000;
 }
 
-/* 8-bit Pixel Container / Card */
-.pixel-card {
+.pixel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+}
+
+/* Pixel Input & Form Controls */
+.pixel-input {
+  background-color: #060a12;
   border: 2px solid #334155;
-  box-shadow: 4px 4px 0px #000000;
-  background-color: #111827;
+  box-shadow: inset 2px 2px 0px #000000;
+  color: #f8fafc;
+  font-family: 'Space Mono', monospace;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.15s;
 }
 
-.pixel-panel {
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
+.pixel-input:focus {
+  border-color: #00f0ff;
+  box-shadow: 
+    inset 2px 2px 0px #000000,
+    0 0 8px rgba(0, 240, 255, 0.4);
 }
 
-/* Railway track graphic pattern */
-.railway-track {
+/* Pixel Badge */
+.pixel-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #000000;
+  box-shadow: 1px 1px 0px #000000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  padding: 3px 6px;
+  line-height: 1;
+}
+
+/* Hazard Stripes for Maintenance Possessions & Safety Buffers */
+.hazard-stripes {
   background-image: repeating-linear-gradient(
-    90deg,
-    #475569,
-    #475569 4px,
-    transparent 4px,
-    transparent 16px
+    45deg,
+    #ffb703,
+    #ffb703 8px,
+    #000000 8px,
+    #000000 16px
   );
 }
 
-/* Signal light animations */
-@keyframes signal-pulse-green {
-  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #22c55e); }
-  50% { opacity: 0.7; filter: drop-shadow(0 0 2px #22c55e); }
-}
-
-@keyframes signal-pulse-amber {
-  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #eab308); }
-  50% { opacity: 0.7; filter: drop-shadow(0 0 2px #eab308); }
-}
-
-@keyframes signal-pulse-red {
-  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #ef4444); }
-  50% { opacity: 0.7; filter: drop-shadow(0 0 2px #ef4444); }
-}
-
-.signal-active-green {
-  animation: signal-pulse-green 1.5s infinite;
-}
-
-.signal-active-amber {
-  animation: signal-pulse-amber 1.2s infinite;
-}
-
-.signal-active-red {
-  animation: signal-pulse-red 0.8s infinite;
-}
-
-/* Subtle CRT scanline overlay */
-.crt-overlay {
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
-  ), linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 0.03),
-    rgba(0, 255, 0, 0.01),
-    rgba(0, 0, 255, 0.03)
+.hazard-stripes-buffer {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(239, 68, 68, 0.25),
+    rgba(239, 68, 68, 0.25) 6px,
+    transparent 6px,
+    transparent 12px
   );
-  background-size: 100% 4px, 6px 100%;
-  pointer-events: none;
+}
+
+.hazard-stripes-block {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(245, 158, 11, 0.9),
+    rgba(245, 158, 11, 0.9) 10px,
+    rgba(17, 24, 39, 0.9) 10px,
+    rgba(17, 24, 39, 0.9) 20px
+  );
+}
+
+/* Animated Signals */
+@keyframes signal-lamp-green {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #00ff66); }
+  50% { opacity: 0.65; filter: drop-shadow(0 0 3px #00ff66); }
+}
+
+@keyframes signal-lamp-amber {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #ffb703); }
+  50% { opacity: 0.65; filter: drop-shadow(0 0 3px #ffb703); }
+}
+
+@keyframes signal-lamp-red {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #ff2a2a); }
+  50% { opacity: 0.65; filter: drop-shadow(0 0 3px #ff2a2a); }
+}
+
+.signal-green-pulse {
+  animation: signal-lamp-green 1.4s infinite ease-in-out;
+}
+
+.signal-amber-pulse {
+  animation: signal-lamp-amber 1.1s infinite ease-in-out;
+}
+
+.signal-red-pulse {
+  animation: signal-lamp-red 0.8s infinite ease-in-out;
+}
+
+/* React Flow custom control center styling */
+.react-flow__renderer {
+  background: transparent !important;
+}
+
+.react-flow__controls {
+  box-shadow: 3px 3px 0px #000000 !important;
+  border: 2px solid #334155 !important;
+  background-color: #0d1527 !important;
+}
+
+.react-flow__controls-button {
+  background-color: #111827 !important;
+  border-bottom: 1px solid #334155 !important;
+  color: #00f0ff !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: #1e293b !important;
+}
+
+.react-flow__attribution {
+  display: none !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060a12;
+  border: 1px solid #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
 }

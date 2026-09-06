@@ -8,6 +8,8 @@ interface HeaderProps {
   scenario: 'congested' | 'demo';
   onToggleScenario: (s: 'congested' | 'demo') => void;
   isSolving: boolean;
+  scanlines: boolean;
+  onToggleScanlines: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,6 +18,8 @@ export const Header: React.FC<HeaderProps> = ({
   scenario,
   onToggleScenario,
   isSolving,
+  scanlines,
+  onToggleScanlines,
 }) => {
   // Live IST Digital Clock (User Correction #3: Actual current time converted to IST)
   const [istTime, setIstTime] = useState<string>('');
@@ -50,131 +54,158 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems = [
-    { id: 'overview', label: 'OVERVIEW' },
-    { id: 'network', label: 'CORRIDOR MAP' },
-    { id: 'blocks', label: 'BLOCK REQUESTS' },
-    { id: 'optimize', label: 'OPTIMIZER' },
-    { id: 'timeline', label: '24H TIMELINE' },
-    { id: 'compare', label: 'BENCHMARK' },
+    { id: 'overview', label: 'OVERVIEW', icon: '📊' },
+    { id: 'network', label: 'CORRIDOR MAP', icon: '🗺️' },
+    { id: 'blocks', label: 'BLOCK REQUESTS', icon: '🔧' },
+    { id: 'optimize', label: 'CP-SAT SOLVER', icon: '⚡' },
+    { id: 'timeline', label: '24H TIMELINE', icon: '⏱️' },
+    { id: 'compare', label: 'BENCHMARK', icon: '⚖️' },
   ];
 
   return (
-    <header className="border-b-4 border-black bg-[#111827] shadow-[0_4px_0_0_#000]">
-      {/* Top Ticker / Disclaimer Banner */}
-      <div className="bg-[#7B1113] text-white px-4 py-1 flex items-center justify-between border-b-2 border-black text-[11px] font-mono tracking-wider">
-        <div className="flex items-center space-x-2">
-          <span className="inline-block w-2 h-2 bg-yellow-400 animate-ping"></span>
-          <span className="font-pixel text-[9px] text-yellow-300">SYSTEM STATUS: ACTIVE</span>
-          <span className="text-zinc-300">|</span>
-          <span className="text-amber-200">CORRIDOR: DELHI - AGRA CANTT (265 KM)</span>
-        </div>
-        <div className="flex items-center space-x-2 bg-black/40 px-2 py-0.5 border border-yellow-500/40">
-          <span className="font-pixel text-[8px] text-yellow-400 uppercase tracking-widest">
-            DEMO DATA — NOT REAL INDIAN RAILWAYS DATA
+    <header className="border-b-2 border-[#1e293b] bg-[#070d18] shadow-pixel relative z-30">
+      {/* Top Ticker / Railway Operations Status Bar */}
+      <div className="bg-[#5c0d11] text-white px-4 py-1.5 flex flex-wrap items-center justify-between border-b border-black text-[11px] font-mono tracking-wider">
+        <div className="flex items-center space-x-2.5">
+          <span className="inline-block w-2 h-2 bg-emerald-400 rounded-none animate-ping"></span>
+          <span className="font-pixel text-[9px] text-yellow-300">
+            CONTROL DESK: CENTRAL OPERATIONS
           </span>
+          <span className="text-red-300">|</span>
+          <span className="text-slate-200">
+            TRUNK CORRIDOR: DELHI (NDLS) → AGRA CANTT (AGC) [265 KM]
+          </span>
+          <span className="text-red-300 hidden md:inline">|</span>
+          <span className="text-cyan-300 hidden md:inline font-mono">
+            6 STATIONS • 5 SECTIONS • 100% ELECTRIFIED
+          </span>
+        </div>
+
+        <div className="flex items-center space-x-3 mt-1 sm:mt-0">
+          {/* CRT Scanlines Toggle */}
+          <button
+            onClick={onToggleScanlines}
+            className={`font-pixel text-[8px] px-2 py-0.5 border transition-colors ${
+              scanlines
+                ? 'bg-electric-cyan text-black border-white shadow-glow-cyan'
+                : 'bg-black/50 text-slate-400 border-slate-700 hover:text-white'
+            }`}
+          >
+            SCANLINES: {scanlines ? 'ON' : 'OFF'}
+          </button>
+
+          <div className="flex items-center space-x-1.5 bg-black/60 px-2 py-0.5 border border-yellow-500/40">
+            <span className="font-pixel text-[8px] text-yellow-400 uppercase tracking-widest">
+              SYNTHETIC BENCHMARK DEMO
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Main Control Panel Header */}
+      {/* Main Control Panel Bar */}
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-        {/* Left: Branding & Logo */}
-        <div className="flex items-center space-x-3">
-          <div className="w-11 h-11 bg-[#7B1113] border-2 border-black shadow-pixel flex items-center justify-center p-1">
-            <PixelTrain size={30} color="#facc15" />
+        {/* Left: Branding & Railway Emblem */}
+        <div className="flex items-center space-x-3.5">
+          <div className="w-12 h-12 bg-[#0c1424] border-2 border-electric-cyan shadow-glow-cyan flex items-center justify-center p-1.5 relative overflow-hidden">
+            <PixelTrain size={30} color="#00f0ff" />
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 transform rotate-45"></div>
           </div>
+
           <div>
             <div className="flex items-center space-x-2">
               <h1 className="font-pixel text-sm md:text-base text-yellow-400 tracking-wider">
-                AI-POWERED RAILWAY BLOCK PLANNING
+                AI BLOCK PLANNING CONTROL
               </h1>
-              <span className="px-1.5 py-0.2 bg-red-950 text-red-300 border border-red-700 text-[9px] font-pixel">
-                v2.0
+              <span className="px-1.5 py-0.5 bg-[#0f2347] text-cyan-300 border border-electric-cyan text-[8px] font-pixel shadow-glow-cyan">
+                SIH-2024
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono tracking-wide">
-              Centralized Maintenance Possession & Conflict Resolution System • CP-SAT Engine
+            <p className="text-[11px] text-slate-400 font-mono tracking-wide mt-0.5">
+              Automated Railway Maintenance Possession & Conflict Resolution System • CP-SAT
             </p>
           </div>
         </div>
 
-        {/* Right: Live IST Digital Clock & System Status */}
+        {/* Right: Live IST Digital Clock & Telemetry Badges */}
         <div className="flex items-center space-x-3">
           {/* Live IST Digital Clock */}
-          <div className="bg-black border-2 border-[#334155] shadow-pixel px-3 py-1 text-right">
-            <div className="text-[9px] font-pixel text-cyan-400 uppercase flex items-center justify-end space-x-1">
-              <span className="inline-block w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></span>
+          <div className="bg-[#060a12] border-2 border-[#1e293b] shadow-pixel px-3.5 py-1.5 text-right relative">
+            <div className="text-[8px] font-pixel text-electric-cyan uppercase flex items-center justify-end space-x-1 mb-0.5">
+              <span className="inline-block w-1.5 h-1.5 bg-emerald-400 rounded-none animate-pulse"></span>
               <span>IST (UTC+05:30)</span>
             </div>
-            <div className="font-digital text-2xl md:text-3xl text-green-400 tracking-widest leading-none">
+            <div className="font-digital text-2xl md:text-3xl text-emerald-400 tracking-widest leading-none">
               {istTime || '--:--:--'}
             </div>
-            <div className="text-[10px] text-slate-400 font-mono">
+            <div className="text-[10px] text-slate-400 font-mono mt-0.5">
               {istDate || '--- --, ----'}
             </div>
           </div>
 
           {/* Engine Status Lamp */}
-          <div className="bg-black border-2 border-[#334155] shadow-pixel px-3 py-2 flex items-center space-x-2">
-            <PixelSignal aspect={isSolving ? 'amber' : 'green'} size={24} />
+          <div className="bg-[#060a12] border-2 border-[#1e293b] shadow-pixel px-3 py-2 flex items-center space-x-2.5">
+            <PixelSignal aspect={isSolving ? 'amber' : 'green'} size={22} />
             <div>
-              <div className="text-[8px] font-pixel text-slate-400">ENGINE</div>
-              <div className={`text-[10px] font-pixel ${isSolving ? 'text-yellow-400 animate-pulse' : 'text-green-400'}`}>
-                {isSolving ? 'SOLVING...' : 'OPTIMAL'}
+              <div className="text-[8px] font-pixel text-slate-400">SOLVER</div>
+              <div className={`text-[10px] font-pixel ${isSolving ? 'text-amber-400 animate-pulse' : 'text-emerald-400'}`}>
+                {isSolving ? 'SEARCHING...' : 'OPTIMAL'}
               </div>
             </div>
           </div>
 
-          {/* Database Mode */}
-          <div className="bg-black border-2 border-[#334155] shadow-pixel px-2.5 py-2 hidden md:block">
-            <div className="text-[8px] font-pixel text-slate-400">STORAGE</div>
-            <div className="text-[10px] font-pixel text-cyan-400">
-              {isFirebaseConfigured ? 'FIRESTORE' : 'LOCAL STORE'}
+          {/* Data Storage Layer */}
+          <div className="bg-[#060a12] border-2 border-[#1e293b] shadow-pixel px-3 py-2 hidden lg:block">
+            <div className="text-[8px] font-pixel text-slate-400">DATA LAYER</div>
+            <div className="text-[10px] font-pixel text-cyan-300">
+              {isFirebaseConfigured ? 'FIRESTORE' : 'LOCAL REPO'}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Bar & Scenario Selector */}
-      <div className="bg-[#090d16] border-t-2 border-black px-4 flex flex-wrap items-center justify-between gap-2">
-        <nav className="flex space-x-1 py-1.5 overflow-x-auto">
+      {/* Navigation Bar & Scenario Switcher */}
+      <div className="bg-[#040811] border-t border-[#1e293b] px-4 flex flex-wrap items-center justify-between gap-2">
+        <nav className="flex space-x-1.5 py-2 overflow-x-auto">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`px-3 py-1.5 text-[10px] md:text-[11px] font-pixel transition-all ${
+                className={`px-3 py-1.5 text-[10px] md:text-[11px] font-pixel transition-all flex items-center space-x-1.5 ${
                   isActive
-                    ? 'bg-[#7B1113] text-yellow-300 border-2 border-black shadow-pixel-sm translate-y-[-1px]'
-                    : 'bg-[#1e293b] text-slate-300 border-2 border-transparent hover:border-black hover:text-white'
+                    ? 'bg-[#0f2347] text-electric-cyan border-2 border-electric-cyan shadow-glow-cyan -translate-y-0.5'
+                    : 'bg-[#0a101d] text-slate-300 border-2 border-[#1e293b] hover:border-slate-600 hover:text-white'
                 }`}
               >
-                {item.label}
+                <span>{item.label}</span>
               </button>
             );
           })}
         </nav>
 
         {/* Scenario Switcher */}
-        <div className="flex items-center space-x-2 py-1">
-          <span className="text-[10px] font-pixel text-slate-400 uppercase hidden sm:inline">SCENARIO:</span>
-          <div className="inline-flex border-2 border-black shadow-pixel-sm bg-black">
+        <div className="flex items-center space-x-2 py-1.5">
+          <span className="text-[9px] font-pixel text-slate-400 uppercase hidden sm:inline">
+            SCENARIO:
+          </span>
+          <div className="inline-flex border-2 border-[#1e293b] shadow-pixel-sm bg-[#060a12]">
             <button
               onClick={() => onToggleScenario('congested')}
-              className={`px-2.5 py-1 text-[9px] font-pixel ${
+              className={`px-3 py-1 text-[9px] font-pixel transition-all ${
                 scenario === 'congested'
-                  ? 'bg-amber-600 text-black font-bold'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-white'
+                  ? 'bg-amber-600 text-black font-bold shadow-glow-amber'
+                  : 'bg-[#0a101d] text-slate-400 hover:text-white'
               }`}
             >
               CONGESTED (11T / 10B)
             </button>
             <button
               onClick={() => onToggleScenario('demo')}
-              className={`px-2.5 py-1 text-[9px] font-pixel ${
+              className={`px-3 py-1 text-[9px] font-pixel transition-all ${
                 scenario === 'demo'
                   ? 'bg-[#7B1113] text-yellow-300 font-bold'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-white'
+                  : 'bg-[#0a101d] text-slate-400 hover:text-white'
               }`}
             >
               STANDARD (8T / 8B)

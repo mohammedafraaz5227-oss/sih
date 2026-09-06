@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { BlockRequest, Asset, MaintenanceType, BlockPriority } from '../types';
-import { PixelWrench, PixelAlert } from './PixelIcons';
+import { PixelWrench, PixelAlert, PixelTrack } from './PixelIcons';
 
 interface BlockRequestsViewProps {
   blocks: BlockRequest[];
@@ -21,6 +21,8 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBlock, setEditingBlock] = useState<BlockRequest | null>(null);
+  const [filterSection, setFilterSection] = useState<string>('all');
+  const [filterPriority, setFilterPriority] = useState<string>('all');
 
   // Form State
   const [assetId, setAssetId] = useState(assets[0]?.id || 'SEC_NDLS_GZB');
@@ -81,7 +83,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
       return;
     }
     if (preferredStart < earliestStart || preferredStart > (latestEnd - durationMinutes)) {
-      setFormError(`Preferred start must fit in [${earliestStart}, ${latestEnd - durationMinutes}] min window.`);
+      setFormError(`Preferred start must fit within [${earliestStart}, ${latestEnd - durationMinutes}] min window.`);
       return;
     }
 
@@ -124,64 +126,122 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
   const getPriorityBadge = (p: BlockPriority) => {
     switch (p) {
       case 5:
-        return <span className="px-2 py-0.5 bg-red-950 border border-red-600 text-red-400 font-pixel text-[8px]">P5 EMERGENCY</span>;
+        return <span className="px-2 py-0.5 bg-rose-950 border border-rose-600 text-rose-300 font-pixel text-[8px] shadow-glow-red">P5 EMERGENCY</span>;
       case 4:
-        return <span className="px-2 py-0.5 bg-orange-950 border border-orange-600 text-orange-400 font-pixel text-[8px]">P4 CRITICAL</span>;
+        return <span className="px-2 py-0.5 bg-orange-950 border border-orange-600 text-orange-300 font-pixel text-[8px]">P4 CRITICAL</span>;
       case 3:
-        return <span className="px-2 py-0.5 bg-yellow-950 border border-yellow-600 text-yellow-400 font-pixel text-[8px]">P3 HIGH</span>;
+        return <span className="px-2 py-0.5 bg-amber-950 border border-amber-600 text-yellow-300 font-pixel text-[8px]">P3 HIGH</span>;
       case 2:
-        return <span className="px-2 py-0.5 bg-blue-950 border border-blue-600 text-cyan-400 font-pixel text-[8px]">P2 MEDIUM</span>;
+        return <span className="px-2 py-0.5 bg-cyan-950 border border-cyan-600 text-cyan-300 font-pixel text-[8px]">P2 MEDIUM</span>;
       case 1:
-        return <span className="px-2 py-0.5 bg-slate-900 border border-slate-600 text-slate-400 font-pixel text-[8px]">P1 LOW</span>;
+        return <span className="px-2 py-0.5 bg-slate-900 border border-slate-700 text-slate-400 font-pixel text-[8px]">P1 LOW</span>;
     }
   };
 
+  // Filtered blocks list
+  const filteredBlocks = useMemo(() => {
+    return blocks.filter((b) => {
+      const matchSection = filterSection === 'all' || b.asset_id === filterSection;
+      const matchPriority = filterPriority === 'all' || b.priority.toString() === filterPriority;
+      return matchSection && matchPriority;
+    });
+  }, [blocks, filterSection, filterPriority]);
+
   return (
     <div className="space-y-6">
-      {/* Top Controls Bar */}
-      <div className="bg-[#1e293b] border-2 border-black shadow-pixel p-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center space-x-2">
-          <PixelWrench size={20} color="#facc15" />
-          <h2 className="font-pixel text-xs text-yellow-400 uppercase">
-            Maintenance Block Demand Registry ({blocks.length} Tasks)
-          </h2>
+      {/* 1. Top Controls Bar */}
+      <div className="bg-[#0a101d] border-2 border-[#1e293b] shadow-pixel p-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 bg-[#060a12] border-2 border-amber-500/70">
+            <PixelWrench size={22} color="#f59e0b" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h2 className="font-pixel text-xs md:text-sm text-yellow-400 uppercase tracking-wide">
+                Maintenance Block Demand Registry ({blocks.length} Tasks)
+              </h2>
+              <span className="px-1.5 py-0.5 bg-slate-800 text-cyan-300 border border-slate-700 font-pixel text-[8px]">
+                CORRIDOR QUEUE
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 font-mono mt-0.5">
+              Engineer requests submitted for track renewal, catenary OHE, signaling, and inspections
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2.5">
           <button
             onClick={onResetDemo}
-            className="pixel-btn bg-slate-800 hover:bg-slate-700 text-slate-300 font-pixel text-[10px] px-3 py-2"
+            className="pixel-btn bg-[#0c1424] hover:bg-[#15233c] text-slate-300 border border-slate-700 font-pixel text-[10px] px-3.5 py-2 transition-all active:translate-y-0.5"
           >
-            RESET TO BENCHMARK SET
+            RESET BENCHMARK SET
           </button>
           <button
             onClick={openCreateModal}
-            className="pixel-btn bg-[#7B1113] hover:bg-red-800 text-yellow-300 font-pixel text-[10px] px-3.5 py-2"
+            className="pixel-btn bg-[#7B1113] hover:bg-red-800 text-yellow-300 font-pixel text-[10px] px-4 py-2 transition-all shadow-glow-amber active:translate-y-0.5"
           >
             + NEW BLOCK REQUEST
           </button>
         </div>
       </div>
 
-      {/* Main Table */}
-      <div className="pixel-card overflow-x-auto bg-[#111827]">
+      {/* 2. Filter Bar */}
+      <div className="bg-[#060a12] border border-[#1e293b] p-3 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+        <div className="flex items-center space-x-3 flex-wrap gap-2">
+          <span className="text-[9px] font-pixel text-slate-400">FILTER BY SECTION:</span>
+          <select
+            value={filterSection}
+            onChange={(e) => setFilterSection(e.target.value)}
+            className="bg-[#0a101d] border border-slate-700 text-slate-200 px-2 py-1 text-xs focus:border-cyan-400 outline-none"
+          >
+            <option value="all">All 5 Track Sections</option>
+            {assets.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.id.replace('SEC_', '')} ({a.name})
+              </option>
+            ))}
+          </select>
+
+          <span className="text-[9px] font-pixel text-slate-400 ml-2">PRIORITY:</span>
+          <select
+            value={filterPriority}
+            onChange={(e) => setFilterPriority(e.target.value)}
+            className="bg-[#0a101d] border border-slate-700 text-slate-200 px-2 py-1 text-xs focus:border-cyan-400 outline-none"
+          >
+            <option value="all">All Priorities (P1-P5)</option>
+            <option value="5">P5 - Emergency</option>
+            <option value="4">P4 - Critical</option>
+            <option value="3">P3 - High</option>
+            <option value="2">P2 - Medium</option>
+            <option value="1">P1 - Low</option>
+          </select>
+        </div>
+
+        <div className="text-[10px] text-slate-400 font-mono">
+          Showing <strong className="text-yellow-400">{filteredBlocks.length}</strong> of {blocks.length} requests
+        </div>
+      </div>
+
+      {/* 3. Main Demands Table */}
+      <div className="pixel-card overflow-x-auto bg-[#0a101d] border-2 border-[#1e293b]">
         <table className="w-full text-left text-xs font-mono">
           <thead>
-            <tr className="bg-black text-slate-400 border-b-2 border-slate-700 text-[10px] font-pixel">
-              <th className="py-2.5 px-3">ID</th>
+            <tr className="bg-[#060a12] text-slate-400 border-b-2 border-slate-800 text-[10px] font-pixel">
+              <th className="py-2.5 px-3">BLOCK ID</th>
               <th className="py-2.5 px-3">SECTION</th>
               <th className="py-2.5 px-3">MAINTENANCE TYPE</th>
               <th className="py-2.5 px-3">PRIORITY</th>
               <th className="py-2.5 px-3">DURATION</th>
-              <th className="py-2.5 px-3">WINDOW (IST)</th>
+              <th className="py-2.5 px-3">TIME WINDOW (IST)</th>
               <th className="py-2.5 px-3">PREFERRED</th>
-              <th className="py-2.5 px-3">CREW</th>
-              <th className="py-2.5 px-3">POWER BLOCK</th>
+              <th className="py-2.5 px-3">CREWS</th>
+              <th className="py-2.5 px-3">OHE POWER</th>
               <th className="py-2.5 px-3 text-right">ACTIONS</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800">
-            {blocks.map((block) => {
+          <tbody className="divide-y divide-slate-800/60">
+            {filteredBlocks.map((block) => {
               const startH = Math.floor(block.earliest_start / 60);
               const startM = block.earliest_start % 60;
               const endH = Math.floor(block.latest_end / 60);
@@ -190,8 +250,8 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
               const prefM = block.preferred_start % 60;
 
               return (
-                <tr key={block.id} className="hover:bg-slate-800/40">
-                  <td className="py-3 px-3 font-pixel text-[10px] text-cyan-400 whitespace-nowrap">
+                <tr key={block.id} className="hover:bg-slate-800/30 transition-colors">
+                  <td className="py-3 px-3 font-pixel text-[10px] text-electric-cyan whitespace-nowrap">
                     {block.id}
                   </td>
                   <td className="py-3 px-3 text-slate-200 whitespace-nowrap">
@@ -203,7 +263,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                   <td className="py-3 px-3 whitespace-nowrap">
                     {getPriorityBadge(block.priority)}
                   </td>
-                  <td className="py-3 px-3 font-digital text-base text-yellow-300 whitespace-nowrap">
+                  <td className="py-3 px-3 font-digital text-base text-yellow-400 whitespace-nowrap">
                     {block.duration_minutes}m
                   </td>
                   <td className="py-3 px-3 font-digital text-base text-slate-300 whitespace-nowrap">
@@ -212,28 +272,30 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                   <td className="py-3 px-3 font-digital text-base text-cyan-300 whitespace-nowrap">
                     {String(prefH).padStart(2, '0')}:{String(prefM).padStart(2, '0')}
                   </td>
-                  <td className="py-3 px-3 text-center whitespace-nowrap">
-                    <span className="px-2 py-0.5 bg-black border border-slate-700 text-yellow-300 font-pixel text-[9px]">
+                  <td className="py-3 px-3 whitespace-nowrap">
+                    <span className="px-2 py-0.5 bg-[#060a12] border border-slate-700 text-yellow-300 font-pixel text-[8px]">
                       {block.crew_required} CREW
                     </span>
                   </td>
-                  <td className="py-3 px-3 text-center whitespace-nowrap">
+                  <td className="py-3 px-3 whitespace-nowrap">
                     {block.requires_power_block ? (
-                      <span className="text-red-400 font-pixel text-[9px]">⚡ REQUIRED</span>
+                      <span className="px-1.5 py-0.5 bg-rose-950/80 border border-rose-700 text-rose-300 font-pixel text-[8px]">
+                        ⚡ 25kV OHE
+                      </span>
                     ) : (
-                      <span className="text-slate-500 font-pixel text-[9px]">NONE</span>
+                      <span className="text-slate-500 font-pixel text-[8px]">NONE</span>
                     )}
                   </td>
-                  <td className="py-3 px-3 text-right whitespace-nowrap space-x-1">
+                  <td className="py-3 px-3 text-right whitespace-nowrap space-x-1.5">
                     <button
                       onClick={() => openEditModal(block)}
-                      className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-black text-[9px] font-pixel"
+                      className="px-2 py-1 bg-[#0c1424] hover:bg-[#15233c] text-yellow-400 border border-slate-700 text-[8px] font-pixel transition-colors"
                     >
                       EDIT
                     </button>
                     <button
                       onClick={() => onDeleteBlock(block.id)}
-                      className="px-2 py-1 bg-red-950 hover:bg-red-800 text-red-300 border border-black text-[9px] font-pixel"
+                      className="px-2 py-1 bg-rose-950 hover:bg-rose-800 text-rose-300 border border-rose-800 text-[8px] font-pixel transition-colors"
                     >
                       DEL
                     </button>
@@ -245,25 +307,25 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
         </table>
       </div>
 
-      {/* Retro Modal Form for Add/Edit */}
+      {/* 4. Modal Form for Add/Edit */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="pixel-card bg-[#111827] border-4 border-black max-w-lg w-full p-5 shadow-pixel-lg">
-            <div className="flex justify-between items-center border-b-2 border-slate-700 pb-3 mb-4">
+          <div className="pixel-card bg-[#0a101d] border-2 border-electric-cyan max-w-lg w-full p-5 shadow-glow-cyan">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
               <h3 className="font-pixel text-xs text-yellow-400 uppercase flex items-center space-x-2">
                 <PixelWrench size={16} color="#facc15" />
                 <span>{editingBlock ? 'EDIT BLOCK REQUEST' : 'NEW MAINTENANCE BLOCK REQUEST'}</span>
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-white font-pixel text-xs"
+                className="text-slate-400 hover:text-white font-pixel text-xs px-1.5 py-0.5 border border-slate-700"
               >
                 [X]
               </button>
             </div>
 
             {formError && (
-              <div className="mb-4 bg-red-950 border-2 border-red-700 p-2 text-xs font-mono text-red-300 flex items-center space-x-2">
+              <div className="mb-4 bg-rose-950 border-2 border-rose-700 p-2.5 text-xs font-mono text-rose-300 flex items-center space-x-2">
                 <PixelAlert size={16} color="#ef4444" />
                 <span>{formError}</span>
               </div>
@@ -271,15 +333,15 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
 
             <form onSubmit={handleSave} className="space-y-3 font-mono text-xs">
               <div>
-                <label className="block text-[10px] font-pixel text-slate-400 mb-1">TARGET TRACK SECTION</label>
+                <label className="block text-[9px] font-pixel text-slate-400 mb-1">TARGET TRACK SECTION</label>
                 <select
                   value={assetId}
                   onChange={(e) => setAssetId(e.target.value)}
-                  className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs focus:border-yellow-400 outline-none"
+                  className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                 >
                   {assets.map((a) => (
                     <option key={a.id} value={a.id}>
-                      {a.id} — {a.name}
+                      {a.id} — {a.name} ({a.end_km - a.start_km} km)
                     </option>
                   ))}
                 </select>
@@ -287,11 +349,11 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">MAINTENANCE TYPE</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">MAINTENANCE TYPE</label>
                   <select
                     value={maintenanceType}
                     onChange={(e) => setMaintenanceType(e.target.value as MaintenanceType)}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs focus:border-yellow-400 outline-none"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                   >
                     <option value="routine_inspection">Routine Inspection</option>
                     <option value="emergency_repair">Emergency Repair</option>
@@ -305,11 +367,11 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">PRIORITY TIER</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">PRIORITY TIER</label>
                   <select
                     value={priority}
                     onChange={(e) => setPriority(Number(e.target.value) as BlockPriority)}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs focus:border-yellow-400 outline-none"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                   >
                     <option value={5}>P5 - Emergency (Immediate)</option>
                     <option value={4}>P4 - Critical Safety</option>
@@ -322,7 +384,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">DURATION (MIN)</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">DURATION (MIN)</label>
                   <input
                     type="number"
                     min={15}
@@ -330,12 +392,12 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                     step={15}
                     value={durationMinutes}
                     onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-yellow-300 font-mono text-xs"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-yellow-300 font-mono text-xs focus:border-cyan-400 outline-none"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">EARLIEST (MIN)</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">EARLIEST (MIN)</label>
                   <input
                     type="number"
                     min={0}
@@ -343,12 +405,12 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                     step={15}
                     value={earliestStart}
                     onChange={(e) => setEarliestStart(Number(e.target.value))}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">LATEST (MIN)</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">LATEST (MIN)</label>
                   <input
                     type="number"
                     min={0}
@@ -356,7 +418,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                     step={15}
                     value={latestEnd}
                     onChange={(e) => setLatestEnd(Number(e.target.value))}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                     required
                   />
                 </div>
@@ -364,7 +426,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">PREFERRED START (MIN)</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">PREFERRED START (MIN)</label>
                   <input
                     type="number"
                     min={0}
@@ -372,30 +434,30 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                     step={15}
                     value={preferredStart}
                     onChange={(e) => setPreferredStart(Number(e.target.value))}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-cyan-300 font-mono text-xs"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-cyan-300 font-mono text-xs focus:border-cyan-400 outline-none"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-pixel text-slate-400 mb-1">CREW REQUIRED</label>
+                  <label className="block text-[9px] font-pixel text-slate-400 mb-1">CREW TEAMS</label>
                   <select
                     value={crewRequired}
                     onChange={(e) => setCrewRequired(Number(e.target.value))}
-                    className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs"
+                    className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                   >
                     <option value={1}>1 Crew Team</option>
-                    <option value={2}>2 Crew Teams</option>
+                    <option value={2}>2 Crew Teams (Max Limit)</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-pixel text-slate-400 mb-1">REQUESTED BY DIVISION</label>
+                <label className="block text-[9px] font-pixel text-slate-400 mb-1">REQUESTED BY DIVISION</label>
                 <input
                   type="text"
                   value={requestedBy}
                   onChange={(e) => setRequestedBy(e.target.value)}
-                  className="w-full bg-black border-2 border-slate-700 p-2 text-white font-mono text-xs"
+                  className="w-full bg-[#060a12] border border-slate-700 p-2 text-white font-mono text-xs focus:border-cyan-400 outline-none"
                   required
                 />
               </div>
@@ -413,19 +475,19 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                 </label>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-4 border-t border-slate-700">
+              <div className="flex justify-end space-x-2.5 pt-4 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="pixel-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 font-pixel text-[10px]"
+                  className="pixel-btn bg-[#0c1424] hover:bg-[#15233c] text-slate-300 px-4 py-2 font-pixel text-[10px]"
                 >
                   CANCEL
                 </button>
                 <button
                   type="submit"
-                  className="pixel-btn bg-[#7B1113] hover:bg-red-800 text-yellow-300 px-5 py-2 font-pixel text-[10px]"
+                  className="pixel-btn bg-[#7B1113] hover:bg-red-800 text-yellow-300 px-5 py-2 font-pixel text-[10px] shadow-glow-amber"
                 >
-                  {editingBlock ? 'SAVE CHANGES' : 'CREATE REQUEST'}
+                  {editingBlock ? 'SAVE CHANGES' : 'CREATE DEMAND'}
                 </button>
               </div>
             </form>
