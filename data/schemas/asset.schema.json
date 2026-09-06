@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Asset",
+  "type": "object",
+  "properties": {
+    "asset_id": { "type": "string" },
+    "type": { "type": "string", "enum": ["track_section", "station"] },
+    "name": { "type": "string" },
+    "length_km": { "type": "number" }
+  },
+  "required": ["asset_id", "type", "name"]
+}

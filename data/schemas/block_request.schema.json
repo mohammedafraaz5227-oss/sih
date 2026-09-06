@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Block Request",
+  "type": "object",
+  "properties": {
+    "request_id": { "type": "string" },
+    "asset_id": { "type": "string" },
+    "duration_min": { "type": "integer" },
+    "priority": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "earliest_start_min": { "type": "integer" },
+    "latest_end_min": { "type": "integer" },
+    "crew_required": { "type": "integer", "default": 1 }
+  },
+  "required": ["request_id", "asset_id", "duration_min", "priority", "earliest_start_min", "latest_end_min"]
+}

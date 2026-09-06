@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Train Movement",
+  "type": "object",
+  "properties": {
+    "train_id": { "type": "string" },
+    "asset_id": { "type": "string" },
+    "entry_time_min": { "type": "integer", "description": "Minute from midnight" },
+    "exit_time_min": { "type": "integer", "description": "Minute from midnight" }
+  },
+  "required": ["train_id", "asset_id", "entry_time_min", "exit_time_min"]
+}
