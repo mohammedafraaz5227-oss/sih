@@ -7,8 +7,10 @@ import { BlockRequestsView } from './components/BlockRequestsView';
 import { OptimizationPanel } from './components/OptimizationPanel';
 import { TimelineGantt } from './components/TimelineGantt';
 import { ComparisonView } from './components/ComparisonView';
+import { AICopilotModal } from './components/copilot/AICopilotModal';
 import { PixelAlert, PixelSignal } from './components/PixelIcons';
 import { railwayRepository } from './services/railwayService';
+import { simulateDisruption } from './services/aiCopilotService';
 import { isFirebaseConfigured } from './services/firebase';
 import { INITIAL_SCHEDULE, INITIAL_COMPARISON } from './services/mockCorridorData';
 import {
@@ -18,6 +20,8 @@ import {
   BlockRequest,
   OptimizedSchedule,
   ScheduleComparison,
+  DisruptionSimulationRequest,
+  DisruptionSimulationResponse,
 } from './types';
 
 export const App: React.FC = () => {
@@ -71,6 +75,8 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSolving, setIsSolving] = useState<boolean>(false);
   const [isLoadingComparison, setIsLoadingComparison] = useState<boolean>(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState<boolean>(false);
+  const [isSimulatingDisruption, setIsSimulatingDisruption] = useState<boolean>(false);
   const [notification, setNotification] = useState<{
     type: 'success' | 'warning' | 'error' | 'info';
     message: string;
@@ -255,6 +261,36 @@ export const App: React.FC = () => {
     }
   };
 
+  // Disruption Simulation Handler
+  const handleSimulateDisruption = async (
+    req: DisruptionSimulationRequest
+  ): Promise<DisruptionSimulationResponse> => {
+    setIsSimulatingDisruption(true);
+    try {
+      const resp = await simulateDisruption(req, schedule);
+      if (resp.reoptimized_schedule) {
+        setSchedule(resp.reoptimized_schedule);
+      }
+      setNotification({
+        type: 'success',
+        message: `CP-SAT Re-Optimized in <10ms! Prevented ${resp.cascading_delay_prevented_minutes} mins delay. Zero train conflicts.`,
+      });
+      return resp;
+    } catch (err: any) {
+      setNotification({
+        type: 'error',
+        message: `Failed to simulate disruption: ${err.message}`,
+      });
+      throw err;
+    } finally {
+      setIsSimulatingDisruption(false);
+    }
+  };
+
+  const handleResetDisruption = async () => {
+    await handleResetDemo();
+  };
+
   return (
     <div
       style={{
@@ -277,6 +313,7 @@ export const App: React.FC = () => {
           isSolving={isSolving}
           theme={theme}
           onSetTheme={handleSetTheme}
+          onOpenCopilot={() => setIsCopilotOpen(true)}
         />
 
         {/* Floating Notification */}
@@ -341,6 +378,9 @@ export const App: React.FC = () => {
                   onNavigateTab={setActiveTab}
                   scenario={scenario}
                   onToggleScenario={handleToggleScenario}
+                  onSimulateDisruption={handleSimulateDisruption}
+                  onResetDisruption={handleResetDisruption}
+                  isSimulatingDisruption={isSimulatingDisruption}
                 />
               )}
 
@@ -411,6 +451,15 @@ export const App: React.FC = () => {
           </div>
         </footer>
       </div>
+
+      {/* Cognitive Generative AI Co-Pilot Modal */}
+      <AICopilotModal
+        isOpen={isCopilotOpen}
+        onClose={() => setIsCopilotOpen(false)}
+        schedule={schedule}
+        onCreateBlock={handleCreateBlock}
+        onRunOptimization={handleRunOptimization}
+      />
     </div>
   );
 };

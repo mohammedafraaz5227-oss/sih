@@ -10,6 +10,7 @@ interface ControlRoomHeaderProps {
   isSolving: boolean;
   theme: 'light' | 'dark';
   onSetTheme: (theme: 'light' | 'dark') => void;
+  onOpenCopilot?: () => void;
 }
 
 export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
@@ -20,6 +21,7 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
   isSolving,
   theme,
   onSetTheme,
+  onOpenCopilot,
 }) => {
   const [istTime, setIstTime] = useState<string>('12:35:39');
   const [istDate, setIstDate] = useState<string>('Wed, 06 Sep 2026');
@@ -88,6 +90,15 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
 
           {/* Mobile Right Quick Controls */}
           <div className="flex items-center gap-2 md:hidden">
+            {onOpenCopilot && (
+              <button
+                onClick={onOpenCopilot}
+                className="px-2 py-1 rounded-lg bg-indigo-600 text-white font-pixel text-[7px] flex items-center gap-1 shadow-xs"
+              >
+                <span>✨</span>
+                <span>AI</span>
+              </button>
+            )}
             <div
               className="flex items-center bg-slate-200/90 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-300 dark:border-slate-800 cursor-pointer"
               onClick={() => onSetTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -154,6 +165,19 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
             );
           })}
         </nav>
+
+        {/* AI Co-Pilot Launch Button */}
+        {onOpenCopilot && (
+          <button
+            onClick={onOpenCopilot}
+            className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 hover:from-indigo-500 hover:to-purple-600 text-white font-pixel text-[8px] tracking-wider shadow-sm transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shrink-0 border border-indigo-400/40"
+            title="Open AI Dispatcher Co-Pilot (NLP Requisitions, Form T/409, XAI)"
+          >
+            <span className="text-xs">✨</span>
+            <span>AI CO-PILOT</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          </button>
+        )}
 
         {/* Right: Real-Time Digital Clock & Telemetry Badges */}
         <div className="hidden md:flex items-center gap-3">

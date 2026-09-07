@@ -6,12 +6,15 @@ import {
   ScheduleComparison,
   Station,
   TrainMovement,
+  DisruptionSimulationRequest,
+  DisruptionSimulationResponse,
 } from '../types';
 import { LiveCorridorVisualizer } from './controlroom/LiveCorridorVisualizer';
 import { OptimizationEngineCard } from './controlroom/OptimizationEngineCard';
 import { CorridorKPIBento } from './controlroom/CorridorKPIBento';
 import { LiveDispatchTicker } from './controlroom/LiveDispatchTicker';
 import { CorridorTimeline24H } from './controlroom/CorridorTimeline24H';
+import { DisruptionSimulatorBar } from './controlroom/DisruptionSimulatorBar';
 import { BentoGrid } from './ui/BentoGrid';
 
 interface OverviewDashboardProps {
@@ -26,6 +29,9 @@ interface OverviewDashboardProps {
   onNavigateTab: (tab: string) => void;
   scenario: 'congested' | 'demo';
   onToggleScenario?: (scenario: 'congested' | 'demo') => void;
+  onSimulateDisruption?: (req: DisruptionSimulationRequest) => Promise<DisruptionSimulationResponse>;
+  onResetDisruption?: () => void;
+  isSimulatingDisruption?: boolean;
 }
 
 export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
@@ -40,6 +46,9 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
   onNavigateTab,
   scenario,
   onToggleScenario = () => {},
+  onSimulateDisruption,
+  onResetDisruption = () => {},
+  isSimulatingDisruption = false,
 }) => {
   const [selectedStationId, setSelectedStationId] = useState<string>('NDLS');
 
@@ -68,6 +77,15 @@ export const OverviewDashboard: React.FC<OverviewDashboardProps> = ({
 
   return (
     <div className="space-y-4 pb-6 select-none">
+      {/* 0. DISRUPTION SIMULATOR & WHAT-IF TESTING BAR */}
+      {onSimulateDisruption && (
+        <DisruptionSimulatorBar
+          onSimulate={onSimulateDisruption}
+          onReset={onResetDisruption}
+          isSimulating={isSimulatingDisruption}
+        />
+      )}
+
       {/* 1. PRIMARY HERO CENTERPIECE: Live Corridor Visualizer & Moving Trains */}
       <section className="w-full">
         <LiveCorridorVisualizer

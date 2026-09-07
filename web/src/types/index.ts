@@ -150,3 +150,56 @@ export interface ScheduleComparison {
   };
   demo_disclaimer: string;
 }
+
+export interface DisruptionSimulationRequest {
+  scenario: 'congested' | 'demo';
+  disruption_type: 'train_delay' | 'emergency_block' | 'ohe_failure' | 'custom';
+  train_id?: string;
+  delay_minutes: number;
+  emergency_asset_id?: string;
+  emergency_duration?: number;
+  emergency_priority?: number;
+}
+
+export interface DisruptionSimulationResponse {
+  status: string;
+  disruption_applied: string;
+  original_conflicts_without_cpsat: number;
+  cascading_delay_prevented_minutes: number;
+  trains_saved_from_delay: string[];
+  reoptimized_schedule: OptimizedSchedule;
+  explanation: string;
+}
+
+export interface NLPParsingResponse {
+  parsed_block: Partial<BlockRequest>;
+  confidence: number;
+  extracted_entities: Record<string, any>;
+  suggested_action: string;
+  natural_explanation: string;
+}
+
+export interface OfficialCircularData {
+  circular_number: string;
+  division: string;
+  zone: string;
+  date_ist: string;
+  subject: string;
+  subject_hindi: string;
+  issuing_authority: string;
+  blocks: {
+    serial: number;
+    section_code: string;
+    section_name: string;
+    line_affected: string;
+    maintenance_type: string;
+    duration_str: string;
+    time_window_ist: string;
+    caution_order_speed: string;
+    safety_precaution: string;
+    supervising_official: string;
+  }[];
+  general_instructions: string[];
+  station_master_acknowledgment: string;
+}
+

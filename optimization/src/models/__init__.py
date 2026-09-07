@@ -4,6 +4,12 @@ from .block_request import BlockRequest, MaintenanceType, BlockPriority
 from .resource import Resource, ResourceType, AvailabilityWindow
 from .schedule import ScheduledBlock, ScheduleMetrics, OptimizedSchedule, ComparisonMetrics, ScheduleComparison
 from .optimization_request import OptimizationRequest
+from .copilot import (
+    DisruptionSimulationRequest,
+    DisruptionSimulationResponse,
+    NLPParsingRequest,
+    NLPParsingResponse,
+)
 
 __all__ = [
     "Asset", "AssetType",
@@ -12,5 +18,10 @@ __all__ = [
     "Resource", "ResourceType", "AvailabilityWindow",
     "ScheduledBlock", "ScheduleMetrics", "OptimizedSchedule",
     "ComparisonMetrics", "ScheduleComparison",
-    "OptimizationRequest"
+    "OptimizationRequest",
+    "DisruptionSimulationRequest",
+    "DisruptionSimulationResponse",
+    "NLPParsingRequest",
+    "NLPParsingResponse",
 ]
+
