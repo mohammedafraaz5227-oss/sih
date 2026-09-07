@@ -159,7 +159,7 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
           <div className="flex flex-col items-end pl-2 border-l border-slate-200 dark:border-slate-800 font-mono">
             <div className="flex items-center gap-1 text-slate-900 dark:text-slate-100 font-bold font-digital text-lg leading-tight tracking-wider">
               <span>{istTime}</span>
-              <span className="text-[9px] font-pixel text-blue-700 dark:text-blue-400">IST</span>
+              <span className="text-[9px] font-pixel text-slate-500">IST</span>
             </div>
             <span className="text-[10px] text-slate-400 font-mono leading-tight">
               {istDate}

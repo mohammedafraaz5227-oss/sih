@@ -564,8 +564,8 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
                 onClick={() => handleStationClick(stn)}
               >
                 {/* Pointer Line Dropping to Track */}
-                <line x1="0" y1="78" x2="0" y2="108" stroke={isNDLS ? '#1d4ed8' : '#0f172a'} strokeWidth="1.5" strokeDasharray="2,2" />
-                <circle cx="0" cy="108" r="3" fill={isNDLS ? '#1d4ed8' : '#0f172a'} />
+                <line x1="0" y1="78" x2="0" y2="108" stroke={isSelected ? '#7B1113' : '#0f172a'} strokeWidth="1.5" strokeDasharray="2,2" />
+                <circle cx="0" cy="108" r="3" fill={isSelected ? '#7B1113' : '#0f172a'} />
 
                 {/* Floating Station Badge Pill */}
                 <g transform="translate(0, 56)">
@@ -575,8 +575,8 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
                     width="52"
                     height="28"
                     rx="6"
-                    fill={isNDLS ? '#1d4ed8' : '#ffffff'}
-                    stroke={isNDLS ? '#ffffff' : '#0f172a'}
+                    fill={isSelected ? '#7B1113' : '#ffffff'}
+                    stroke={isSelected ? '#d97706' : '#0f172a'}
                     strokeWidth="1.5"
                     className="shadow-md transition-all group-hover:scale-110"
                     filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))"
@@ -586,7 +586,7 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
                     x="0"
                     y="-3"
                     textAnchor="middle"
-                    fill={isNDLS ? '#ffffff' : '#0f172a'}
+                    fill={isSelected ? '#ffffff' : '#0f172a'}
                     fontSize="9.5"
                     fontFamily='"Press Start 2P", monospace'
                     fontWeight="bold"

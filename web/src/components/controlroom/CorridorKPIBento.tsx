@@ -36,7 +36,7 @@ export const CorridorKPIBento: React.FC<CorridorKPIBentoProps> = ({
             value={occupancyPercent}
             size={96}
             strokeWidth={8}
-            gaugePrimaryColor="#0284c7"
+            gaugePrimaryColor="#d97706"
           >
             <div className="flex flex-col items-center">
               <span className="font-digital text-base font-bold text-slate-900 dark:text-slate-100 leading-none">

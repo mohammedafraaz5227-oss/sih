@@ -56,19 +56,19 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
           <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-pixel text-[7px] uppercase">
             OR-TOOLS v9.8
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 font-pixel text-[7px] uppercase">
+          <span className="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-300 text-slate-700 font-pixel text-[7px] uppercase">
             LIVE
           </span>
         </div>
       }
       headerAction={
-        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-800">
+        <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
           <button
             onClick={() => onToggleScenario('demo')}
             className={`px-2 py-0.5 rounded-md font-pixel text-[6.5px] transition-all ${
               scenario === 'demo'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             DEMO (6)
@@ -77,8 +77,8 @@ export const OptimizationEngineCard: React.FC<OptimizationEngineCardProps> = ({
             onClick={() => onToggleScenario('congested')}
             className={`px-2 py-0.5 rounded-md font-pixel text-[6.5px] transition-all ${
               scenario === 'congested'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             CONGESTED (10)
