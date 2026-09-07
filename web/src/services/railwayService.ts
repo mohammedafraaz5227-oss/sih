@@ -7,6 +7,7 @@ import {
   ScheduleComparison 
 } from '../types';
 import { STATIONS, ASSETS, CONGESTED_TRAINS, CONGESTED_BLOCKS, STANDARD_TRAINS, STANDARD_BLOCKS, INITIAL_SCHEDULE, INITIAL_COMPARISON } from './mockCorridorData';
+import { fetchBackend } from './apiClient';
 import { db, isFirebaseConfigured } from './firebase';
 import { 
   collection, 
@@ -121,7 +122,7 @@ class InMemoryRailwayRepository implements IRailwayRepository {
     };
 
     try {
-      const res = await fetch('/api/optimize', {
+      const res = await fetchBackend('/optimize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -145,7 +146,7 @@ class InMemoryRailwayRepository implements IRailwayRepository {
 
       return schedule;
     } catch (err: any) {
-      console.warn(`Could not reach FastAPI backend directly at /api/optimize. Please ensure optimization service is running on port 8000.`);
+      console.warn(`Could not reach FastAPI backend at /optimize or port 8000.`, err);
       throw err;
     }
   }
@@ -167,15 +168,15 @@ class InMemoryRailwayRepository implements IRailwayRepository {
     };
 
     try {
-      const res = await fetch('/api/compare', {
+      const res = await fetchBackend('/compare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        // Fallback to /api/compare/congested
-        const res2 = await fetch('/api/compare/congested', { method: 'POST' });
+        // Fallback to /compare/congested
+        const res2 = await fetchBackend('/compare/congested', { method: 'POST' });
         if (!res2.ok) throw new Error(`Comparison endpoint returned ${res2.status}: ${res2.statusText}`);
         const comparison = await res2.json() as ScheduleComparison;
         this.latestComparison = comparison;

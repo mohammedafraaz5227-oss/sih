@@ -8,6 +8,7 @@ import {
   NLPParsingResponse, 
   OfficialCircularData 
 } from '../types';
+import { fetchBackend } from './apiClient';
 
 const ASSET_MAP: Record<string, string> = {
   NDLS: 'SEC_NDLS_GZB',
@@ -166,7 +167,7 @@ export function parseRequisitionLocally(text: string): NLPParsingResponse {
  */
 export async function parseFieldRequisition(text: string): Promise<NLPParsingResponse> {
   try {
-    const res = await fetch('/api/nlp/parse', {
+    const res = await fetchBackend('/nlp/parse', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text }),
@@ -188,7 +189,7 @@ export async function simulateDisruption(
   currentSchedule: OptimizedSchedule | null
 ): Promise<DisruptionSimulationResponse> {
   try {
-    const res = await fetch('/api/disruption/simulate', {
+    const res = await fetchBackend('/disruption/simulate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req),

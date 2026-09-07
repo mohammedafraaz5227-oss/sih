@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from src.models import (
     OptimizationRequest,
     OptimizedSchedule,
@@ -26,6 +27,14 @@ app = FastAPI(
     title="SIH Block Planner — Optimization Service",
     description="AI-powered maintenance block scheduling using CP-SAT and Generative AI Co-Pilot. Uses demo data only.",
     version="0.3.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
