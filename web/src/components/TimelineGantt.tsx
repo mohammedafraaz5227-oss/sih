@@ -92,14 +92,14 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. Header Controls & Legend Bar */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 transition-colors duration-200">
         <div>
           <div className="flex items-center space-x-2">
             <span className="text-xl">🕒</span>
-            <h2 className="font-pixel text-xs md:text-sm text-slate-900 dark:text-slate-100 uppercase">
+            <h2 className="font-pixel text-xs md:text-sm text-slate-900 dark:text-[#f4f4f5] uppercase">
               24-Hour Corridor Gantt Master Timetable
             </h2>
-            <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300 text-[7px] font-pixel uppercase">
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 text-[7px] font-pixel uppercase">
               1,440 MIN HORIZON
             </span>
           </div>
@@ -171,7 +171,7 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
       </div>
 
       {/* 2. Main 24-Hour Gantt Timeline Canvas */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm overflow-x-auto relative transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm overflow-x-auto relative transition-colors duration-200">
         <div className="min-w-[1100px] relative">
           {/* LIVE IST LASER SCRUBBER LINE (Spans entire height of Gantt) */}
           <div
@@ -185,15 +185,15 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
           </div>
 
           {/* Hour Marks Header */}
-          <div className="flex border-b-2 border-slate-200 dark:border-slate-800 pb-2 mb-4 text-[10px] font-pixel text-slate-500 dark:text-slate-400">
-            <div className="w-48 flex-shrink-0 font-pixel text-blue-700 dark:text-yellow-400 pl-2">
+          <div className="flex border-b-2 border-slate-200 dark:border-[#27272a] pb-2 mb-4 text-[10px] font-pixel text-slate-500 dark:text-slate-400">
+            <div className="w-48 flex-shrink-0 font-pixel text-amber-700 dark:text-amber-400 pl-2">
               TRACK SECTION
             </div>
             <div className="flex-1 grid grid-cols-24 gap-0 relative">
               {hours.map((h) => (
                 <div
                   key={h}
-                  className="text-center border-l border-slate-200 dark:border-slate-800/80 text-[9px] font-digital text-blue-600 dark:text-cyan-300"
+                  className="text-center border-l border-slate-200 dark:border-[#27272a]/80 text-[9px] font-digital text-slate-600 dark:text-zinc-400"
                 >
                   {String(h).padStart(2, '0')}:00
                 </div>
@@ -218,7 +218,7 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
               const assetBlocks = scheduledBlocks.filter((b) => b.asset_id === asset.id);
 
               return (
-                <div key={asset.id} className="flex items-center border-b border-slate-100 dark:border-slate-800/60 pb-3">
+                <div key={asset.id} className="flex items-center border-b border-slate-100 dark:border-[#27272a]/60 pb-3">
                   {/* Left Label */}
                   <div className="w-48 flex-shrink-0 pr-3">
                     <div className="font-pixel text-[8.5px] text-slate-900 dark:text-slate-100 truncate">
@@ -233,11 +233,11 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
                   </div>
 
                   {/* 24-Hour Timeline Bar */}
-                  <div className="flex-1 h-14 bg-slate-50/80 dark:bg-[#060a12]/80 border border-slate-200 dark:border-slate-800 relative rounded-xl overflow-hidden">
+                  <div className="flex-1 h-14 bg-slate-50/80 dark:bg-[#09090b]/80 border border-slate-200 dark:border-[#27272a] relative rounded-xl overflow-hidden">
                     {/* Hourly Grid Lines */}
                     <div className="absolute inset-0 grid grid-cols-24 pointer-events-none">
                       {hours.map((h) => (
-                        <div key={h} className="border-r border-slate-200/50 dark:border-slate-800/60 h-full" />
+                        <div key={h} className="border-r border-slate-200/50 dark:border-[#27272a]/60 h-full" />
                       ))}
                     </div>
 
@@ -331,10 +331,10 @@ export const TimelineGantt: React.FC<TimelineGanttProps> = ({
       </div>
 
       {/* 3. Real-Time Telemetry & Inspector Tooltip Dock */}
-      <div className="bg-white dark:bg-[#0c1424] border border-slate-200/90 dark:border-[#1e293b] rounded-2xl p-4 min-h-[60px] flex items-center justify-between font-mono text-xs shadow-sm transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-4 min-h-[60px] flex items-center justify-between font-mono text-xs shadow-sm transition-colors duration-200">
         {hoveredItem ? (
           <div className="flex items-center space-x-3 w-full">
-            <div className="p-2 bg-blue-50 dark:bg-[#060a12] border border-blue-200 dark:border-slate-700 rounded-xl">
+            <div className="p-2 bg-amber-50 dark:bg-[#18181b] border border-amber-200 dark:border-[#27272a] rounded-xl">
               {hoveredItem.type === 'train' ? (
                 <PixelTrain size={22} color="#0284c7" />
               ) : (

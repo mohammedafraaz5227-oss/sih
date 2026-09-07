@@ -161,17 +161,17 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. Control Room Header Bar */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm relative overflow-hidden transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 shadow-sm relative overflow-hidden transition-colors duration-200">
         <div className="flex items-center space-x-3 z-10">
-          <div className="p-2.5 bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 rounded-xl">
-            <PixelTrack size={22} color="#0284c7" />
+          <div className="p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 rounded-xl">
+            <PixelTrack size={22} color="#d97706" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="font-pixel text-xs text-blue-700 dark:text-cyan-400 tracking-wider">
+              <span className="font-pixel text-xs text-amber-800 dark:text-amber-400 tracking-wider">
                 DELHI–AGRA HIGH-DENSITY CORRIDOR
               </span>
-              <span className="px-1.5 py-0.5 bg-blue-100 dark:bg-cyan-950/80 border border-blue-200 dark:border-cyan-700 text-blue-900 dark:text-cyan-300 text-[8px] font-pixel rounded">
+              <span className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-700 text-amber-900 dark:text-amber-300 text-[8px] font-pixel rounded">
                 LIVE SCHEMATIC
               </span>
             </div>
@@ -182,23 +182,23 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
         </div>
 
         <div className="flex items-center space-x-3 text-[9px] font-pixel z-10">
-          <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg">
+          <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-[#27272a] rounded-lg">
             <span className="w-2 h-2 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-            <span className="text-slate-700 dark:text-slate-300">CLEAR (GREEN)</span>
+            <span className="text-slate-700 dark:text-zinc-300">CLEAR (GREEN)</span>
           </div>
-          <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg">
+          <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-[#27272a] rounded-lg">
             <span className="w-2 h-2 bg-amber-500 rounded-full inline-block"></span>
-            <span className="text-slate-700 dark:text-slate-300">MAINTENANCE (AMBER)</span>
+            <span className="text-slate-700 dark:text-zinc-300">MAINTENANCE (AMBER)</span>
           </div>
-          <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg">
-            <span className="w-2 h-2 bg-blue-600 rounded-full inline-block"></span>
-            <span className="text-slate-700 dark:text-slate-300">TRAIN IN TRANSIT</span>
+          <div className="flex items-center space-x-1.5 px-2.5 py-1 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-[#27272a] rounded-lg">
+            <span className="w-2 h-2 bg-red-600 rounded-full inline-block"></span>
+            <span className="text-slate-700 dark:text-zinc-300">TRAIN IN TRANSIT</span>
           </div>
         </div>
       </div>
 
       {/* 2. Interactive React Flow Corridor Map */}
-      <div className="relative h-[290px] w-full bg-slate-900/95 dark:bg-[#060a12] border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+      <div className="relative h-[290px] w-full bg-slate-900/95 dark:bg-[#09090b] border border-slate-200/90 dark:border-[#27272a] rounded-2xl shadow-sm overflow-hidden">
         {/* Subtle grid background overlay */}
         <div className="absolute inset-0 bg-control-grid opacity-30 pointer-events-none" />
 
@@ -220,21 +220,21 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
           elementsSelectable={true}
           proOptions={{ hideAttribution: true }}
         >
-          <Background color="#1e293b" gap={20} size={1} />
+          <Background color="#27272a" gap={20} size={1} />
           <Controls
             showInteractive={false}
-            className="!bg-slate-800 !border !border-slate-700 !shadow-sm !rounded-xl [&>button]:!border-slate-700 [&>button]:!fill-slate-300 hover:[&>button]:!bg-slate-700"
+            className="!bg-zinc-900 !border !border-[#27272a] !shadow-sm !rounded-xl [&>button]:!border-[#27272a] [&>button]:!fill-zinc-300 hover:[&>button]:!bg-zinc-800"
           />
         </ReactFlow>
 
         {/* Map Tip Banner */}
-        <div className="absolute bottom-3 left-4 pointer-events-none bg-slate-900/90 text-white rounded-xl shadow-md border border-slate-700/70 px-3 py-1.5 text-[9px] font-mono">
+        <div className="absolute bottom-3 left-4 pointer-events-none bg-zinc-900/90 text-white rounded-xl shadow-md border border-[#27272a] px-3 py-1.5 text-[9px] font-mono">
           💡 Click any station node or track badge to inspect timetable, signals, and maintenance windows.
         </div>
       </div>
 
       {/* 3. Detailed Inspector Card (Track Section or Station) */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm relative transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm relative transition-colors duration-200">
         {/* Toggle Inspector Subject */}
         <div className="flex flex-wrap items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 gap-3">
           <div className="flex items-center space-x-3">
@@ -469,10 +469,10 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
             </div>
 
             {/* Arriving/Departing Trains at this Station */}
-            <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5">
-              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-3">
-                <h4 className="font-pixel text-[9px] text-blue-700 dark:text-cyan-400 flex items-center space-x-2">
-                  <PixelTrain size={14} color="#0284c7" />
+            <div className="bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-[#27272a] rounded-xl p-3.5">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-[#27272a] pb-2 mb-3">
+                <h4 className="font-pixel text-[9px] text-amber-800 dark:text-amber-400 flex items-center space-x-2">
+                  <PixelTrain size={14} color="#d97706" />
                   <span>TRAINS DISPATCHING THROUGH {selectedStation.name.toUpperCase()} ({trainsAtStation.length})</span>
                 </h4>
                 <span className="text-[9px] font-mono text-slate-500 dark:text-slate-400">Real-time Timetable</span>
@@ -482,7 +482,7 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
                 {trainsAtStation.map(train => (
                   <div
                     key={train.id}
-                    className="p-2.5 bg-white dark:bg-[#0d1527] border border-slate-200 dark:border-slate-800 rounded-lg flex items-center justify-between shadow-xs"
+                    className="p-2.5 bg-white dark:bg-[#18181b] border border-slate-200 dark:border-[#27272a] rounded-lg flex items-center justify-between shadow-xs"
                   >
                     <div>
                       <div className="font-pixel text-[10px] text-slate-900 dark:text-white">
@@ -492,7 +492,7 @@ export const RailwayNetwork: React.FC<RailwayNetworkProps> = ({
                         {train.train_type} (Priority: P{train.priority})
                       </div>
                     </div>
-                    <span className="px-2 py-1 bg-blue-50 dark:bg-[#060a12] border border-blue-200 dark:border-slate-700 text-blue-700 dark:text-cyan-300 text-[8px] font-pixel rounded">
+                    <span className="px-2 py-1 bg-amber-50 dark:bg-[#121214] border border-amber-200 dark:border-[#27272a] text-amber-800 dark:text-amber-300 text-[8px] font-pixel rounded">
                       SCHEDULED
                     </span>
                   </div>

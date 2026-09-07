@@ -216,29 +216,29 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
   };
 
   return (
-    <div className="relative w-full bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm overflow-hidden flex flex-col justify-between transition-colors duration-200">
+    <div className="relative w-full bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-4 sm:p-5 shadow-sm overflow-hidden flex flex-col justify-between transition-colors duration-200">
       {/* 1. Header Bar: Title + Indian Railways Crest & Slogan */}
-      <div className="flex flex-wrap items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800 gap-2.5 z-20">
+      <div className="flex flex-wrap items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-zinc-800 gap-2.5 z-20">
         <div className="flex items-center gap-2.5">
           <span className="w-2.5 h-4 bg-[#7B1113] rounded-xs shadow-xs" />
           <div>
-            <h2 className="font-pixel text-[10px] text-slate-900 dark:text-slate-100 tracking-wider uppercase">
+            <h2 className="font-pixel text-[10px] text-slate-900 dark:text-[#f4f4f5] tracking-wider uppercase">
               LIVE CORRIDOR TOPOLOGY & DISPATCH
             </h2>
-            <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+            <p className="font-mono text-[11px] text-slate-500 dark:text-zinc-400">
               Delhi ⇄ Agra 6-Station Double-Line High-Density Route (265 KM)
             </p>
           </div>
         </div>
 
         {/* Right: Indian Railways Slogan Badge */}
-        <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+        <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800">
           <span className="text-base">🇮🇳</span>
           <div className="flex flex-col text-right">
-            <span className="font-pixel text-[7.5px] text-slate-900 dark:text-slate-100 tracking-wider">
+            <span className="font-pixel text-[7.5px] text-slate-900 dark:text-[#f4f4f5] tracking-wider">
               INDIAN RAILWAYS
             </span>
-            <span className="font-mono text-[8.5px] text-slate-500 dark:text-slate-400 uppercase tracking-tight">
+            <span className="font-mono text-[8.5px] text-slate-500 dark:text-zinc-400 uppercase tracking-tight">
               SAFE TRACKS • STRONGER TOMORROW
             </span>
           </div>
@@ -259,10 +259,10 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
           />
         ) : (
           /* Satellite Terrain Grid Mode */
-          <div className="absolute inset-0 w-full h-full bg-[#0a1424] overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#0284c715_1px,transparent_1px),linear-gradient(to_bottom,#0284c715_1px,transparent_1px)] bg-[size:24px_24px]" />
-            <div className="absolute top-1/3 left-0 right-0 h-1 bg-cyan-500/40" />
-            <div className="absolute top-1/2 left-0 right-0 h-1 bg-indigo-500/40" />
+          <div className="absolute inset-0 w-full h-full bg-[#09090b] overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px]" />
+            <div className="absolute top-1/3 left-0 right-0 h-1 bg-amber-500/30" />
+            <div className="absolute top-1/2 left-0 right-0 h-1 bg-emerald-500/30" />
           </div>
         )}
 
@@ -652,11 +652,11 @@ export const LiveCorridorVisualizer: React.FC<LiveCorridorVisualizerProps> = ({
           {/* Floating Dark Glassmorphic Legend */}
           <div className="pointer-events-auto flex items-center flex-wrap gap-3 bg-slate-900/90 text-white backdrop-blur-md rounded-xl px-3 py-1.5 border border-slate-700/80 text-[10px] font-mono shadow-md">
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-1.5 rounded-xs bg-blue-600 inline-block" />
+              <span className="w-3 h-1.5 rounded-xs bg-amber-600 inline-block" />
               <span>Down Line (NDLS→AGC)</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-1.5 rounded-xs bg-indigo-500 inline-block" />
+              <span className="w-3 h-1.5 rounded-xs bg-emerald-600 inline-block" />
               <span>Up Line (AGC→NDLS)</span>
             </div>
             <div className="flex items-center gap-1.5">

@@ -70,7 +70,7 @@ export const DisruptionSimulatorBar: React.FC<DisruptionSimulatorBarProps> = ({
   };
 
   return (
-    <div className="w-full bg-slate-50/90 dark:bg-[#0a101d]/90 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 shadow-sm mb-4 transition-all">
+    <div className="w-full bg-slate-50/90 dark:bg-[#121214]/90 border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-3 shadow-sm mb-4 transition-all">
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
         {/* Left: Label */}
         <div className="flex items-center gap-2.5 shrink-0">

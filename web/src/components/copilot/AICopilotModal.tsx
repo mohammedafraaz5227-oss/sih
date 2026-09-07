@@ -106,12 +106,12 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
         transition={{ duration: 0.2 }}
-        className="bg-white dark:bg-[#0c1424] border border-slate-300 dark:border-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden text-slate-900 dark:text-slate-100"
+        className="bg-white dark:bg-[#121214] border border-slate-300 dark:border-[#27272a] rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden text-slate-900 dark:text-slate-100"
       >
         {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-[#09101d]/80">
+        <div className="px-5 py-4 border-b border-slate-200 dark:border-[#27272a] flex items-center justify-between bg-slate-50/80 dark:bg-[#18181b]/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-amber-500/40 flex items-center justify-center shadow-md">
               <span className="text-xl">✨</span>
             </div>
             <div>
@@ -119,7 +119,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                 <h2 className="text-base sm:text-lg font-bold tracking-wide">
                   COGNITIVE AI DISPATCHER CO-PILOT
                 </h2>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-700">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
                   HYBRID AI LAYER
                 </span>
               </div>
@@ -130,19 +130,19 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-mono font-bold"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-zinc-800 transition-colors font-mono font-bold"
           >
             ✕
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-slate-200 dark:border-slate-800 bg-slate-100/60 dark:bg-[#080d18] px-4 pt-2 gap-2 text-xs font-semibold select-none">
+        <div className="flex border-b border-slate-200 dark:border-[#27272a] bg-slate-100/60 dark:bg-[#09090b] px-4 pt-2 gap-2 text-xs font-semibold select-none">
           <button
             onClick={() => setActiveTab('nlp')}
             className={`px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2 border-b-2 ${
               activeTab === 'nlp'
-                ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400 bg-white dark:bg-[#0c1424] font-bold shadow-xs'
+                ? 'border-amber-600 text-amber-700 dark:text-amber-400 bg-white dark:bg-[#121214] font-bold shadow-xs'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -153,7 +153,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
             onClick={() => setActiveTab('circular')}
             className={`px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2 border-b-2 ${
               activeTab === 'circular'
-                ? 'border-amber-600 text-amber-600 dark:text-amber-400 bg-white dark:bg-[#0c1424] font-bold shadow-xs'
+                ? 'border-amber-600 text-amber-700 dark:text-amber-400 bg-white dark:bg-[#121214] font-bold shadow-xs'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -164,7 +164,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
             onClick={() => setActiveTab('xai')}
             className={`px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2 border-b-2 ${
               activeTab === 'xai'
-                ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-white dark:bg-[#0c1424] font-bold shadow-xs'
+                ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-white dark:bg-[#121214] font-bold shadow-xs'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
@@ -178,7 +178,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
           {/* TAB 1: NLP Field Requisition */}
           {activeTab === 'nlp' && (
             <div className="space-y-4">
-              <div className="bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 rounded-xl p-3.5 text-xs text-blue-900 dark:text-blue-200">
+              <div className="bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-xl p-3.5 text-xs text-amber-900 dark:text-amber-200">
                 <span className="font-bold">Natural Language Ingestion:</span> Field engineers, gangmen, and permanent way inspectors (PWI) can type or voice-dictate requisitions in plain English, Hindi, or Hinglish. The AI parses the request into strict mathematical constraints.
               </div>
 
@@ -192,7 +192,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                     <button
                       key={idx}
                       onClick={() => setInputText(prompt)}
-                      className="text-left text-xs bg-slate-100 dark:bg-slate-800/80 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 hover:border-indigo-400 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 px-3 py-1.5 rounded-lg transition-all duration-150"
+                      className="text-left text-xs bg-slate-100 dark:bg-zinc-800/80 hover:bg-amber-50 dark:hover:bg-amber-950/40 hover:border-amber-400 text-slate-700 dark:text-zinc-300 border border-slate-300 dark:border-[#27272a] px-3 py-1.5 rounded-lg transition-all duration-150"
                     >
                       💬 {prompt.substring(0, 55)}...
                     </button>
@@ -210,7 +210,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                   onChange={(e) => setInputText(e.target.value)}
                   rows={3}
                   placeholder="Enter maintenance block requisition text in English or Hindi..."
-                  className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-xs font-mono focus:outline-hidden focus:ring-2 focus:ring-indigo-500 text-slate-900 dark:text-slate-100 resize-none"
+                  className="w-full bg-slate-50 dark:bg-[#18181b] border border-slate-300 dark:border-[#27272a] rounded-xl p-3 text-xs font-mono focus:outline-hidden focus:ring-2 focus:ring-amber-500 text-slate-900 dark:text-slate-100 resize-none"
                 />
               </div>
 
@@ -218,11 +218,11 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                 <button
                   onClick={handleParse}
                   disabled={isParsing || !inputText.trim()}
-                  className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-xs rounded-xl shadow-md transition-all flex items-center gap-2 disabled:opacity-50"
+                  className="px-5 py-2.5 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-semibold text-xs rounded-xl shadow-md transition-all flex items-center gap-2 disabled:opacity-50"
                 >
                   {isParsing ? (
                     <>
-                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-3.5 h-3.5 border-2 border-white dark:border-zinc-900 border-t-transparent rounded-full animate-spin"></div>
                       <span>EXTRACTING CONSTRAINTS...</span>
                     </>
                   ) : (
@@ -239,12 +239,12 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/30 rounded-xl p-4 space-y-3"
+                  className="border border-amber-200 dark:border-[#27272a] bg-amber-50/40 dark:bg-[#18181b] rounded-xl p-4 space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-base">✅</span>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-950 dark:text-indigo-200">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-amber-950 dark:text-amber-200">
                         Extracted Railway Constraint Payload
                       </h4>
                     </div>
@@ -262,7 +262,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                     {Object.entries(parsedResult.extracted_entities).map(([k, v]) => (
                       <div
                         key={k}
-                        className="bg-white dark:bg-[#0c1424] border border-slate-200 dark:border-slate-800 rounded-lg p-2"
+                        className="bg-white dark:bg-[#121214] border border-slate-200 dark:border-[#27272a] rounded-lg p-2"
                       >
                         <div className="text-[10px] text-slate-400 uppercase font-semibold">
                           {k.replace('_', ' ')}
@@ -285,7 +285,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                       className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 shadow-xs ${
                         submitSuccess
                           ? 'bg-emerald-600 text-white'
-                          : 'bg-indigo-600 hover:bg-indigo-500 text-white'
+                          : 'bg-[#7B1113] hover:bg-[#921416] text-white'
                       }`}
                     >
                       {isSubmitting ? (
@@ -376,7 +376,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                             </span>
                             <div className="text-[10px] text-slate-500">{b.duration_str}</div>
                           </td>
-                          <td className="p-2 font-mono font-bold text-indigo-700 dark:text-indigo-300">
+                          <td className="p-2 font-mono font-bold text-amber-800 dark:text-amber-300">
                             {b.time_window_ist}
                           </td>
                           <td className="p-2 font-mono font-bold text-rose-700 dark:text-rose-400">
@@ -455,7 +455,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
                     <button
                       key={idx}
                       onClick={() => handleAskXAI(q)}
-                      className="text-left text-xs bg-slate-100 dark:bg-slate-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 hover:border-emerald-400 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 p-2.5 rounded-xl transition-all"
+                      className="text-left text-xs bg-slate-100 dark:bg-zinc-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 hover:border-emerald-400 text-slate-700 dark:text-zinc-300 border border-slate-300 dark:border-[#27272a] p-2.5 rounded-xl transition-all"
                     >
                       💡 {q}
                     </button>
@@ -464,13 +464,13 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
               </div>
 
               {/* Active Question & AI Response */}
-              <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 space-y-3">
+              <div className="bg-slate-50 dark:bg-[#18181b] border border-slate-200 dark:border-[#27272a] rounded-xl p-4 space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-200">
                   <span className="text-emerald-600 dark:text-emerald-400">❓ Controller Query:</span>
                   <span>{xaiQuestion}</span>
                 </div>
 
-                <div className="border-t border-slate-200 dark:border-slate-800 pt-3">
+                <div className="border-t border-slate-200 dark:border-[#27272a] pt-3">
                   <div className="flex items-start gap-2.5">
                     <div className="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                       AI
@@ -486,13 +486,13 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#09101d] flex items-center justify-between text-xs font-mono">
+        <div className="px-5 py-3 border-t border-slate-200 dark:border-[#27272a] bg-slate-50 dark:bg-[#18181b] flex items-center justify-between text-xs font-mono">
           <div className="text-slate-500 dark:text-slate-400">
             Indian Railways Smart Operations Co-Pilot • SIH-1608
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold rounded-lg transition-colors"
+            className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-200 font-bold rounded-lg transition-colors"
           >
             CLOSE
           </button>

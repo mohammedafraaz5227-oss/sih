@@ -23,13 +23,14 @@ export const RetroGrid: React.FC<RetroGridProps> = ({
           className={cn(
             'animate-grid',
             '[background-repeat:repeat] [background-size:40px_40px] [height:300vh] [inset:0%_0px] [margin-left:-50%] [transform-origin:100%_0_0] [width:200vw]',
-            '[background-image:linear-gradient(to_right,rgba(15,23,42,0.05)_1px,transparent_0),linear-gradient(to_bottom,rgba(15,23,42,0.05)_1px,transparent_0)]'
+            '[background-image:linear-gradient(to_right,rgba(15,23,42,0.05)_1px,transparent_0),linear-gradient(to_bottom,rgba(15,23,42,0.05)_1px,transparent_0)]',
+            'dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_0),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_0)]'
           )}
         />
       </div>
 
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#f8fafc] via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#f8fafc] via-transparent to-transparent dark:from-[#09090b]" />
     </div>
   );
 };

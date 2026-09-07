@@ -28,17 +28,41 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [scenario, setScenario] = useState<'congested' | 'demo'>('congested');
 
-  // Light Control Room Theme (permanently enforced, dark mode removed)
+  // Theme State (Dark vs Light Control Room)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const paramTheme = params.get('theme');
+      if (paramTheme === 'dark' || paramTheme === 'light') return paramTheme;
+      const saved = localStorage.getItem('sih_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    }
+    return 'light';
+  });
+
+  const handleToggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
+
   useEffect(() => {
     try {
-      localStorage.removeItem('sih_theme');
+      localStorage.setItem('sih_theme', theme);
     } catch (e) {}
-    document.documentElement.classList.remove('dark');
-    document.body.classList.remove('dark');
-    document.documentElement.style.colorScheme = 'light';
-    document.documentElement.style.backgroundColor = '#f8fafc';
-    document.body.style.backgroundColor = '#f8fafc';
-  }, []);
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+      document.documentElement.style.backgroundColor = '#09090b';
+      document.body.style.backgroundColor = '#09090b';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+      document.documentElement.style.backgroundColor = '#f8fafc';
+      document.body.style.backgroundColor = '#f8fafc';
+    }
+  }, [theme]);
 
   // Core Data State
   const [stations, setStations] = useState<Station[]>([]);
@@ -271,13 +295,13 @@ export const App: React.FC = () => {
   return (
     <div
       style={{
-        backgroundColor: '#f8fafc',
-        color: '#0f172a',
+        backgroundColor: theme === 'dark' ? '#09090b' : '#f8fafc',
+        color: theme === 'dark' ? '#f4f4f5' : '#0f172a',
       }}
-      className="relative min-h-screen flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden"
+      className="relative min-h-screen flex flex-col font-sans p-2 sm:p-4 selection:bg-[#7B1113] selection:text-white overflow-x-hidden transition-colors duration-200"
     >
       {/* 21st.dev Ambient Retro Perspective Grid */}
-      <RetroGrid className="opacity-15" />
+      <RetroGrid className="opacity-20" />
 
       {/* Outer Dashboard Card Wrapper */}
       <div className="relative z-10 max-w-[1440px] w-full mx-auto flex-1 flex flex-col">
@@ -288,6 +312,8 @@ export const App: React.FC = () => {
           scenario={scenario}
           onToggleScenario={handleToggleScenario}
           isSolving={isSolving}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
           onOpenCopilot={() => setIsCopilotOpen(true)}
         />
 

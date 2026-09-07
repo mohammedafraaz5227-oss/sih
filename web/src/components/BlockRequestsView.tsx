@@ -150,7 +150,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
   return (
     <div className="space-y-4 pb-6 select-none">
       {/* 1. Top Controls Bar */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 transition-colors duration-200">
         <div className="flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-700 dark:text-amber-400 text-xl shadow-xs">
             🔧
@@ -160,7 +160,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
               <h2 className="font-pixel text-xs md:text-sm text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                 Maintenance Block Demand Registry ({blocks.length} Tasks)
               </h2>
-              <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300 font-pixel text-[7px] uppercase">
+              <span className="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-300 font-pixel text-[7px] uppercase">
                 CORRIDOR QUEUE
               </span>
             </div>
@@ -173,13 +173,13 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
         <div className="flex items-center space-x-2.5">
           <button
             onClick={onResetDemo}
-            className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 font-pixel text-[8px] transition-all"
+            className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 border border-slate-300 dark:border-[#27272a] font-pixel text-[8px] transition-all"
           >
             RESET BENCHMARK SET
           </button>
           <button
             onClick={openCreateModal}
-            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-pixel text-[8px] tracking-wide transition-all shadow-sm"
+            className="px-4 py-2 rounded-xl bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 font-pixel text-[8px] tracking-wide transition-all shadow-sm"
           >
             + NEW BLOCK REQUEST
           </button>
@@ -187,13 +187,13 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
       </div>
 
       {/* 2. Filter Bar */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 text-xs font-mono transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 text-xs font-mono transition-colors duration-200">
         <div className="flex items-center space-x-3 flex-wrap gap-2">
           <span className="text-[8px] font-pixel text-slate-500 dark:text-slate-400 uppercase">FILTER BY SECTION:</span>
           <select
             value={filterSection}
             onChange={(e) => setFilterSection(e.target.value)}
-            className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-lg px-2.5 py-1 text-xs focus:border-blue-500 outline-none"
+            className="bg-slate-50 dark:bg-[#18181b] border border-slate-200 dark:border-[#27272a] text-slate-800 dark:text-slate-200 rounded-lg px-2.5 py-1 text-xs focus:border-amber-500 outline-none"
           >
             <option value="all">All 5 Track Sections</option>
             {assets.map((a) => (
@@ -219,15 +219,15 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
         </div>
 
         <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
-          Showing <strong className="text-blue-700 dark:text-blue-400">{filteredBlocks.length}</strong> of {blocks.length} requests
+          Showing <strong className="text-amber-700 dark:text-amber-400">{filteredBlocks.length}</strong> of {blocks.length} requests
         </div>
       </div>
 
       {/* 3. Main Demands Table */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl overflow-x-auto shadow-sm transition-colors duration-200">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl overflow-x-auto shadow-sm transition-colors duration-200">
         <table className="w-full text-left text-xs font-mono">
           <thead>
-            <tr className="bg-slate-50/80 dark:bg-slate-900/80 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 text-[8px] font-pixel uppercase">
+            <tr className="bg-slate-50/80 dark:bg-[#18181b] text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-[#27272a] text-[8px] font-pixel uppercase">
               <th className="py-2.5 px-3">BLOCK ID</th>
               <th className="py-2.5 px-3">SECTION</th>
               <th className="py-2.5 px-3">MAINTENANCE TYPE</th>
@@ -240,7 +240,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
               <th className="py-2.5 px-3 text-right">ACTIONS</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
+          <tbody className="divide-y divide-slate-100 dark:divide-[#27272a]">
             {filteredBlocks.map((block) => {
               const startH = Math.floor(block.earliest_start / 60);
               const startM = block.earliest_start % 60;
@@ -250,8 +250,8 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
               const prefM = block.preferred_start % 60;
 
               return (
-                <tr key={block.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors">
-                  <td className="py-3 px-3 font-pixel text-[10px] text-blue-600 dark:text-cyan-400 whitespace-nowrap font-bold">
+                <tr key={block.id} className="hover:bg-slate-50 dark:hover:bg-zinc-900/60 transition-colors">
+                  <td className="py-3 px-3 font-pixel text-[10px] text-amber-600 dark:text-amber-400 whitespace-nowrap font-bold">
                     {block.id}
                   </td>
                   <td className="py-3 px-3 text-slate-800 dark:text-slate-200 whitespace-nowrap">
@@ -269,11 +269,11 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                   <td className="py-3 px-3 font-digital text-base text-slate-700 dark:text-slate-300 whitespace-nowrap">
                     {String(startH).padStart(2, '0')}:{String(startM).padStart(2, '0')} - {String(endH).padStart(2, '0')}:{String(endM).padStart(2, '0')}
                   </td>
-                  <td className="py-3 px-3 font-digital text-base text-blue-700 dark:text-cyan-300 whitespace-nowrap">
+                  <td className="py-3 px-3 font-digital text-base text-slate-700 dark:text-zinc-300 whitespace-nowrap">
                     {String(prefH).padStart(2, '0')}:{String(prefM).padStart(2, '0')}
                   </td>
                   <td className="py-3 px-3 whitespace-nowrap">
-                    <span className="px-2 py-0.5 bg-slate-100 dark:bg-[#060a12] border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-yellow-300 font-pixel text-[8px]">
+                    <span className="px-2 py-0.5 bg-slate-100 dark:bg-[#18181b] border border-slate-200 dark:border-[#27272a] text-slate-800 dark:text-amber-300 font-pixel text-[8px]">
                       {block.crew_required} CREW
                     </span>
                   </td>
@@ -289,7 +289,7 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                   <td className="py-3 px-3 text-right whitespace-nowrap space-x-1.5">
                     <button
                       onClick={() => openEditModal(block)}
-                      className="px-2 py-1 bg-slate-100 dark:bg-[#0c1424] hover:bg-slate-200 dark:hover:bg-[#15233c] text-slate-800 dark:text-yellow-400 border border-slate-200 dark:border-slate-700 text-[8px] font-pixel transition-colors rounded"
+                      className="px-2 py-1 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-200 border border-slate-200 dark:border-[#27272a] text-[8px] font-pixel transition-colors rounded"
                     >
                       EDIT
                     </button>
@@ -310,8 +310,8 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
       {/* 4. Modal Form for Add/Edit */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl transition-colors duration-200">
-            <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+          <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl max-w-lg w-full p-6 shadow-2xl transition-colors duration-200">
+            <div className="flex justify-between items-center border-b border-slate-100 dark:border-[#27272a] pb-3 mb-4">
               <h3 className="font-pixel text-xs text-slate-900 dark:text-slate-100 uppercase flex items-center space-x-2">
                 <span>🔧</span>
                 <span>{editingBlock ? 'EDIT BLOCK REQUEST' : 'NEW MAINTENANCE BLOCK REQUEST'}</span>
@@ -475,17 +475,17 @@ export const BlockRequestsView: React.FC<BlockRequestsViewProps> = ({
                 </label>
               </div>
 
-              <div className="flex justify-end space-x-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex justify-end space-x-2.5 pt-4 border-t border-slate-100 dark:border-[#27272a]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-pixel text-[8px]"
+                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 font-pixel text-[8px]"
                 >
                   CANCEL
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-pixel text-[8px] shadow-sm"
+                  className="px-5 py-2 rounded-xl bg-[#7B1113] hover:bg-[#921416] text-white font-pixel text-[8px] shadow-sm"
                 >
                   {editingBlock ? 'SAVE CHANGES' : 'CREATE DEMAND'}
                 </button>

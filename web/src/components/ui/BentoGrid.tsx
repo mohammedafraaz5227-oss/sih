@@ -42,12 +42,12 @@ export const BentoCard: React.FC<BentoCardProps> = ({
   glowColor = 'blue',
 }) => {
   const glowStyles = {
-    blue: 'hover:border-blue-400/80 hover:shadow-[0_8px_30px_rgb(2,132,199,0.12)]',
+    blue: 'hover:border-slate-400/80 dark:hover:border-zinc-500/80 hover:shadow-md',
     green: 'hover:border-emerald-400/80 hover:shadow-[0_8px_30px_rgb(16,185,129,0.12)]',
     amber: 'hover:border-amber-400/80 hover:shadow-[0_8px_30px_rgb(245,158,11,0.12)]',
-    cyan: 'hover:border-cyan-400/80 hover:shadow-[0_8px_30px_rgb(6,182,212,0.12)]',
+    cyan: 'hover:border-emerald-400/80 hover:shadow-md',
     red: 'hover:border-rose-400/80 hover:shadow-[0_8px_30px_rgb(239,68,68,0.12)]',
-    purple: 'hover:border-purple-400/80 hover:shadow-[0_8px_30px_rgb(124,58,237,0.12)]',
+    purple: 'hover:border-amber-400/80 hover:shadow-[0_8px_30px_rgb(245,158,11,0.12)]',
   };
 
   return (
@@ -56,7 +56,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 p-4 shadow-sm transition-all duration-300',
+        'group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] p-4 shadow-sm transition-all duration-300',
         glowStyles[glowColor],
         className
       )}

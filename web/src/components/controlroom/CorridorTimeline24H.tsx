@@ -81,7 +81,7 @@ export const CorridorTimeline24H: React.FC<CorridorTimeline24HProps> = ({
         {/* Left / Center: 24-Hour Timeline Grid (Flex 1) */}
         <div className="flex-1 min-w-0">
           {/* Timeline Grid Container */}
-          <div className="relative border border-slate-200/80 dark:border-slate-800 rounded-xl bg-slate-50/70 dark:bg-[#060a12]/80 p-2.5 pb-6 overflow-hidden">
+          <div className="relative border border-slate-200/80 dark:border-[#27272a] rounded-xl bg-slate-50/70 dark:bg-[#121214] p-2.5 pb-6 overflow-hidden">
             {/* Top Time Ticks Header */}
             <div className="flex items-center mb-2 pl-36 pr-4 justify-between text-[8px] font-mono text-slate-400">
               {timeTicks.map((tick, idx) => (
@@ -190,11 +190,11 @@ export const CorridorTimeline24H: React.FC<CorridorTimeline24HProps> = ({
         </div>
 
         {/* Right: Selected Train Inspector Dock (Matching Reference Image) */}
-        <div className="w-full lg:w-72 bg-white dark:bg-slate-900/90 rounded-xl border border-slate-200/90 dark:border-slate-800 p-3.5 flex flex-col justify-between text-xs font-mono shadow-xs shrink-0">
+        <div className="w-full lg:w-72 bg-white dark:bg-[#121214] rounded-xl border border-slate-200/90 dark:border-[#27272a] p-3.5 flex flex-col justify-between text-xs font-mono shadow-xs shrink-0">
           <div>
             {/* Header */}
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800 mb-2.5">
-              <div className="flex items-center gap-1.5 font-pixel text-[8.5px] text-slate-900 dark:text-slate-100 uppercase">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-zinc-800 mb-2.5">
+              <div className="flex items-center gap-1.5 font-pixel text-[8.5px] text-slate-900 dark:text-[#f4f4f5] uppercase">
                 <span>🚂</span>
                 <span>SELECTED TRAIN</span>
               </div>
@@ -203,39 +203,39 @@ export const CorridorTimeline24H: React.FC<CorridorTimeline24HProps> = ({
 
             {/* Train Identity Badge */}
             <div className="flex items-center justify-between gap-2 mb-2">
-              <span className="font-bold text-slate-900 dark:text-slate-100 text-xs font-pixel">
+              <span className="font-bold text-slate-900 dark:text-[#f4f4f5] text-xs font-pixel">
                 12031 Rajdhani Express
               </span>
-              <span className="px-1.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-pixel text-[6.5px] uppercase">
+              <span className="px-1.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700/60 text-emerald-700 dark:text-emerald-300 font-pixel text-[6.5px] uppercase">
                 ON TIME
               </span>
             </div>
 
             {/* Route */}
-            <div className="text-slate-500 dark:text-slate-400 text-[11px] mb-3">
+            <div className="text-slate-500 dark:text-zinc-400 text-[11px] mb-3">
               NDLS → AGC
             </div>
 
             {/* Specs Table */}
             <div className="space-y-2 text-[11px]">
-              <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-500 dark:text-slate-400">Speed</span>
-                <span className="font-digital text-sm font-bold text-slate-900 dark:text-slate-100">130 km/h</span>
+              <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-zinc-800/60">
+                <span className="text-slate-500 dark:text-zinc-400">Speed</span>
+                <span className="font-digital text-sm font-bold text-slate-900 dark:text-[#f4f4f5]">130 km/h</span>
               </div>
-              <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-500 dark:text-slate-400">Current Location</span>
-                <span className="text-slate-800 dark:text-slate-200">Near TDK (142 km)</span>
+              <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-zinc-800/60">
+                <span className="text-slate-500 dark:text-zinc-400">Current Location</span>
+                <span className="text-slate-800 dark:text-zinc-200">Near TDK (142 km)</span>
               </div>
               <div className="flex items-center justify-between py-1">
-                <span className="text-slate-500 dark:text-slate-400">ETA at AGC</span>
-                <span className="font-digital text-sm font-bold text-blue-700 dark:text-blue-400">16:12 IST</span>
+                <span className="text-slate-500 dark:text-zinc-400">ETA at AGC</span>
+                <span className="font-digital text-sm font-bold text-amber-600 dark:text-amber-400">16:12 IST</span>
               </div>
             </div>
           </div>
 
           {/* Footer View Details Link */}
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end">
-            <button className="text-[11px] text-blue-600 dark:text-blue-400 hover:text-blue-700 font-bold flex items-center gap-1">
+          <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-end">
+            <button className="text-[11px] text-amber-600 dark:text-amber-400 hover:text-amber-500 font-bold flex items-center gap-1">
               <span>View Details</span>
               <span>→</span>
             </button>

@@ -28,7 +28,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
   return (
     <div className="space-y-4 pb-6 select-none">
       {/* 1. Header Banner */}
-      <div className="w-full bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 transition-colors duration-200">
+      <div className="w-full bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 transition-colors duration-200">
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 text-2xl shadow-xs">
             📊
@@ -51,7 +51,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         <ShinyButton
           onClick={onRunComparison}
           disabled={isLoading}
-          variant={isLoading ? 'amber' : 'blue'}
+          variant={isLoading ? 'amber' : 'emerald'}
           className="px-6 py-3 font-pixel text-xs tracking-wider uppercase shrink-0"
         >
           {isLoading ? 'CALCULATING BENCHMARK...' : 'RUN BENCHMARK COMPARISON'}
@@ -129,7 +129,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
       {/* 3. Side-by-Side Plan Comparison Panels */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Left: Naive Baseline */}
-        <div className="bg-white dark:bg-[#0a101d] border-2 border-rose-200 dark:border-rose-900/60 rounded-2xl p-5 shadow-sm transition-colors duration-200">
+        <div className="bg-white dark:bg-[#121214] border-2 border-rose-200 dark:border-rose-900/60 rounded-2xl p-5 shadow-sm transition-colors duration-200">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-rose-100 dark:border-rose-900/40">
             <div className="flex items-center gap-2">
               <PulsingSignalPip aspect="red" size="md" pulse={false} />
@@ -171,7 +171,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         </div>
 
         {/* Right: CP-SAT Optimized */}
-        <div className="bg-white dark:bg-[#0a101d] border-2 border-emerald-300 dark:border-emerald-800/60 rounded-2xl p-5 shadow-sm transition-colors duration-200">
+        <div className="bg-white dark:bg-[#121214] border-2 border-emerald-300 dark:border-emerald-800/60 rounded-2xl p-5 shadow-sm transition-colors duration-200">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-emerald-100 dark:border-emerald-900/40">
             <div className="flex items-center gap-2">
               <PulsingSignalPip aspect="green" size="md" />

@@ -31,9 +31,9 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
   return (
     <div className="space-y-4 pb-6 select-none">
       {/* 1. Hero CP-SAT Banner Card */}
-      <div className="w-full bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 relative overflow-hidden transition-colors duration-200">
+      <div className="w-full bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4 relative overflow-hidden transition-colors duration-200">
         <div className="flex items-center gap-3.5 z-10">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-center justify-center text-amber-600 dark:text-amber-400 text-2xl shadow-xs">
             ⚡
           </div>
           <div>
@@ -136,10 +136,10 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
       </BentoGrid>
 
       {/* 3. Detailed Schedule Allocation Table */}
-      <div className="bg-white dark:bg-[#0a101d] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 shadow-sm transition-colors duration-200">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
+      <div className="bg-white dark:bg-[#121214] border border-slate-200/90 dark:border-[#27272a] rounded-2xl p-5 shadow-sm transition-colors duration-200">
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-[#27272a]">
           <div className="flex items-center gap-2 font-pixel text-xs text-slate-900 dark:text-slate-100 uppercase">
-            <span className="text-blue-600 dark:text-blue-400">📋</span>
+            <span className="text-amber-600 dark:text-amber-400">📋</span>
             <span>OPTIMIZED BLOCK SCHEDULE ASSIGNMENTS</span>
           </div>
           <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
@@ -150,7 +150,7 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left font-mono text-xs">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 font-pixel text-[7.5px] text-slate-600 dark:text-slate-400 uppercase">
+              <tr className="border-b border-slate-200 dark:border-[#27272a] bg-slate-50/80 dark:bg-[#18181b] font-pixel text-[7.5px] text-slate-600 dark:text-slate-400 uppercase">
                 <th className="py-2.5 px-3">Status</th>
                 <th className="py-2.5 px-3">Demand ID</th>
                 <th className="py-2.5 px-3">Corridor Track Section</th>
@@ -161,7 +161,7 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
                 <th className="py-2.5 px-3">Deviation</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
+            <tbody className="divide-y divide-slate-100 dark:divide-[#27272a]">
               {scheduledBlocks.map((b) => {
                 const startH = Math.floor(b.scheduled_start / 60);
                 const startM = b.scheduled_start % 60;
@@ -170,7 +170,7 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
                 const timeStr = `${String(startH).padStart(2, '0')}:${String(startM).padStart(2, '0')} - ${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
 
                 return (
-                  <tr key={b.block_request_id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/60 transition-all">
+                  <tr key={b.block_request_id} className="hover:bg-slate-50/80 dark:hover:bg-zinc-900/60 transition-all">
                     <td className="py-2.5 px-3">
                       <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-pixel text-[7px] border border-emerald-200 dark:border-emerald-700">
                         <PulsingSignalPip aspect="green" size="sm" pulse={false} />
@@ -181,7 +181,7 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
                       {b.block_request_id}
                     </td>
                     <td className="py-2.5 px-3 text-slate-700 dark:text-slate-300">{b.asset_name}</td>
-                    <td className="py-2.5 px-3 uppercase text-[11px] text-blue-700 dark:text-blue-400 font-medium">
+                    <td className="py-2.5 px-3 uppercase text-[11px] text-amber-700 dark:text-amber-400 font-medium">
                       {b.maintenance_type.replace('_', ' ')}
                     </td>
                     <td className="py-2.5 px-3">
