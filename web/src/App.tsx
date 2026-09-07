@@ -28,40 +28,17 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [scenario, setScenario] = useState<'congested' | 'demo'>('congested');
 
-  // Theme State (Light vs Dark Control Room)
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('sih_theme');
-      if (saved === 'dark') return 'dark';
-      if (saved === 'light') return 'light';
-    }
-    return 'light';
-  });
-
-  const handleSetTheme = useCallback((newTheme: 'light' | 'dark') => {
-    setTheme(newTheme);
-    try {
-      localStorage.setItem('sih_theme', newTheme);
-    } catch (e) {}
-
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-      document.documentElement.style.colorScheme = 'dark';
-      document.documentElement.style.backgroundColor = '#060a12';
-      document.body.style.backgroundColor = '#060a12';
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-      document.documentElement.style.colorScheme = 'light';
-      document.documentElement.style.backgroundColor = '#f1f5f9';
-      document.body.style.backgroundColor = '#f1f5f9';
-    }
-  }, []);
-
+  // Light Control Room Theme (permanently enforced, dark mode removed)
   useEffect(() => {
-    handleSetTheme(theme);
-  }, [theme, handleSetTheme]);
+    try {
+      localStorage.removeItem('sih_theme');
+    } catch (e) {}
+    document.documentElement.classList.remove('dark');
+    document.body.classList.remove('dark');
+    document.documentElement.style.colorScheme = 'light';
+    document.documentElement.style.backgroundColor = '#f8fafc';
+    document.body.style.backgroundColor = '#f8fafc';
+  }, []);
 
   // Core Data State
   const [stations, setStations] = useState<Station[]>([]);
@@ -294,13 +271,13 @@ export const App: React.FC = () => {
   return (
     <div
       style={{
-        backgroundColor: theme === 'dark' ? '#060a12' : '#f1f5f9',
-        color: theme === 'dark' ? '#f1f5f9' : '#0f172a',
+        backgroundColor: '#f8fafc',
+        color: '#0f172a',
       }}
-      className="relative min-h-screen flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden transition-colors duration-200"
+      className="relative min-h-screen flex flex-col font-sans p-2 sm:p-4 selection:bg-blue-600 selection:text-white overflow-x-hidden"
     >
       {/* 21st.dev Ambient Retro Perspective Grid */}
-      <RetroGrid className="opacity-25" />
+      <RetroGrid className="opacity-15" />
 
       {/* Outer Dashboard Card Wrapper */}
       <div className="relative z-10 max-w-[1440px] w-full mx-auto flex-1 flex flex-col">
@@ -311,8 +288,6 @@ export const App: React.FC = () => {
           scenario={scenario}
           onToggleScenario={handleToggleScenario}
           isSolving={isSolving}
-          theme={theme}
-          onSetTheme={handleSetTheme}
           onOpenCopilot={() => setIsCopilotOpen(true)}
         />
 

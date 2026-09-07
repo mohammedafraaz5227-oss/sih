@@ -8,8 +8,6 @@ interface ControlRoomHeaderProps {
   scenario: 'congested' | 'demo';
   onToggleScenario: (s: 'congested' | 'demo') => void;
   isSolving: boolean;
-  theme: 'light' | 'dark';
-  onSetTheme: (theme: 'light' | 'dark') => void;
   onOpenCopilot?: () => void;
 }
 
@@ -19,8 +17,6 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
   scenario,
   onToggleScenario,
   isSolving,
-  theme,
-  onSetTheme,
   onOpenCopilot,
 }) => {
   const [istTime, setIstTime] = useState<string>('12:35:39');
@@ -99,41 +95,6 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
                 <span>AI</span>
               </button>
             )}
-            <div
-              className="flex items-center bg-slate-200/90 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-300 dark:border-slate-800 cursor-pointer"
-              onClick={() => onSetTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSetTheme('light');
-                }}
-                className={`px-2 py-1 rounded text-xs transition-all cursor-pointer ${
-                  theme === 'light'
-                    ? 'bg-white shadow-xs text-blue-700 font-bold border border-slate-200'
-                    : 'opacity-40 hover:opacity-100 text-slate-500'
-                }`}
-                title="Light Mode"
-              >
-                ☀️
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSetTheme('dark');
-                }}
-                className={`px-2 py-1 rounded text-xs transition-all cursor-pointer ${
-                  theme === 'dark'
-                    ? 'bg-slate-800 shadow-xs text-yellow-400 font-bold border border-slate-700'
-                    : 'opacity-40 hover:opacity-100 text-slate-500'
-                }`}
-                title="Dark Mode"
-              >
-                🌙
-              </button>
-            </div>
             <PulsingSignalPip aspect={isSolving ? 'amber' : 'green'} size="sm" />
           </div>
         </div>
@@ -181,45 +142,6 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
 
         {/* Right: Real-Time Digital Clock & Telemetry Badges */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Segmented Dual-Pill Theme Toggle */}
-          <div
-            className="flex items-center bg-slate-200/90 dark:bg-slate-900/90 p-1 rounded-xl border border-slate-300 dark:border-slate-800 shadow-xs cursor-pointer"
-            onClick={() => onSetTheme(theme === 'dark' ? 'light' : 'dark')}
-          >
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSetTheme('light');
-              }}
-              className={`px-2.5 py-1 rounded-lg font-pixel text-[7.5px] flex items-center gap-1.5 transition-all cursor-pointer ${
-                theme === 'light'
-                  ? 'bg-white text-blue-700 font-bold shadow-xs border border-slate-200'
-                  : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-              }`}
-              title="Switch to Light Mode"
-            >
-              <span>☀️</span>
-              <span>LIGHT</span>
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSetTheme('dark');
-              }}
-              className={`px-2.5 py-1 rounded-lg font-pixel text-[7.5px] flex items-center gap-1.5 transition-all cursor-pointer ${
-                theme === 'dark'
-                  ? 'bg-slate-800 text-yellow-400 font-bold shadow-xs border border-slate-700'
-                  : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-              }`}
-              title="Switch to Dark Mode"
-            >
-              <span>🌙</span>
-              <span>DARK</span>
-            </button>
-          </div>
-
           {/* System Status Pill (Matching Reference) */}
           <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shadow-[0_0_8px_#10b981] animate-pulse" />

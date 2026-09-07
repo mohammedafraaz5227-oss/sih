@@ -6,16 +6,10 @@
 
 @layer base {
   body {
-    background-color: #f1f5f9;
+    background-color: #f8fafc;
     color: #0f172a;
     font-family: 'Space Mono', 'Courier New', monospace;
     overflow-x: hidden;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  html.dark body {
-    background-color: #060a12;
-    color: #f8fafc;
   }
 
   /* Selective pixel typography as requested */
