@@ -11,17 +11,10 @@
     <script>
       (function() {
         try {
-          var saved = localStorage.getItem('sih_theme');
-          var theme = saved === 'dark' ? 'dark' : 'light';
-          if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-            document.documentElement.style.backgroundColor = '#060a12';
-          } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.style.colorScheme = 'light';
-            document.documentElement.style.backgroundColor = '#f1f5f9';
-          }
+          localStorage.removeItem('sih_theme');
+          document.documentElement.classList.remove('dark');
+          document.documentElement.style.colorScheme = 'light';
+          document.documentElement.style.backgroundColor = '#f8fafc';
         } catch (e) {}
       })();
     </script>

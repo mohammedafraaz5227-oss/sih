@@ -116,7 +116,7 @@ export const ControlRoomHeader: React.FC<ControlRoomHeaderProps> = ({
                 {isActive && (
                   <motion.div
                     layoutId="activeNavTabPill"
-                    className="absolute inset-0 bg-blue-600 rounded-lg -z-0"
+                    className="absolute inset-0 bg-[#7B1113] rounded-lg -z-0"
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
                 )}

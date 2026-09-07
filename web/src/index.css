@@ -36,9 +36,9 @@
 .bg-control-room-light {
   background-color: #f8fafc;
   background-image: 
-    linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-    radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
   background-size: 28px 28px, 28px 28px, 14px 14px;
   background-position: 0 0, 0 0, 7px 7px;
 }
